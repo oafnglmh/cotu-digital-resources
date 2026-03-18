@@ -1,0 +1,46 @@
+export const DISTRICTS = [
+  {
+    id: "dong_giang",
+    name: "Đông Giang",
+    center: [15.92, 107.87],
+    communes: [
+      { id: "dong_giang", name: "TT. Prao" },
+      { id: "dong_giang", name: "Xã Tà Lu" },
+      { id: "dong_giang", name: "Xã Sông Kôn" },
+      { id: "dong_giang", name: "Xã Jơ Ngây" },
+      { id: "dong_giang", name: "Xã A Ting" },
+      { id: "dong_giang", name: "Xã Mà Cooih" },
+      { id: "dong_giang", name: "Xã Arooih" },
+      { id: "dong_giang", name: "Xã Ba" },
+      { id: "dong_giang", name: "Xã ZA Hung" },
+      { id: "dong_giang", name: "Xã Kà Dăng" },
+    ],
+  },
+  {
+    id: "hoi_an",
+    name: "Hội An",
+    center: [15.88, 108.33],
+    communes: [
+      { id: "hoi_an", name: "P. Minh An" },
+      { id: "hoi_an", name: "P. Cẩm Phô" },
+      { id: "hoi_an", name: "P. Thanh Hà" },
+      { id: "hoi_an", name: "P. Cẩm Châu" },
+      { id: "hoi_an", name: "P. Cẩm Nam" },
+      { id: "hoi_an", name: "Xã Cẩm Thanh" },
+      { id: "hoi_an", name: "Xã Cẩm Kim" },
+      { id: "hoi_an", name: "Xã Cẩm Hà" },
+    ],
+  },
+  {
+    id: "duy_xuyen",
+    name: "Duy Xuyên",
+    center: [15.80, 108.20],
+    communes: [
+      { id: "duy_xuyen", name: "TT. Nam Phước" },
+      { id: "duy_xuyen", name: "Xã Duy Phú" },
+      { id: "duy_xuyen", name: "Xã Duy Trinh" },
+      { id: "duy_xuyen", name: "Xã Duy Tân" },
+      { id: "duy_xuyen", name: "Xã Duy Nghĩa" },
+    ],
+  },
+];
