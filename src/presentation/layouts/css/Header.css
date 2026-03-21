@@ -1,0 +1,491 @@
+/* ═══════════════════════════════════════════════════════════════════════════
+   header.css  —  Phong cách Cơ Tu · Thổ cẩm · Đất đỏ Tây Nguyên
+   Màu sắc lấy cảm hứng từ: vải dệt thổ cẩm, hoa văn chim phượng, 
+   màu đất đỏ, vàng nghệ, xanh rừng Trường Sơn
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Crimson+Pro:ital,wght@0,400;0,600;1,400&display=swap');
+
+/* ── CSS Variables ─────────────────────────────────────────────────────────── */
+:root {
+  /* Bảng màu Cơ Tu */
+  --cotu-earth:      #8b3a1e;   /* đất đỏ */
+  --cotu-earth-deep: #5c1f08;   /* đất nâu sẫm */
+  --cotu-gold:       #c9821a;   /* vàng nghệ */
+  --cotu-gold-light: #e8a832;   /* vàng nhạt */
+  --cotu-gold-pale:  #f5d080;   /* vàng kem */
+  --cotu-forest:     #2d5a27;   /* xanh rừng */
+  --cotu-forest-mid: #3d7a35;   /* xanh lá */
+  --cotu-sky:        #1a4a6b;   /* xanh trời */
+  --cotu-black:      #1a0e08;   /* đen nâu */
+  --cotu-cream:      #f7eed8;   /* kem sáng */
+  --cotu-ivory:      #fdf6e8;   /* trắng ngà */
+  --cotu-sand:       #e8d4a8;   /* cát vàng */
+
+  /* Gradient thổ cẩm */
+  --header-bg: linear-gradient(
+    135deg,
+    #fdf6e8 0%,
+    #f7eed8 25%,
+    #f0e2c4 50%,
+    #f7eed8 75%,
+    #fdf6e8 100%
+  );
+
+  /* Shadow */
+  --header-shadow: 0 2px 20px rgba(139, 58, 30, 0.15), 
+                   0 1px 4px rgba(139, 58, 30, 0.1);
+}
+
+/* ── Header wrapper ────────────────────────────────────────────────────────── */
+.cotu-header {
+  position:sticky;
+  top: 0;
+  z-index: 10000;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 0;
+  background: var(--header-bg);
+  border-bottom: 3px solid transparent;
+  border-image: var(--cotu-border-pattern) 1;
+  box-shadow: var(--header-shadow);
+  font-family: 'Crimson Pro', Georgia, serif;
+}
+
+/* ── Woven texture overlay ─────────────────────────────────────────────────── */
+.cotu-header::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image:
+    repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 3px,
+      rgba(139, 58, 30, 0.04) 3px,
+      rgba(139, 58, 30, 0.04) 4px
+    ),
+    repeating-linear-gradient(
+      90deg,
+      transparent,
+      transparent 3px,
+      rgba(201, 130, 26, 0.03) 3px,
+      rgba(201, 130, 26, 0.03) 4px
+    );
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ── Diamond / thổ cẩm border strip at very bottom ────────────────────────── */
+.cotu-header::after {
+  content: '';
+  position: absolute;
+  bottom: -3px;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: repeating-linear-gradient(
+    90deg,
+    var(--cotu-earth)     0px,  8px,
+    var(--cotu-gold)      8px,  16px,
+    var(--cotu-forest)    16px, 24px,
+    var(--cotu-gold)      24px, 32px,
+    var(--cotu-earth)     32px, 40px,
+    var(--cotu-earth-deep)40px, 48px
+  );
+  animation: slidePattern 8s linear infinite;
+}
+
+@keyframes slidePattern {
+  from { background-position: 0 0; }
+  to   { background-position: 96px 0; }
+}
+
+/* ── Inner content wrapper (above pseudo-elements) ─────────────────────────── */
+.cotu-header-inner {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 20px;
+}
+
+/* ── Brand block ───────────────────────────────────────────────────────────── */
+.cotu-brand {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  flex-shrink: 0;
+  text-decoration: none;
+}
+
+.cotu-logo-box {
+  width: 38px;
+  height: 38px;
+  border-radius: 10px;
+  background: linear-gradient(135deg, var(--cotu-earth), var(--cotu-earth-deep));
+  border: 2px solid var(--cotu-gold);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  box-shadow: 0 2px 8px rgba(139, 58, 30, 0.35),
+              inset 0 1px 0 rgba(232, 168, 50, 0.3);
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.cotu-logo-box:hover {
+  transform: scale(1.05);
+  box-shadow: 0 4px 14px rgba(139, 58, 30, 0.45);
+}
+
+/* Diamond pattern inside logo box */
+.cotu-logo-box::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(
+    45deg,
+    transparent 0px, transparent 4px,
+    rgba(232, 168, 50, 0.12) 4px, rgba(232, 168, 50, 0.12) 5px
+  );
+}
+
+.cotu-logo-icon {
+  position: relative;
+  z-index: 1;
+  color: var(--cotu-gold-pale);
+}
+
+.cotu-app-name {
+  font-family: 'Playfair Display', 'Times New Roman', serif;
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--cotu-earth-deep);
+  letter-spacing: 0.02em;
+  line-height: 1.2;
+  white-space: nowrap;
+}
+
+.cotu-tagline {
+  font-size: 9px;
+  color: var(--cotu-earth);
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  opacity: 0.7;
+  font-family: 'Crimson Pro', serif;
+  font-style: italic;
+}
+
+/* ── Divider ───────────────────────────────────────────────────────────────── */
+.cotu-divider {
+  width: 1px;
+  height: 32px;
+  flex-shrink: 0;
+  margin: 0 4px;
+  background: linear-gradient(
+    to bottom,
+    transparent,
+    var(--cotu-earth) 30%,
+    var(--cotu-gold) 50%,
+    var(--cotu-earth) 70%,
+    transparent
+  );
+  opacity: 0.4;
+}
+
+/* ── Nav tabs ──────────────────────────────────────────────────────────────── */
+.cotu-nav {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+}
+
+.cotu-tab {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 7px 16px;
+  border-radius: 10px;
+  font-size: 13px;
+  font-weight: 600;
+  font-family: 'Crimson Pro', serif;
+  letter-spacing: 0.01em;
+  border: 1.5px solid transparent;
+  background: transparent;
+  color: #7a4a2a;
+  cursor: pointer;
+  transition: all 0.22s cubic-bezier(0.34, 1.56, 0.64, 1);
+  overflow: hidden;
+}
+
+.cotu-tab::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 9px;
+  background: linear-gradient(
+    135deg,
+    rgba(139, 58, 30, 0.0),
+    rgba(201, 130, 26, 0.0)
+  );
+  transition: background 0.22s ease;
+}
+
+.cotu-tab:hover {
+  color: var(--cotu-earth-deep);
+  border-color: rgba(139, 58, 30, 0.2);
+  transform: translateY(-1px);
+}
+
+.cotu-tab:hover::before {
+  background: linear-gradient(
+    135deg,
+    rgba(139, 58, 30, 0.06),
+    rgba(201, 130, 26, 0.06)
+  );
+}
+
+.cotu-tab.active {
+  color: var(--cotu-ivory);
+  border-color: var(--cotu-earth);
+  background: linear-gradient(
+    135deg,
+    var(--cotu-earth) 0%,
+    var(--cotu-earth-deep) 100%
+  );
+  box-shadow: 0 3px 12px rgba(139, 58, 30, 0.35),
+              inset 0 1px 0 rgba(232, 168, 50, 0.2);
+  transform: translateY(-1px);
+}
+
+/* Shimmer on active tab */
+.cotu-tab.active::after {
+  content: '';
+  position: absolute;
+  top: 0; left: -100%;
+  width: 60%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.15),
+    transparent
+  );
+  animation: shimmer 3s ease-in-out infinite;
+}
+
+@keyframes shimmer {
+  0%   { left: -100%; }
+  50%  { left: 150%; }
+  100% { left: 150%; }
+}
+
+.cotu-tab-icon {
+  transition: transform 0.2s ease;
+  flex-shrink: 0;
+}
+.cotu-tab:hover .cotu-tab-icon { transform: scale(1.15); }
+.cotu-tab.active .cotu-tab-icon { color: var(--cotu-gold-pale); }
+
+/* ── Spacer ────────────────────────────────────────────────────────────────── */
+.cotu-spacer { flex: 1; }
+
+/* ── Children slot ─────────────────────────────────────────────────────────── */
+.cotu-slot {
+  flex: 1;
+  min-width: 0;
+}
+
+.cotu-slot-divider {
+  width: 1px;
+  height: 24px;
+  flex-shrink: 0;
+  margin: 0 4px;
+  background: rgba(139, 58, 30, 0.2);
+}
+
+/* ── Language Switcher ─────────────────────────────────────────────────────── */
+.cotu-lang-btn {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 6px 13px;
+  border-radius: 10px;
+  border: 1.5px solid rgba(139, 58, 30, 0.25);
+  background: rgba(247, 238, 216, 0.6);
+  color: #7a4a2a;
+  font-size: 12px;
+  font-family: 'Crimson Pro', serif;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.cotu-lang-btn:hover {
+  background: rgba(139, 58, 30, 0.08);
+  border-color: rgba(139, 58, 30, 0.4);
+  color: var(--cotu-earth-deep);
+}
+
+.cotu-lang-btn.open {
+  background: linear-gradient(135deg, var(--cotu-earth), var(--cotu-earth-deep));
+  border-color: var(--cotu-earth);
+  color: var(--cotu-ivory);
+  box-shadow: 0 3px 10px rgba(139, 58, 30, 0.3);
+}
+
+.cotu-lang-btn .globe-icon {
+  transition: transform 0.3s ease;
+  color: inherit;
+}
+.cotu-lang-btn.open .globe-icon { 
+  transform: rotate(15deg); 
+  color: var(--cotu-gold-pale);
+}
+
+.cotu-lang-btn .chevron {
+  transition: transform 0.25s ease;
+}
+.cotu-lang-btn.open .chevron { transform: rotate(180deg); }
+
+/* ── Language dropdown ─────────────────────────────────────────────────────── */
+.cotu-lang-dropdown {
+  position: absolute;
+  right: 0;
+  top: calc(100% + 8px);
+  width: 180px;
+  border-radius: 14px;
+  border: 1.5px solid rgba(139, 58, 30, 0.2);
+  background: var(--cotu-ivory);
+  box-shadow: 0 8px 32px rgba(139, 58, 30, 0.2),
+              0 2px 8px rgba(0,0,0,0.08);
+  overflow: hidden;
+  z-index: 10001;
+  animation: dropIn 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+@keyframes dropIn {
+  from { opacity: 0; transform: translateY(-8px) scale(0.96); }
+  to   { opacity: 1; transform: translateY(0)   scale(1);    }
+}
+
+.cotu-lang-dropdown-header {
+  padding: 8px 14px;
+  border-bottom: 1px solid rgba(139, 58, 30, 0.12);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--cotu-earth);
+  font-size: 9px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  font-family: 'Crimson Pro', serif;
+  background: rgba(139, 58, 30, 0.04);
+}
+
+/* Decorative top strip on dropdown */
+.cotu-lang-dropdown::before {
+  content: '';
+  display: block;
+  height: 3px;
+  background: repeating-linear-gradient(
+    90deg,
+    var(--cotu-earth)  0px, 8px,
+    var(--cotu-gold)   8px, 16px,
+    var(--cotu-forest) 16px, 24px,
+    var(--cotu-gold)   24px, 32px
+  );
+}
+
+.cotu-lang-option {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 16px;
+  font-size: 13px;
+  font-family: 'Crimson Pro', serif;
+  font-weight: 600;
+  color: #6b3a20;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  border-bottom: 1px solid rgba(139, 58, 30, 0.06);
+  text-align: left;
+}
+
+.cotu-lang-option:last-child { border-bottom: none; }
+
+.cotu-lang-option:hover {
+  background: rgba(139, 58, 30, 0.07);
+  color: var(--cotu-earth-deep);
+  padding-left: 20px;
+}
+
+.cotu-lang-option.active {
+  background: linear-gradient(
+    90deg,
+    rgba(139, 58, 30, 0.1),
+    rgba(201, 130, 26, 0.06)
+  );
+  color: var(--cotu-earth-deep);
+}
+
+.cotu-lang-option .flag { font-size: 18px; line-height: 1; flex-shrink: 0; }
+.cotu-lang-option .lang-name { font-size: 12px; flex: 1; }
+
+.cotu-active-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--cotu-earth);
+  margin-left: auto;
+  flex-shrink: 0;
+  box-shadow: 0 0 4px rgba(139, 58, 30, 0.5);
+}
+
+/* ── Backdrop ──────────────────────────────────────────────────────────────── */
+.cotu-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 10000;
+}
+
+/* ── Page load entrance animation ─────────────────────────────────────────── */
+@keyframes headerReveal {
+  from {
+    opacity: 0;
+    transform: translateY(-12px);
+    filter: blur(4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+    filter: blur(0);
+  }
+}
+
+.cotu-header {
+  animation: headerReveal 0.5s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.cotu-brand        { animation: headerReveal 0.5s 0.05s cubic-bezier(0.22, 1, 0.36, 1) both; }
+.cotu-nav          { animation: headerReveal 0.5s 0.12s cubic-bezier(0.22, 1, 0.36, 1) both; }
+.cotu-lang-btn     { animation: headerReveal 0.5s 0.20s cubic-bezier(0.22, 1, 0.36, 1) both; }
+
+/* ── Responsive ────────────────────────────────────────────────────────────── */
+@media (max-width: 640px) {
+  .cotu-header-inner { padding: 8px 14px; gap: 8px; }
+  .cotu-app-name     { font-size: 13px; }
+  .cotu-tab          { padding: 6px 10px; font-size: 12px; }
+  .cotu-lang-btn span.lang-text { display: none; }
+}

@@ -11,7 +11,7 @@ export const HERITAGES = [
     lat: 15.8801, lng: 108.3380,
     desc: "Đô thị cảng thương mại quốc tế phồn thịnh từ thế kỷ 15–19, nơi hội tụ văn hoá Việt, Hoa, Nhật và phương Tây. Bảo tồn hơn 1.000 công trình kiến trúc đặc sắc.",
     image: "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4b/Hoi_An_2016_-_panoramio_%281%29.jpg/1280px-Hoi_An_2016_-_panoramio_%281%29.jpg",
-    video: "https://www.youtube.com/embed/BkCibE1oFGA",
+    video: "https://www.youtube.com/embed/dp_Ak9rtTVo",
     tags: ["UNESCO", "Kiến trúc", "Thương cảng"],
   },
   {
@@ -26,7 +26,7 @@ export const HERITAGES = [
     lat: 15.7630, lng: 108.1232,
     desc: "Quần thể đền tháp Chăm Pa linh thiêng, trung tâm tôn giáo của vương quốc Chăm Pa suốt 10 thế kỷ.",
     image: "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5e/My_Son_Sanctuary_2.jpg/1280px-My_Son_Sanctuary_2.jpg",
-    video: "https://www.youtube.com/embed/3C8DEFpegsc",
+    video: "https://www.youtube.com/embed/8sVtL0o-v7U",
     tags: ["UNESCO", "Chăm Pa", "Đền tháp"],
   },
   {
