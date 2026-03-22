@@ -1,9 +1,3 @@
-// import Map from "../../../components/Map";
-
-// export default function Home() {
-//   return <Map />
-// }
-
 import { GlobalCSS } from "../../../components/SharedUI";
 import Navbar from "../../../components/Navbar";
 import HeroSection from "../../../components/HeroSection";

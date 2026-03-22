@@ -1,7 +1,3 @@
-/**
- * Map.jsx — Bản đồ di sản · Phong cách Cơ Tu
- * Màu: đất đỏ #8B3A1E, vàng nghệ #C9821A, xanh rừng #2D5A27, nền tối
- */
 import { useState, useEffect, useRef } from "react";
 import { MapContainer, TileLayer, Marker, Popup, GeoJSON } from "react-leaflet";
 import L from "leaflet";
