@@ -1,242 +1,177 @@
-export const LANG = {
-  appName: "Cơ Tu Heritage",
-  appSub: "Di Sản Văn Hóa · Tây Giang · Quảng Nam",
-};
+// src/data/mockData.js — Cập nhật theo tài liệu WEBSITE.docx
 
-// ─── Navigation ──────────────────────────────────────────────────────────────
+// ─── Navigation ───────────────────────────────────────────────────────────────
 export const NAV_ITEMS = [
-  { id: "thong-tin-chung", label: "Thông tin chung", href: "#thong-tin-chung" },
-  { id: "dsvt", label: "Di sản vật thể", href: "#dsvt" },
-  { id: "dspt", label: "Di sản phi vật thể", href: "#dspt" },
+  { id: "info",      label: "Thông Tin",           href: "#info" },
+  { id: "vat-the",   label: "Di Sản Vật Thể",      href: "#vat-the" },
+  { id: "phi-vat",   label: "Di Sản Phi Vật Thể",  href: "#phi-vat" },
+  { id: "model3d",   label: "Mô Hình 3D",           href: "#model3d" },
+  { id: "lien-he",   label: "Liên Hệ",              href: "#lien-he" },
 ];
 
-// ─── Hero stats ───────────────────────────────────────────────────────────────
+// ─── Stats (từ docx) ──────────────────────────────────────────────────────────
 export const STATS = [
-  { value: "50,000+", label: "Dân số Cơ Tu" },
-  { value: "3", label: "Huyện sinh sống" },
-  { value: "1,000+", label: "Năm lịch sử" },
-  { value: "12+", label: "Lễ hội truyền thống" },
+  { value: "55.000", label: "Dân số Cơ Tu" },
+  { value: "3",       label: "Huyện (tỉnh Quảng Nam)" },
+  { value: "3.600",  label: "km² diện tích" },
+  { value: "300",    label: "Tổng di sản" },
 ];
 
-// ─── Làng & Nhà Gươl ─────────────────────────────────────────────────────────
-export const LANG_DATA = {
-  title: "Làng & Nhà Gươl",
-  subtitle: "Trái tim của cộng đồng Cơ Tu",
-  desc: "Làng Cơ Tu được bố trí theo hình vòng tròn, với Nhà Gươl ở trung tâm — linh hồn của mỗi cộng đồng. Đây là nơi diễn ra mọi sinh hoạt văn hóa, tín ngưỡng và điều hành làng xã.",
-  items: [
-    {
-      id: 1,
-      name: "Nhà Gươl",
-      subtitle: "Ngôi nhà cộng đồng",
-      desc: "Nhà Gươl là công trình kiến trúc đặc sắc nhất của người Cơ Tu. Mái nhọn vút cao, chạm khắc hoa văn tinh tế — nơi hội họp, lễ hội và truyền dạy văn hóa cho thế hệ trẻ. Mỗi chi tiết điêu khắc đều mang ý nghĩa tâm linh sâu sắc.",
-      image:
-        "https://imagevietnam.vnanet.vn//MediaUpload/Org/2024/11/29/1829-19-36-58.jpg",
-      tag: "Kiến trúc dân gian",
-      color: "#8B3A1E",
-    },
-    {
-      id: 2,
-      name: "Nhà Sàn Truyền Thống",
-      subtitle: "Không gian sinh hoạt gia đình",
-      desc: "Nhà sàn Cơ Tu được xây dựng từ gỗ rừng, tre nứa. Kiến trúc thích nghi hoàn hảo với địa hình núi cao và khí hậu ẩm ướt của Trường Sơn, đồng thời bảo vệ gia đình khỏi thú dữ.",
-      image:
-        "https://vov4.vov.vn/sites/default/files/styles/large_watermark/public/2022-11/img20170609143121.jpg",
-      tag: "Di sản vật thể",
-      color: "#2D5A27",
-    },
-    {
-      id: 3,
-      name: "Cổng Làng & Hàng Rào",
-      subtitle: "Ranh giới linh thiêng",
-      desc: "Cổng làng Cơ Tu được trang trí bằng hoa văn thổ cẩm và hình tượng thần linh. Hàng rào bao quanh làng không chỉ có chức năng bảo vệ mà còn mang ý nghĩa phân định ranh giới thiêng liêng giữa làng và rừng.",
-      image:
-        "https://congtroidongiang.vn/wp-content/uploads/2024/05/lang-van-hoa-co-tu-7.jpg",
-      tag: "Văn hóa làng xã",
-      color: "#C9821A",
-    },
-  ],
-};
-
-// ─── Trang phục ───────────────────────────────────────────────────────────────
-export const TRANG_PHUC = {
-  title: "Trang Phục Cơ Tu",
-  subtitle: "Thổ cẩm — tâm hồn dệt nên",
-  desc: "Mỗi trang phục Cơ Tu là một tác phẩm nghệ thuật. Hoa văn hình học, chim phượng, núi rừng — mỗi họa tiết mang câu chuyện về tín ngưỡng và cuộc sống.",
-  items: [
-    {
-      id: 1,
-      name: "Áo Cộc Tay (A Doóh)",
-      desc: "Áo ngắn, cổ chữ V, nền chàm đen; hoa văn nổi bật ở vai, ngực, gấu áo với màu đỏ – trắng – vàng đặc trưng.",
-      tag: "Nữ phục",
-    },
-    {
-      id: 2,
-      name: "Váy Ngắn (O Réch)",
-      desc: "Váy ống ngắn, quấn quanh hông; gọn nhẹ, tiện cho sinh hoạt và lao động nương rẫy hằng ngày.",
-      tag: "Nữ phục",
-    },
-    {
-      id: 3,
-      name: "Váy Dài (Cơđơ Ớch)",
-      desc: "Váy dài nhiều lớp; hoa văn tập trung ở phần dưới, họa tiết hình học đơn giản, rõ nét, dùng trong lễ hội.",
-      tag: "Lễ phục",
-    },
-    {
-      id: 4,
-      name: "Khố (Cha Lon)",
-      desc: "Dải vải quấn hông dành cho nam giới; hai đầu trang trí hoa văn hoặc hạt cườm nổi bật, biểu thị địa vị.",
-      tag: "Nam phục",
-    },
-    {
-      id: 5,
-      name: "Thắt Lưng (Kateng)",
-      desc: "Dài, có tua và hạt cườm; hoa văn hình thoi đặc trưng, là phụ kiện quan trọng trong lễ phục truyền thống.",
-      tag: "Phụ kiện",
-    },
-    {
-      id: 6,
-      name: "Trang Phục Vỏ Cây",
-      desc: "Làm từ vỏ cây rừng; chất liệu thô tự nhiên, phản ánh đời sống gắn bó mật thiết với rừng núi Trường Sơn.",
-      tag: "Cổ phục",
-    },
-  ],
-};
-
-// ─── Lễ hội ──────────────────────────────────────────────────────────────────
-export const LE_HOI = {
-  title: "Lễ Hội Truyền Thống",
-  subtitle: "Nhịp thở của cộng đồng",
-  items: [
-    {
-      id: 1,
-      name: "Lễ Mừng Lúa Mới",
-      time: "Tháng 10 âm lịch",
-      location: "Nhà Gươl — toàn làng",
-      desc: "Diễn ra sau thu hoạch lúa rẫy. Mỗi gia đình cúng trước, sau đó cả làng tổ chức chung tại nhà Gươl với đầy đủ lễ nghi và ca múa truyền thống.",
-      meanings: [
-        "Tạ ơn thần linh (Giàng, thần lúa, thần rừng) đã phù hộ mùa màng",
-        "Cầu mùa sau thuận lợi, cuộc sống no đủ bình an",
-        "Gắn kết cộng đồng qua ăn uống, múa hát, chia sẻ lương thực",
-        "Khẳng định vai trò cây lúa — nguồn sống chính của người Cơ Tu",
-        "Duy trì bản sắc văn hóa và mối quan hệ hài hòa giữa người — thiên nhiên — thần linh",
-      ],
-      image:
-        "https://bqn.1cdn.vn/2024/11/22/3756399524159f4bc604.jpg",
-      video: "https://www.youtube.com/watch?v=np_VfvgwbLw",
-      tag: "Lễ hội nông nghiệp",
-      color: "#8B3A1E",
-    },
-    {
-      id: 2,
-      name: "Múa Tung Tung Da Dá",
-      time: "Các lễ hội lớn trong năm",
-      location: "Sân làng — trước Nhà Gươl",
-      desc: "Thường diễn ra trong lễ mừng lúa mới, lễ ăn trâu, lễ cầu mùa. Là điệu múa nghi lễ mang tính tâm linh sâu sắc, thể hiện sự giao tiếp với thần linh.",
-      meanings: [
-        "Nghi lễ tâm linh — giao tiếp với thần linh",
-        "Cầu mong mùa màng tốt tươi, cuộc sống bình an",
-        "Gắn kết cộng đồng và gìn giữ bản sắc văn hóa",
-        "Truyền dạy kỹ năng múa cho thế hệ trẻ",
-      ],
-      image:
-        "https://cdn-i2.congthuong.vn/stores/news_dataimages/2023/042023/27/11/dsc0978320230427114748.jpg?rt=20230427132221",
-      video: "https://www.youtube.com/watch?v=hadh8pqlBEE&list=RDhadh8pqlBEE&start_radio=1",
-      tag: "Di sản phi vật thể",
-      color: "#2D5A27",
-    },
-    {
-      id: 3,
-      name: "Lễ Ăn Trâu (Đâm Trâu)",
-      time: "3–5 năm / lần",
-      location: "Trung tâm làng",
-      desc: "Lễ hội lớn nhất của người Cơ Tu, tổ chức định kỳ để tạ ơn thần linh và cầu phúc cho cộng đồng. Tiếng chiêng vang, ngọn lửa bùng cháy, điệu múa hoà cùng đất trời Trường Sơn.",
-      meanings: [
-        "Tạ ơn thần linh về những điều may mắn đã nhận được",
-        "Cầu phúc cho cả làng trong giai đoạn tiếp theo",
-        "Thể hiện sự thịnh vượng và đoàn kết của cộng đồng",
-        "Dịp để các làng giao lưu, kết nghĩa anh em",
-      ],
-      image:
-        "https://cdn3.ivivu.com/2022/10/le-hoi-dam-trau-ivivu.jpg",
-      video: "https://www.youtube.com/watch?v=3Z4tUccnB_s",
-      tag: "Lễ hội lớn",
-      color: "#C9821A",
-    },
-  ],
-};
-
-// ─── Nghề thủ công ────────────────────────────────────────────────────────────
-export const NGHE_THU_CONG = {
-  title: "Nghề Thủ Công Truyền Thống",
-  subtitle: "Đôi tay khéo léo dệt nên văn hóa",
-  items: [
-    {
-      id: 1,
-      name: "Dệt Thổ Cẩm",
-      icon: "🧵",
-      desc: "Nghề dệt truyền thống tinh xảo với hoa văn đặc trưng hình học, chim thú và núi rừng.",
-      heritage: "Phi vật thể",
-    },
-    {
-      id: 2,
-      name: "Đan Lát",
-      icon: "🌾",
-      desc: "Đan gùi, rổ, rá từ tre nứa — vật dụng thiết yếu trong đời sống lao động nương rẫy.",
-      heritage: "Thủ công",
-    },
-    {
-      id: 3,
-      name: "Chạm Khắc Gỗ",
-      icon: "🪵",
-      desc: "Điêu khắc trang trí Nhà Gươl, nhà sàn với các họa tiết thần linh và tín ngưỡng.",
-      heritage: "Kiến trúc",
-    },
-    {
-      id: 4,
-      name: "Làm Nhạc Cụ",
-      icon: "🎶",
-      desc: "Chế tác chiêng, trống, đàn abel — nhạc cụ linh hồn của các lễ hội Cơ Tu.",
-      heritage: "Âm nhạc",
-    },
-  ],
-};
-
-// ─── Gallery ──────────────────────────────────────────────────────────────────
-export const GALLERY = [
+// ─── Trang phục — 7 loại (từ docx) ───────────────────────────────────────────
+export const TRANG_PHUC_ITEMS = [
   {
     id: 1,
-    src: "https://cdn.tienphong.vn/images/a6bf4f60924201126af6849ca45a39809e40bc53b34869c35bbcf042421ba5f2715f4430be044a89627ed4cb2ca6d94866ea0270a269ea4e44d315de2551b17be1ea4bd39c695733b513a3985dfeb63f/tp-cotuimg-8723-6252.jpg",
-    caption: "Cộng đồng Cơ Tu",
-    tag: "Con người",
+    name: "Áo Doóh",
+    tag: "Nữ phục",
+    mota: "Áo dệt từ sợi bông, thân áo rộng ~50cm và dài ~100cm, gấp đôi tạo thân trước-sau. Phần cổ khoét dài ~25cm, hai bên sườn khâu lại tạo dáng cộc tay với cổ chữ V. Hoa văn trang trí ở vai, ngực và gấu áo với màu đỏ, trắng hoặc vàng trên nền chàm đen.",
+    ynghia: "Phụ nữ mặc phổ biến trong sinh hoạt hằng ngày và các lễ hội cộng đồng.",
+    color: "#8B3A1E",
+    img:""
   },
   {
     id: 2,
-    src: "https://imagevietnam.vnanet.vn//MediaUpload/Org/2024/11/29/1829-19-36-58.jpg",
-    caption: "Nhà Gươl truyền thống",
-    tag: "Kiến trúc",
+    name: "Khố (G'hul)",
+    tag: "Nam phục",
+    mota: "Đàn ông ngày thường mặc khố dài 1,5–2m, rộng ~25cm, màu chàm đen, hoa văn đơn giản, ngắn đến đầu gối — tiện lợi cho đi rừng làm rẫy. Lễ hội mặc khố dài 3–8m, rộng ~45cm, hai mảnh trước sau dài đến mắt cá chân.",
+    ynghia: "Trước đây dùng trong đời sống hằng ngày, nay chủ yếu dùng trong lễ hội và nghi lễ cộng đồng.",
+    color: "#5C1F08",
+    img:""
   },
   {
     id: 3,
-    src: "https://images2.thanhnien.vn/528068263637045248/2024/11/29/chan-trang-3-ol-173289547823640921207.jpg",
-    caption: "Lễ hội Cơ Tu",
-    tag: "Lễ hội",
+    name: "Váy Dài (Chơđhoong)",
+    tag: "Lễ phục nữ",
+    mota: "Váy dệt thổ cẩm dài ~6m, khâu thành hai lớp mỗi lớp ~3m. Dây lưng quấn trên ngực giữ váy. Hoa văn cách điệu tập trung thành mảng lớn ở phần dưới — họa tiết abloom, lá trầu đứng riêng bằng các vạch sọc.",
+    ynghia: "Trang phục lễ hội hoặc dịp đặc biệt — cưới hỏi, nghi lễ quan trọng, sinh hoạt cộng đồng.",
+    color: "#C9821A",
+    img:""
   },
   {
     id: 4,
-    src: "https://media-cdn-v2.laodong.vn/Storage/NewsPortal/2023/4/27/1185467/Z4299905917702_2D15c.jpg",
-    caption: "Văn hóa truyền thống",
-    tag: "Văn hóa",
+    name: "Váy Ngắn (Doóh)",
+    tag: "Nữ phục",
+    mota: "Dài 80cm, rộng 70–80cm. Màu chàm đen, đính hoa văn bằng chì, ít sặc sỡ. Tấm vải khâu thành hình ống, quấn quanh hông và cố định bằng dây buộc hoặc thắt lưng.",
+    ynghia: "Mặc hằng ngày đến đầu gối cho tiện lao động. Dịp lễ hội có thể dài hơn và trang trí hoa văn cầu kỳ.",
+    color: "#2D5A27",
+    img:""
   },
   {
     id: 5,
-    src: "https://images.baodantoc.vn/uploads/2024/Thang-8/Ngay-21/Anh/untitled%20folder/1.jpg",
-    caption: "Bản làng Cơ Tu",
-    tag: "Làng xã",
+    name: "Thắt Lưng (Cơteng Papah)",
+    tag: "Phụ kiện",
+    mota: "Dệt từ sợi bông, dài ~2m, rộng ~5cm. Màu trắng sữa hoặc xám. Hoa văn hình học cách điệu, hai đầu có tua dài nhiều màu ~30cm. Khi thắt quấn hai vòng qua trước bụng ra sau lưng.",
+    ynghia: "Có giá trị thẩm mỹ cao trong trang phục, tạo sự nổi bật cho người mặc.",
+    color: "#E8A832",
+    img:""
   },
   {
     id: 6,
-    src: "https://imagevietnam.vnanet.vn//MediaUpload/Org/2024/11/29/2929-19-43-36.jpg",
-    caption: "Nhà Gươl linh thiêng",
-    tag: "Kiến trúc",
+    name: "Trang Phục Vỏ Cây",
+    tag: "Cổ phục",
+    mota: "Làm từ vỏ cây rừng như Tro ra đang, Tà coóng hoặc mít rừng. Vỏ cây bóc ra, nướng cho mềm rồi đập mỏng trước khi khâu thành áo hoặc khố.",
+    ynghia: "Chống giá rét và thích nghi cho hoạt động đi rừng: khai thác mây, phát rẫy, cắt lá lợp nhà, đặc biệt là đi săn bắt rừng sâu.",
+    color: "#3D7A35",
+    img:""
   },
+  {
+    id: 7,
+    name: "Khăn Trùm Đầu (Pr'nơng)",
+    tag: "Phụ kiện đầu",
+    mota: "Tấm khăn dài với hai kiểu vấn: (1) Vấn quanh đầu hết chiều dài, điểm kết thúc một bên đầu. (2) Quấn một vòng, múi sau gáy, hai dải buông về phía sau vừa trùm đầu vừa che lưng — thường dùng trong lễ hội.",
+    ynghia: "Che chắn giữ ấm hằng ngày. Trong lễ hội, các già làng quấn kiểu che lưng — góp phần hoàn thiện trang phục và thể hiện sự chỉnh tề.",
+    color: "#8B3A1E",
+    img:""
+  },
+];
+
+// ─── Lễ hội — từ docx ─────────────────────────────────────────────────────────
+export const LE_HOI_ITEMS = [
+  {
+    id: 1,
+    name: "Lễ Mừng Lúa Mới",
+    thoiGian: "Tháng 10 âm lịch, sau thu hoạch lúa rẫy",
+    diaDiem: "Nhà Gươl & sân làng xung quanh cột lễ (x'nur)",
+    tag: "Lễ hội nông nghiệp",
+    color: "#8B3A1E",
+    hoatDong: [
+      "Lễ cúng Giàng và các thần linh tự nhiên",
+      "Nghi thức dựng cây nêu",
+      "Đâm trâu hiến sinh",
+      "Hát lý, múa tung tung da dá",
+      "Đánh cồng chiêng và uống rượu cần",
+      "Sửa chữa nhà Gươl, chuẩn bị lễ vật cộng đồng",
+    ],
+    ynghia: "Lễ mừng lúa mới không chỉ là nghi lễ tín ngưỡng tạ ơn thần linh đã phù hộ mùa màng mà còn thể hiện khát vọng về cuộc sống no đủ, bình an. Đồng thời củng cố sự gắn kết xã hội, duy trì giá trị văn hóa và tái khẳng định mối quan hệ hài hòa giữa con người với tự nhiên và thế giới tâm linh.",
+    quyTrinh: "Trước hết cúng riêng tại từng gia đình, sau đó lễ hội chung toàn làng khi tất cả các hộ đã thu hoạch xong.",
+    image: "../../../../public/assets/image.png",
+    video: "https://www.youtube.com/embed/dp_Ak9rtTVo",
+  },
+  {
+    id: 2,
+    name: "Múa Tung Tung Da Dá",
+    thoiGian: "Các lễ hội lớn trong năm",
+    diaDiem: "Sân làng — trước Nhà Gươl",
+    tag: "Di sản phi vật thể",
+    color: "#2D5A27",
+    hoatDong: [
+      "Nghi lễ tâm linh giao tiếp với thần linh",
+      "Điệu múa cầu mùa màng tốt tươi",
+      "Truyền dạy kỹ năng múa cho thế hệ trẻ",
+      "Gắn kết cộng đồng qua vũ điệu tập thể",
+    ],
+    ynghia: "Là nghi lễ mang tính tâm linh sâu sắc, thể hiện sự giao tiếp với thần linh, cầu mong mùa màng tốt tươi, cuộc sống bình an. Đồng thời gắn kết cộng đồng và gìn giữ bản sắc văn hóa Cơ Tu.",
+    quyTrinh: "Diễn ra trong lễ mừng lúa mới, lễ ăn trâu, lễ cầu mùa — chủ yếu sau thu hoạch hoặc các dịp sinh hoạt cộng đồng lớn.",
+    image: "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c2/Co_Tu_people.jpg/800px-Co_Tu_people.jpg",
+    video: "https://www.youtube.com/embed/8sVtL0o-v7U",
+  },
+  {
+    id: 3,
+    name: "Lễ Ăn Trâu (Đâm Trâu)",
+    thoiGian: "3–5 năm / lần",
+    diaDiem: "Trung tâm làng — quanh cột lễ",
+    tag: "Lễ hội lớn",
+    color: "#C9821A",
+    hoatDong: [
+      "Dựng cột lễ x'nur trang trí hoa văn",
+      "Nghi lễ hiến sinh trâu cho thần linh",
+      "Tiếng chiêng trống vang khắp núi rừng",
+      "Các làng lân cận giao lưu, kết nghĩa",
+    ],
+    ynghia: "Lễ hội lớn nhất của người Cơ Tu — tổ chức định kỳ để tạ ơn thần linh và cầu phúc. Thể hiện sự thịnh vượng và đoàn kết cộng đồng.",
+    quyTrinh: "Cả làng cùng chuẩn bị nhiều tháng trước — từ dựng cột lễ, nuôi trâu đến mời các làng lân cận tham dự.",
+    image: "https://baoangiang.com.vn/thumb/600x400/data/editor/202302/van-hoa-co-tu-1-16754063371551847898563.jpg",
+    video: null,
+  },
+];
+
+// ─── Làng & kiến trúc ─────────────────────────────────────────────────────────
+export const LANG_ITEMS = [
+  {
+    id: 1,
+    name: "Nhà Gươl",
+    subtitle: "Ngôi nhà cộng đồng",
+    tag: "Di sản vật thể",
+    desc: "Nhà Gươl là công trình kiến trúc đặc sắc nhất — mái nhọn vút cao, chạm khắc hoa văn tinh tế. Đây là trung tâm sinh hoạt, hội họp và tín ngưỡng của toàn làng.",
+    color: "#8B3A1E",
+    image: "https://statics.vinpearl.com/nha-guol-cua-nguoi-co-tu-1_1626227529.jpg",
+  },
+  {
+    id: 2,
+    name: "Nhà Sàn Truyền Thống",
+    subtitle: "Không gian sinh hoạt gia đình",
+    tag: "Di sản vật thể",
+    desc: "Nhà sàn xây dựng từ gỗ rừng, tre nứa — thích nghi hoàn hảo với địa hình núi cao và khí hậu ẩm ướt Trường Sơn, đồng thời bảo vệ gia đình khỏi thú dữ.",
+    color: "#2D5A27",
+    image: "https://images.baodanang.vn/uploaded/nguyenthitam/2023_08_15/co_tu/co-tu_MFVO.jpg",
+  },
+];
+
+// ─── Gallery ──────────────────────────────────────────────────────────────────
+export const GALLERY = [
+  { id:1, src:"https://upload.wikimedia.org/wikipedia/commons/thumb/c/c2/Co_Tu_people.jpg/800px-Co_Tu_people.jpg", caption:"Cộng đồng Cơ Tu", tag:"Con người" },
+  { id:2, src:"https://statics.vinpearl.com/nha-guol-cua-nguoi-co-tu-1_1626227529.jpg", caption:"Nhà Gươl truyền thống", tag:"Kiến trúc" },
+  { id:3, src:"https://images.baodanang.vn/uploaded/nguyenthitam/2023_08_15/co_tu/co-tu2.jpg", caption:"Lễ hội Cơ Tu", tag:"Lễ hội" },
+  { id:4, src:"https://baoangiang.com.vn/thumb/600x400/data/editor/202302/van-hoa-co-tu-1-16754063371551847898563.jpg", caption:"Văn hóa truyền thống", tag:"Văn hóa" },
+  { id:5, src:"https://images.baodanang.vn/uploaded/nguyenthitam/2023_08_15/co_tu/co-tu_MFVO.jpg", caption:"Bản làng Cơ Tu", tag:"Làng xã" },
+  { id:6, src:"https://upload.wikimedia.org/wikipedia/commons/thumb/8/8e/Nha_Guol_Co_Tu.jpg/800px-Nha_Guol_Co_Tu.jpg", caption:"Nhà Gươl linh thiêng", tag:"Kiến trúc" },
 ];
