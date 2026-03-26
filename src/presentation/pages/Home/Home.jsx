@@ -332,7 +332,7 @@ function Header() {
                   color: scrolled ? C.earth : C.onDark.textDim,
                 }}
               >
-                Văn Hoá Cơ Tu · Đà Nẵng
+                Văn Hoá Cơ Tu
               </div>
             </div>
           </motion.div>
@@ -537,7 +537,7 @@ function Hero() {
   const opac = useTransform(scrollY, [0, 400], [1, 0]);
 
   return (
-    <section
+    <section id="info"
       style={{
         position: "relative",
         height: "100vh",
@@ -547,7 +547,7 @@ function Hero() {
         alignItems: "center",
         justifyContent: "center",
       }}
-    >
+    > 
       <motion.div style={{ position: "absolute", inset: 0, y }}>
         <div
           style={{
@@ -556,10 +556,20 @@ function Hero() {
             backgroundImage: `url(${bgImg})`,
             backgroundSize: "cover",
             backgroundPosition: "center",
-            filter: "brightness(0.8) contrast(1.1)",
+            filter: "brightness(0.45) contrast(1.1)",
           }}
         />
       </motion.div>
+
+      <div
+        style={{
+          position: "absolute",
+          inset: 0,
+          background:
+            "linear-gradient(to bottom, rgba(0,0,0,0.4) 0%, rgba(0,0,0,0.55) 60%, rgba(0,0,0,0.75) 100%)",
+          zIndex: 1,
+        }}
+      />
 
       {/* Floating diamonds */}
       {Array.from({ length: 20 }, (_, i) => (
@@ -575,6 +585,7 @@ function Hero() {
               i % 3 === 0 ? C.gold : i % 3 === 1 ? `${C.earth}80` : C.forest,
             transform: "rotate(45deg)",
             opacity: 0.3,
+            zIndex: 1,
           }}
           animate={{ y: [0, -20, 0], opacity: [0.15, 0.45, 0.15] }}
           transition={{
@@ -586,7 +597,15 @@ function Hero() {
         />
       ))}
 
-      <div style={{ position: "absolute", bottom: 0, left: 0, right: 0 }}>
+      <div
+        style={{
+          position: "absolute",
+          bottom: 0,
+          left: 0,
+          right: 0,
+          zIndex: 2,
+        }}
+      >
         <div
           style={{
             height: 60,
@@ -599,13 +618,14 @@ function Hero() {
       <motion.div
         style={{
           position: "relative",
-          zIndex: 2,
+          zIndex: 3,
           textAlign: "center",
           padding: "0 24px",
-          maxWidth: 820,
+          maxWidth: 860,
           opacity: opac,
         }}
       >
+        {/* Eyebrow label */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -616,7 +636,7 @@ function Hero() {
             textTransform: "uppercase",
             color: C.goldPale,
             fontFamily: "'Crimson Pro',serif",
-            marginBottom: 16,
+            marginBottom: 20,
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
@@ -630,7 +650,7 @@ function Hero() {
               background: `linear-gradient(90deg,transparent,${C.goldPale})`,
             }}
           />
-          Văn Hoá Người Cơ Tu Tại Thành Phố Đà Nẵng
+          Di Sản Văn Hoá · Trường Sơn
           <div
             style={{
               height: 1,
@@ -640,33 +660,45 @@ function Hero() {
           />
         </motion.div>
 
+        {/* Tiêu đề chính */}
         <motion.h1
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.35, duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
           style={{
-            fontSize: "clamp(38px,7vw,82px)",
+            fontSize: "clamp(30px,5.5vw,64px)",
             fontWeight: 700,
-            lineHeight: 1.05,
+            lineHeight: 1.2,
             fontFamily: "'Playfair Display',serif",
             color: "white",
             marginBottom: 8,
-            textShadow: `0 4px 30px rgba(201,130,26,.3)`,
+            textShadow: `0 4px 30px rgba(201,130,26,.35)`,
           }}
         >
-          Cotu
+          Văn Hoá Người{" "}
           <span
             style={{
               background: `linear-gradient(135deg,${C.gold},${C.goldPale},${C.goldLight})`,
               WebkitBackgroundClip: "text",
               WebkitTextFillColor: "transparent",
-              marginLeft: 8,
             }}
           >
-            Culture
+            Cơ Tu
+          </span>
+          <br />
+          Tại Thành Phố{" "}
+          <span
+            style={{
+              background: `linear-gradient(135deg,${C.gold},${C.goldPale})`,
+              WebkitBackgroundClip: "text",
+              WebkitTextFillColor: "transparent",
+            }}
+          >
+            Đà Nẵng
           </span>
         </motion.h1>
 
+        {/* Subtitle */}
         <motion.p
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -685,6 +717,7 @@ function Hero() {
           thiên nhiên và thần linh sống hoà hợp trong nhịp điệu muôn đời.
         </motion.p>
 
+        {/* Stats */}
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
@@ -697,7 +730,7 @@ function Hero() {
             padding: "20px",
             width: "100%",
             borderRadius: 22,
-            background: "rgba(0,0,0,0.35)",
+            background: "rgba(0,0,0,0.45)",
             backdropFilter: "blur(10px)",
             border: `1px solid ${C.onDark.border}`,
           }}
@@ -713,6 +746,7 @@ function Hero() {
         </motion.div>
       </motion.div>
 
+      {/* Scroll indicator */}
       <motion.div
         animate={{ y: [0, 8, 0] }}
         transition={{ duration: 1.8, repeat: Infinity }}
@@ -721,7 +755,7 @@ function Hero() {
           bottom: 48,
           left: "50%",
           transform: "translateX(-50%)",
-          zIndex: 2,
+          zIndex: 3,
           cursor: "pointer",
         }}
         onClick={() =>
@@ -765,7 +799,7 @@ const C = {
   onDark: {
     text: "rgba(245,208,128,0.90)",
     textSub: "rgba(245,208,128,0.60)",
-    textDim: "rgba(245,208,128,0.38)",
+    textDim: "#fff",
     border: "rgba(245,208,128,0.18)",
     borderMid: "rgba(245,208,128,0.32)",
   },
@@ -881,7 +915,6 @@ function LeHoiModal({ initialIndex = 0, onClose }) {
   const [showVideo, setShowVideo] = useState(false);
   const item = LE_HOI_ITEMS[active];
 
-  // Reset video khi đổi tab
   useEffect(() => {
     setShowVideo(false);
   }, [active]);
@@ -913,7 +946,7 @@ function LeHoiModal({ initialIndex = 0, onClose }) {
         position: "fixed",
         inset: 0,
         zIndex: 2147483647,
-        background: "rgba(10,4,2,0.96)",
+        background: "rgba(48, 26, 10, 0.97)",
         backdropFilter: "blur(12px)",
         WebkitBackdropFilter: "blur(12px)",
         overflowY: "auto",
@@ -930,14 +963,14 @@ function LeHoiModal({ initialIndex = 0, onClose }) {
         }}
       />
 
-      {/* ── STICKY HEADER ── */}
+      {/* STICKY HEADER */}
       <div
         style={{
           position: "sticky",
           top: 0,
           zIndex: 10,
-          background: "rgba(10,4,2,0.97)",
-          borderBottom: `1px solid ${C.onDark.border}`,
+          background: "rgba(52, 28, 11, 0.98)",
+          borderBottom: `1px solid rgba(200,160,80,0.3)`,
         }}
       >
         {/* Title row */}
@@ -976,7 +1009,7 @@ function LeHoiModal({ initialIndex = 0, onClose }) {
               style={{
                 fontSize: 21,
                 fontWeight: 700,
-                color: C.goldPale,
+                color: "#F5D89A",
                 fontFamily: "'Playfair Display',serif",
               }}
             >
@@ -1006,7 +1039,7 @@ function LeHoiModal({ initialIndex = 0, onClose }) {
           </motion.button>
         </div>
 
-        {/* ── TAB SELECTOR ── */}
+        {/* TAB SELECTOR */}
         <div
           style={{
             padding: "0 28px 14px",
@@ -1032,9 +1065,9 @@ function LeHoiModal({ initialIndex = 0, onClose }) {
                 background:
                   active === i
                     ? `linear-gradient(135deg,${h.color || C.earth},${C.earthDeep})`
-                    : "rgba(255,255,255,0.05)",
-                border: `1.5px solid ${active === i ? h.color || C.earth : C.onDark.border}`,
-                color: active === i ? "white" : C.onDark.textSub,
+                    : "rgba(255,255,255,0.08)",
+                border: `1.5px solid ${active === i ? h.color || C.earth : "rgba(200,160,80,0.25)"}`,
+                color: active === i ? "white" : "#C4A97A",
                 boxShadow:
                   active === i ? `0 4px 16px ${h.color || C.earth}40` : "none",
               }}
@@ -1045,7 +1078,7 @@ function LeHoiModal({ initialIndex = 0, onClose }) {
         </div>
       </div>
 
-      {/* ── MAIN CONTENT ── */}
+      {/* MAIN CONTENT */}
       <div
         style={{
           flex: 1,
@@ -1066,8 +1099,8 @@ function LeHoiModal({ initialIndex = 0, onClose }) {
               display: "grid",
               gridTemplateColumns: "1fr 1fr",
               gap: 0,
-              background: "rgba(255,255,255,0.04)",
-              border: `1px solid ${C.onDark.border}`,
+              background: "rgba(255,255,255,0.06)",
+              border: `1px solid rgba(200,160,80,0.25)`,
               borderRadius: 20,
               overflow: "hidden",
             }}
@@ -1113,7 +1146,7 @@ function LeHoiModal({ initialIndex = 0, onClose }) {
                       position: "absolute",
                       inset: 0,
                       background:
-                        "linear-gradient(to top,rgba(10,4,2,.8) 0%,transparent 55%)",
+                        "linear-gradient(to top,rgba(48,26,10,.85) 0%,transparent 55%)",
                     }}
                   />
 
@@ -1126,8 +1159,8 @@ function LeHoiModal({ initialIndex = 0, onClose }) {
                       fontSize: 10,
                       padding: "3px 12px",
                       borderRadius: 20,
-                      background: `${item.color || C.earth}35`,
-                      border: `1px solid ${item.color || C.earth}60`,
+                      background: `${item.color || C.earth}40`,
+                      border: `1px solid ${item.color || C.earth}70`,
                       color: "white",
                       letterSpacing: ".12em",
                       textTransform: "uppercase",
@@ -1152,16 +1185,16 @@ function LeHoiModal({ initialIndex = 0, onClose }) {
                         gap: 8,
                         padding: "9px 18px",
                         borderRadius: 25,
-                        background: "rgba(10,4,2,.8)",
-                        border: `1px solid rgba(245,208,128,.4)`,
-                        color: C.goldPale,
+                        background: "rgba(48,26,10,.85)",
+                        border: `1px solid rgba(245,208,128,.5)`,
+                        color: "#F5D89A",
                         fontSize: 12,
                         fontFamily: "'Crimson Pro',serif",
                         cursor: "pointer",
                         backdropFilter: "blur(6px)",
                       }}
                     >
-                      <Play size={13} fill={C.goldPale} /> Xem Video
+                      <Play size={13} fill="#F5D89A" /> Xem Video
                     </motion.button>
                   )}
 
@@ -1188,13 +1221,13 @@ function LeHoiModal({ initialIndex = 0, onClose }) {
                           alignItems: "center",
                           gap: 5,
                           fontSize: 11,
-                          color: "rgba(245,208,128,0.75)",
+                          color: "rgba(245,208,128,0.9)",
                           fontFamily: "'Crimson Pro',serif",
-                          background: "rgba(10,4,2,0.65)",
+                          background: "rgba(48,26,10,0.75)",
                           padding: "3px 10px",
                           borderRadius: 20,
                           backdropFilter: "blur(4px)",
-                          border: `1px solid rgba(245,208,128,0.15)`,
+                          border: `1px solid rgba(245,208,128,0.25)`,
                         }}
                       >
                         <Icon
@@ -1217,7 +1250,7 @@ function LeHoiModal({ initialIndex = 0, onClose }) {
                 flexDirection: "column",
                 overflowY: "auto",
                 maxHeight: 600,
-                background: "rgba(26,13,7,0.4)",
+                background: "rgba(55, 30, 12, 0.5)",
               }}
             >
               {/* Name */}
@@ -1225,7 +1258,7 @@ function LeHoiModal({ initialIndex = 0, onClose }) {
                 style={{
                   fontSize: "clamp(20px,2.5vw,30px)",
                   fontWeight: 700,
-                  color: C.goldPale,
+                  color: "#F5D89A",
                   fontFamily: "'Playfair Display',serif",
                   lineHeight: 1.2,
                   marginBottom: 12,
@@ -1238,8 +1271,8 @@ function LeHoiModal({ initialIndex = 0, onClose }) {
               <div
                 style={{
                   padding: "11px 15px",
-                  background: `${item.color || C.earth}12`,
-                  border: `1px solid ${item.color || C.earth}25`,
+                  background: `${item.color || C.earth}18`,
+                  border: `1px solid ${item.color || C.earth}35`,
                   borderLeft: `3px solid ${item.color || C.earth}`,
                   borderRadius: 8,
                   marginBottom: 18,
@@ -1247,8 +1280,8 @@ function LeHoiModal({ initialIndex = 0, onClose }) {
               >
                 <p
                   style={{
-                    fontSize: 12.5,
-                    color: C.onDark.text,
+                    fontSize: 16.5,
+                    color: "#E8D5B0",
                     lineHeight: 1.7,
                     fontFamily: "'Crimson Pro',serif",
                     fontStyle: "italic",
@@ -1292,8 +1325,8 @@ function LeHoiModal({ initialIndex = 0, onClose }) {
                       display: "flex",
                       gap: 9,
                       alignItems: "flex-start",
-                      fontSize: 13,
-                      color: C.onDark.text,
+                      fontSize: 16,
+                      color: "#E8D5B0",
                       fontFamily: "'Crimson Pro',serif",
                       lineHeight: 1.6,
                     }}
@@ -1329,8 +1362,8 @@ function LeHoiModal({ initialIndex = 0, onClose }) {
               </div>
               <p
                 style={{
-                  fontSize: 13,
-                  color: C.onDark.textSub,
+                  fontSize: 16,
+                  color: "#C4A97A",
                   lineHeight: 1.75,
                   fontFamily: "'Crimson Pro',serif",
                   fontStyle: "italic",
@@ -1357,9 +1390,9 @@ function LeHoiModal({ initialIndex = 0, onClose }) {
                     style={{
                       width: i === 2 ? 8 : 5,
                       height: i === 2 ? 8 : 5,
-                      background: i === 2 ? C.goldPale : `${C.gold}60`,
+                      background: i === 2 ? "#F5D89A" : `${C.gold}80`,
                       transform: "rotate(45deg)",
-                      opacity: 0.6,
+                      opacity: 0.75,
                     }}
                   />
                 ))}
@@ -1369,14 +1402,14 @@ function LeHoiModal({ initialIndex = 0, onClose }) {
         </AnimatePresence>
       </div>
 
-      {/* ── STICKY FOOTER ── */}
+      {/* STICKY FOOTER */}
       <div
         style={{
           position: "sticky",
           bottom: 0,
           flexShrink: 0,
           background:
-            "linear-gradient(to top,rgba(10,4,2,0.97) 60%,transparent)",
+            "linear-gradient(to top,rgba(48,26,10,0.97) 60%,transparent)",
           padding: "20px 28px",
           textAlign: "center",
         }}
@@ -1449,7 +1482,7 @@ function CyberCard({ item, onClick }) {
           alignItems: "center",
           borderRadius: 20,
           background:
-            "linear-gradient(145deg,#1a0d07 0%,#2a1208 50%,#1a0d07 100%)",
+            "linear-gradient(145deg, rgb(65, 35, 15) 0%, rgb(95, 50, 20) 50%, rgb(65, 35, 15) 100%)",
           border: "1.5px solid rgba(245,208,128,0.18)",
           overflow: "hidden",
           boxShadow:
@@ -1727,8 +1760,8 @@ function TrangPhucModal({ onClose }) {
           textTransform: "uppercase",
           padding: "3px 14px",
           borderRadius: 20,
-          background: `${item.color || C.earth}25`,
-          border: `1px solid ${item.color || C.earth}60`,
+          background: `${item.color || C.earth}35`,
+          border: `1px solid ${item.color || C.earth}80`,
           color: item.color || C.gold,
           fontFamily: "'Crimson Pro',serif",
           marginBottom: 14,
@@ -1741,7 +1774,7 @@ function TrangPhucModal({ onClose }) {
           fontSize: "clamp(20px,2.5vw,30px)",
           fontWeight: 700,
           fontFamily: "'Playfair Display',serif",
-          color: C.goldPale,
+          color: "#F5D89A",
           marginBottom: 12,
           lineHeight: 1.2,
         }}
@@ -1752,7 +1785,7 @@ function TrangPhucModal({ onClose }) {
         style={{
           fontSize: 15,
           lineHeight: 1.8,
-          color: C.onDark.text,
+          color: "#E8D5B0",
           fontFamily: "'Crimson Pro',serif",
           marginBottom: 16,
         }}
@@ -1765,7 +1798,7 @@ function TrangPhucModal({ onClose }) {
             fontSize: 13.5,
             lineHeight: 1.75,
             fontStyle: "italic",
-            color: C.onDark.textSub,
+            color: "#C4A97A",
             fontFamily: "'Crimson Pro',serif",
           }}
         >
@@ -1780,8 +1813,8 @@ function TrangPhucModal({ onClose }) {
       style={{
         borderRadius: 18,
         overflow: "hidden",
-        border: `1px solid ${C.onDark.borderMid}`,
-        boxShadow: "0 16px 50px rgba(0,0,0,0.5)",
+        border: `1px solid rgba(200,160,80,0.35)`,
+        boxShadow: "0 16px 50px rgba(0,0,0,0.4)",
       }}
     >
       <img
@@ -1811,7 +1844,7 @@ function TrangPhucModal({ onClose }) {
         position: "fixed",
         inset: 0,
         zIndex: 2147483647,
-        background: "rgba(10,4,2,0.96)",
+        background: "rgba(38, 22, 10, 0.97)",
         backdropFilter: "blur(12px)",
         WebkitBackdropFilter: "blur(12px)",
         overflowY: "auto",
@@ -1832,12 +1865,12 @@ function TrangPhucModal({ onClose }) {
           position: "sticky",
           top: 0,
           zIndex: 10,
-          background: "rgba(10,4,2,0.97)",
+          background: "rgba(42, 24, 10, 0.98)",
           padding: "18px 28px",
           display: "flex",
           alignItems: "center",
           justifyContent: "space-between",
-          borderBottom: `1px solid ${C.onDark.border}`,
+          borderBottom: `1px solid rgba(200,160,80,0.25)`,
         }}
       >
         <div>
@@ -1867,7 +1900,7 @@ function TrangPhucModal({ onClose }) {
             style={{
               fontSize: 22,
               fontWeight: 700,
-              color: C.goldPale,
+              color: "#F5D89A",
               fontFamily: "'Playfair Display',serif",
             }}
           >
@@ -1917,12 +1950,12 @@ function TrangPhucModal({ onClose }) {
                 height: i % 3 === 0 ? 10 : 7,
                 background:
                   i % 3 === 0
-                    ? C.goldPale
+                    ? "#F5D89A"
                     : i % 3 === 1
-                      ? `${C.gold}80`
-                      : `${C.goldPale}50`,
+                      ? `${C.gold}90`
+                      : `#F5D89A70`,
                 transform: "rotate(45deg)",
-                opacity: 0.65,
+                opacity: 0.8,
               }}
             />
           ))}
@@ -1994,8 +2027,6 @@ function DiSanVatThe3D() {
     >
       <ThoCamBg opacity={0.074} />
       <InjectStyles />
-
-      {/* Subtle grid */}
       <div
         style={{
           position: "absolute",
@@ -2013,7 +2044,6 @@ function DiSanVatThe3D() {
         subtitle="Những hiện vật tiêu biểu của văn hóa Cơ Tu — từ kiến trúc đến trang phục truyền thống"
       />
 
-      {/* Cards grid */}
       <motion.div
         initial="hidden"
         whileInView="show"
@@ -2045,26 +2075,6 @@ function DiSanVatThe3D() {
           </motion.div>
         ))}
       </motion.div>
-
-      {/* Hint */}
-      <motion.p
-        initial={{ opacity: 0 }}
-        whileInView={{ opacity: 1 }}
-        viewport={{ once: true }}
-        transition={{ delay: 0.8 }}
-        style={{
-          marginTop: 48,
-          fontSize: 12,
-          color: C.onDark.textDim,
-          fontFamily: "'Crimson Pro',serif",
-          fontStyle: "italic",
-          letterSpacing: ".08em",
-          position: "relative",
-          zIndex: 1,
-        }}
-      >
-        Di chuột lên thẻ để khám phá · Nhấn vào Trang Phục để xem chi tiết
-      </motion.p>
 
       {/* Toast */}
       <AnimatePresence>
