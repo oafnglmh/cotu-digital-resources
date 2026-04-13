@@ -25,6 +25,10 @@ import {
   Music,
   Camera,
   Phone,
+  Bot,
+  Send,
+  Sparkles,
+  Loader2,
 } from "lucide-react";
 import {
   NAV_ITEMS,
@@ -2732,6 +2736,590 @@ function Footer() {
   );
 }
 
+// ─── AI Chat Widget ───────────────────────────────────────────────────────────
+const GEMINI_API_KEY = import.meta.env.VITE_GEMINI_API_KEY ?? ""; // 🔑 Đặt key trong file .env : VITE_GEMINI_API_KEY=AIzaSy...
+const GEMINI_API_URL =
+  "https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent";
+
+const SYSTEM_PROMPT = `Bạn là trợ lý AI chuyên về văn hóa người Cơ Tu tại Đà Nẵng, Việt Nam. 
+Bạn có kiến thức sâu rộng về:
+- Lịch sử và nguồn gốc người Cơ Tu ở vùng núi Đà Nẵng, Quảng Nam
+- Trang phục truyền thống: áo thổ cẩm, váy dệt tay với hoa văn đặc trưng
+- Lễ hội: Lễ hội Đâm Trâu (Za Koonh), lễ mừng lúa mới, lễ cưới hỏi
+- Kiến trúc: Nhà Gươl (nhà làng cộng đồng), nhà sàn truyền thống
+- Âm nhạc và nghệ thuật: nhạc cụ dân tộc (tù và, trống, chiêng), điệu múa truyền thống
+- Thổ cẩm Cơ Tu: nghề dệt vải thủ công với các hoa văn hình học đặc sắc
+- Ẩm thực: các món ăn truyền thống của người Cơ Tu
+- Phong tục tập quán và tín ngưỡng
+- Địa bàn cư trú: huyện Hòa Vang (Đà Nẵng), Tây Giang, Đông Giang, Nam Giang (Quảng Nam)
+- Nỗ lực bảo tồn văn hóa Cơ Tu hiện nay
+
+Hãy trả lời bằng tiếng Việt, thân thiện và chuyên nghiệp. Nếu câu hỏi không liên quan đến văn hóa Cơ Tu, hãy nhẹ nhàng hướng dẫn người dùng hỏi về chủ đề này. Câu trả lời nên ngắn gọn, dễ hiểu, khoảng 2-4 câu trừ khi cần giải thích chi tiết hơn.`;
+
+function AIChatWidget() {
+  const [isOpen, setIsOpen] = useState(false);
+  const [messages, setMessages] = useState([
+    {
+      role: "assistant",
+      content:
+        "Xin chào! 👋 Tôi là trợ lý AI về văn hóa Cơ Tu. Bạn muốn tìm hiểu điều gì về văn hóa của người Cơ Tu tại Đà Nẵng?",
+    },
+  ]);
+  const [input, setInput] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+  const [hasError, setHasError] = useState(false);
+  const messagesEndRef = useRef(null);
+  const inputRef = useRef(null);
+
+  const scrollToBottom = () => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  };
+
+  useEffect(() => {
+    if (isOpen) {
+      scrollToBottom();
+      setTimeout(() => inputRef.current?.focus(), 300);
+    }
+  }, [isOpen, messages]);
+
+  const sendMessage = async () => {
+    const trimmed = input.trim();
+    if (!trimmed || isLoading) return;
+
+    const userMsg = { role: "user", content: trimmed };
+    setMessages((prev) => [...prev, userMsg]);
+    setInput("");
+    setIsLoading(true);
+    setHasError(false);
+
+    try {
+      // Build conversation history for Gemini
+      const history = messages
+        .filter((m) => m.role !== "system")
+        .map((m) => ({
+          role: m.role === "assistant" ? "model" : "user",
+          parts: [{ text: m.content }],
+        }));
+      history.push({ role: "user", parts: [{ text: trimmed }] });
+
+      const response = await fetch(`${GEMINI_API_URL}?key=${GEMINI_API_KEY}`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          system_instruction: { parts: [{ text: SYSTEM_PROMPT }] },
+          contents: history,
+          generationConfig: {
+            temperature: 0.7,
+            maxOutputTokens: 1024,
+          },
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error(`API error: ${response.status}`);
+      }
+
+      const data = await response.json();
+      const aiText =
+        data?.candidates?.[0]?.content?.parts?.[0]?.text ??
+        "Xin lỗi, tôi không thể trả lời lúc này. Vui lòng thử lại.";
+
+      setMessages((prev) => [
+        ...prev,
+        { role: "assistant", content: aiText },
+      ]);
+    } catch (err) {
+      console.error("Gemini API error:", err);
+      setHasError(true);
+      setMessages((prev) => [
+        ...prev,
+        {
+          role: "assistant",
+          content:
+            "⚠️ Xin lỗi, có lỗi kết nối xảy ra. Vui lòng kiểm tra API key và thử lại.",
+          isError: true,
+        },
+      ]);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleKeyDown = (e) => {
+    if (e.key === "Enter" && !e.shiftKey) {
+      e.preventDefault();
+      sendMessage();
+    }
+  };
+
+  const suggestedQuestions = [
+    "Nhà Gươl là gì?",
+    "Hoa văn thổ cẩm Cơ Tu",
+    "Lễ hội Đâm Trâu",
+    "Trang phục truyền thống",
+  ];
+
+  return (
+    <>
+      {/* Floating button */}
+      <motion.button
+        onClick={() => setIsOpen((o) => !o)}
+        whileHover={{ scale: 1.08 }}
+        whileTap={{ scale: 0.94 }}
+        style={{
+          position: "fixed",
+          bottom: 28,
+          right: 28,
+          zIndex: 99990,
+          width: 60,
+          height: 60,
+          borderRadius: "50%",
+          border: "none",
+          cursor: "pointer",
+          background: `linear-gradient(135deg, ${C.earth}, ${C.earthDeep})`,
+          boxShadow: `0 6px 28px rgba(139,58,30,0.55), 0 0 0 3px ${C.gold}50`,
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          color: C.goldPale,
+        }}
+        aria-label="Mở chat AI văn hóa Cơ Tu"
+      >
+        <AnimatePresence mode="wait">
+          {isOpen ? (
+            <motion.div
+              key="close"
+              initial={{ rotate: -90, opacity: 0 }}
+              animate={{ rotate: 0, opacity: 1 }}
+              exit={{ rotate: 90, opacity: 0 }}
+              transition={{ duration: 0.2 }}
+            >
+              <X size={24} />
+            </motion.div>
+          ) : (
+            <motion.div
+              key="open"
+              initial={{ rotate: 90, opacity: 0 }}
+              animate={{ rotate: 0, opacity: 1 }}
+              exit={{ rotate: -90, opacity: 0 }}
+              transition={{ duration: 0.2 }}
+              style={{ position: "relative" }}
+            >
+              <Bot size={26} />
+              {/* Pulse ring */}
+              <motion.div
+                animate={{ scale: [1, 1.6], opacity: [0.6, 0] }}
+                transition={{ duration: 1.8, repeat: Infinity, ease: "easeOut" }}
+                style={{
+                  position: "absolute",
+                  inset: -8,
+                  borderRadius: "50%",
+                  border: `2px solid ${C.gold}`,
+                  pointerEvents: "none",
+                }}
+              />
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </motion.button>
+
+      {/* Chat popup */}
+      <AnimatePresence>
+        {isOpen && (
+          <motion.div
+            initial={{ opacity: 0, y: 40, scale: 0.92 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: 40, scale: 0.92 }}
+            transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
+            style={{
+              position: "fixed",
+              bottom: 100,
+              right: 28,
+              zIndex: 99989,
+              width: "min(420px, calc(100vw - 32px))",
+              height: "min(600px, calc(100vh - 140px))",
+              display: "flex",
+              flexDirection: "column",
+              borderRadius: 20,
+              overflow: "hidden",
+              boxShadow:
+                "0 24px 80px rgba(0,0,0,0.28), 0 4px 16px rgba(139,58,30,0.25)",
+              border: `1px solid ${C.border}`,
+            }}
+          >
+            {/* Header */}
+            <div
+              style={{
+                background: `linear-gradient(135deg, ${C.earthDeep}, ${C.earth})`,
+                padding: "16px 20px",
+                display: "flex",
+                alignItems: "center",
+                gap: 12,
+                flexShrink: 0,
+              }}
+            >
+              <div
+                style={{
+                  width: 42,
+                  height: 42,
+                  borderRadius: "50%",
+                  background: `rgba(245,208,128,0.15)`,
+                  border: `1.5px solid ${C.gold}60`,
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  color: C.goldPale,
+                  flexShrink: 0,
+                }}
+              >
+                <Sparkles size={20} />
+              </div>
+              <div style={{ flex: 1 }}>
+                <div
+                  style={{
+                    fontFamily: "'Playfair Display', serif",
+                    fontWeight: 700,
+                    fontSize: 15,
+                    color: C.goldPale,
+                    lineHeight: 1.2,
+                  }}
+                >
+                  Trợ Lý Văn Hóa Cơ Tu
+                </div>
+                <div
+                  style={{
+                    fontSize: 11,
+                    color: `${C.goldPale}80`,
+                    fontFamily: "'Crimson Pro', serif",
+                    display: "flex",
+                    alignItems: "center",
+                    gap: 5,
+                  }}
+                >
+                  <div
+                    style={{
+                      width: 6,
+                      height: 6,
+                      borderRadius: "50%",
+                      background: "#4ade80",
+                    }}
+                  />
+                  Powered by LMH
+                </div>
+              </div>
+              {/* Tribal strip decoration */}
+              <div
+                style={{
+                  display: "flex",
+                  gap: 3,
+                }}
+              >
+                {[C.gold, C.earth, C.forest, C.gold].map((col, i) => (
+                  <div
+                    key={i}
+                    style={{
+                      width: 6,
+                      height: 6,
+                      background: col,
+                      transform: "rotate(45deg)",
+                      opacity: 0.7,
+                    }}
+                  />
+                ))}
+              </div>
+            </div>
+
+            {/* Tribal strip */}
+            <div
+              style={{
+                height: 3,
+                flexShrink: 0,
+                background: `repeating-linear-gradient(90deg,${C.earth} 0,${C.earth} 6px,${C.gold} 6px,${C.gold} 12px,${C.forest} 12px,${C.forest} 18px,${C.gold} 18px,${C.gold} 24px)`,
+              }}
+            />
+
+            {/* Messages area */}
+            <div
+              style={{
+                flex: 1,
+                overflowY: "auto",
+                padding: "16px",
+                display: "flex",
+                flexDirection: "column",
+                gap: 12,
+                background: C.bg,
+                backgroundImage: `repeating-linear-gradient(0deg,transparent,transparent 39px,rgba(139,58,30,0.03) 39px,rgba(139,58,30,0.03) 40px), repeating-linear-gradient(90deg,transparent,transparent 39px,rgba(139,58,30,0.02) 39px,rgba(139,58,30,0.02) 40px)`,
+              }}
+            >
+              {messages.map((msg, idx) => (
+                <motion.div
+                  key={idx}
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.3 }}
+                  style={{
+                    display: "flex",
+                    justifyContent:
+                      msg.role === "user" ? "flex-end" : "flex-start",
+                    gap: 8,
+                    alignItems: "flex-end",
+                  }}
+                >
+                  {msg.role === "assistant" && (
+                    <div
+                      style={{
+                        width: 28,
+                        height: 28,
+                        borderRadius: "50%",
+                        background: `linear-gradient(135deg, ${C.earth}, ${C.earthDeep})`,
+                        border: `1px solid ${C.gold}40`,
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        color: C.goldPale,
+                        flexShrink: 0,
+                      }}
+                    >
+                      <Bot size={14} />
+                    </div>
+                  )}
+                  <div
+                    style={{
+                      maxWidth: "78%",
+                      padding: "10px 14px",
+                      borderRadius:
+                        msg.role === "user"
+                          ? "16px 16px 4px 16px"
+                          : "16px 16px 16px 4px",
+                      background:
+                        msg.role === "user"
+                          ? `linear-gradient(135deg, ${C.earth}, ${C.earthDeep})`
+                          : msg.isError
+                          ? `rgba(239,68,68,0.08)`
+                          : "white",
+                      color:
+                        msg.role === "user"
+                          ? C.goldPale
+                          : msg.isError
+                          ? "#dc2626"
+                          : C.textDark,
+                      fontSize: 13.5,
+                      fontFamily: "'Crimson Pro', serif",
+                      lineHeight: 1.6,
+                      boxShadow:
+                        msg.role === "user"
+                          ? `0 3px 12px rgba(139,58,30,0.3)`
+                          : `0 2px 8px rgba(0,0,0,0.07)`,
+                      border:
+                        msg.role === "user"
+                          ? "none"
+                          : `1px solid ${msg.isError ? "rgba(239,68,68,0.2)" : C.border}`,
+                      whiteSpace: "pre-wrap",
+                      wordBreak: "break-word",
+                    }}
+                  >
+                    {msg.content}
+                  </div>
+                </motion.div>
+              ))}
+
+              {/* Loading indicator */}
+              {isLoading && (
+                <motion.div
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  style={{ display: "flex", gap: 8, alignItems: "flex-end" }}
+                >
+                  <div
+                    style={{
+                      width: 28,
+                      height: 28,
+                      borderRadius: "50%",
+                      background: `linear-gradient(135deg, ${C.earth}, ${C.earthDeep})`,
+                      border: `1px solid ${C.gold}40`,
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      color: C.goldPale,
+                      flexShrink: 0,
+                    }}
+                  >
+                    <Bot size={14} />
+                  </div>
+                  <div
+                    style={{
+                      padding: "12px 16px",
+                      borderRadius: "16px 16px 16px 4px",
+                      background: "white",
+                      border: `1px solid ${C.border}`,
+                      boxShadow: "0 2px 8px rgba(0,0,0,0.07)",
+                      display: "flex",
+                      gap: 4,
+                      alignItems: "center",
+                    }}
+                  >
+                    {[0, 1, 2].map((i) => (
+                      <motion.div
+                        key={i}
+                        animate={{ y: [0, -5, 0] }}
+                        transition={{
+                          duration: 0.7,
+                          repeat: Infinity,
+                          delay: i * 0.15,
+                          ease: "easeInOut",
+                        }}
+                        style={{
+                          width: 7,
+                          height: 7,
+                          borderRadius: "50%",
+                          background: C.earth,
+                          opacity: 0.7,
+                        }}
+                      />
+                    ))}
+                  </div>
+                </motion.div>
+              )}
+
+              <div ref={messagesEndRef} />
+            </div>
+
+            {/* Suggested questions (only show if just the greeting) */}
+            {messages.length === 1 && (
+              <div
+                style={{
+                  padding: "8px 16px",
+                  background: C.bgSub,
+                  borderTop: `1px solid ${C.border}`,
+                  display: "flex",
+                  flexWrap: "wrap",
+                  gap: 6,
+                  flexShrink: 0,
+                }}
+              >
+                {suggestedQuestions.map((q) => (
+                  <button
+                    key={q}
+                    onClick={() => {
+                      setInput(q);
+                      setTimeout(() => inputRef.current?.focus(), 50);
+                    }}
+                    style={{
+                      padding: "5px 10px",
+                      borderRadius: 20,
+                      border: `1px solid ${C.borderMid}`,
+                      background: "white",
+                      color: C.earth,
+                      fontSize: 11.5,
+                      fontFamily: "'Crimson Pro', serif",
+                      cursor: "pointer",
+                      transition: "all .18s",
+                    }}
+                    onMouseEnter={(e) => {
+                      e.currentTarget.style.background = C.earth;
+                      e.currentTarget.style.color = C.goldPale;
+                      e.currentTarget.style.borderColor = C.earth;
+                    }}
+                    onMouseLeave={(e) => {
+                      e.currentTarget.style.background = "white";
+                      e.currentTarget.style.color = C.earth;
+                      e.currentTarget.style.borderColor = C.borderMid;
+                    }}
+                  >
+                    {q}
+                  </button>
+                ))}
+              </div>
+            )}
+
+            {/* Input area */}
+            <div
+              style={{
+                padding: "12px 16px",
+                background: "white",
+                borderTop: `1px solid ${C.border}`,
+                display: "flex",
+                gap: 8,
+                alignItems: "flex-end",
+                flexShrink: 0,
+              }}
+            >
+              <textarea
+                ref={inputRef}
+                value={input}
+                onChange={(e) => setInput(e.target.value)}
+                onKeyDown={handleKeyDown}
+                placeholder="Hỏi về văn hóa Cơ Tu..."
+                rows={1}
+                style={{
+                  flex: 1,
+                  border: `1.5px solid ${C.border}`,
+                  borderRadius: 12,
+                  padding: "9px 13px",
+                  fontSize: 13.5,
+                  fontFamily: "'Crimson Pro', serif",
+                  color: C.textDark,
+                  background: C.bg,
+                  resize: "none",
+                  outline: "none",
+                  lineHeight: 1.5,
+                  maxHeight: 100,
+                  overflowY: "auto",
+                  transition: "border-color .18s",
+                }}
+                onFocus={(e) =>
+                  (e.currentTarget.style.borderColor = C.earth)
+                }
+                onBlur={(e) =>
+                  (e.currentTarget.style.borderColor = C.border)
+                }
+              />
+              <motion.button
+                whileHover={{ scale: 1.06 }}
+                whileTap={{ scale: 0.93 }}
+                onClick={sendMessage}
+                disabled={isLoading || !input.trim()}
+                style={{
+                  width: 40,
+                  height: 40,
+                  borderRadius: "50%",
+                  border: "none",
+                  cursor: isLoading || !input.trim() ? "not-allowed" : "pointer",
+                  background:
+                    isLoading || !input.trim()
+                      ? `rgba(139,58,30,0.3)`
+                      : `linear-gradient(135deg, ${C.earth}, ${C.earthDeep})`,
+                  color: C.goldPale,
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  flexShrink: 0,
+                  transition: "all .18s",
+                  boxShadow:
+                    isLoading || !input.trim()
+                      ? "none"
+                      : `0 3px 12px rgba(139,58,30,0.4)`,
+                }}
+              >
+                {isLoading ? (
+                  <motion.div
+                    animate={{ rotate: 360 }}
+                    transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
+                  >
+                    <Loader2 size={16} />
+                  </motion.div>
+                ) : (
+                  <Send size={16} />
+                )}
+              </motion.button>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </>
+  );
+}
+
 // ─── App root ─────────────────────────────────────────────────────────────────
 export default function Home() {
   return (
@@ -2762,6 +3350,7 @@ export default function Home() {
       <Model3DSection />
       <LienHeSection />
       <Footer />
+      <AIChatWidget />
     </div>
   );
 }
