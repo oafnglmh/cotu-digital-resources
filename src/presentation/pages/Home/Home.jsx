@@ -48,7 +48,14 @@ import img4 from "../../../../public/assets/img04.png";
 import img5 from "../../../../public/assets/img05.png";
 import img6 from "../../../../public/assets/img06.png";
 import img7 from "../../../../public/assets/img07.png";
-
+import image from "../../../../public/assets/image.png";
+import image01 from "../../../../public/assets/Picture1.png";
+import image02 from "../../../../public/assets/Picture2.png";
+import image03 from "../../../../public/assets/Picture3.png";
+import image04 from "../../../../public/assets/Picture4.png";
+import image05 from "../../../../public/assets/Picture5.png";
+import image06 from "../../../../public/assets/Picture6.png";
+import image07 from "../../../../public/assets/Picture7.png";
 // ─── DESIGN TOKENS — Tone xanh rừng núi, sáng hơn ───────────────────────────
 const C = {
   // Nền sáng — màu kem xanh nhẹ
@@ -109,14 +116,14 @@ const LE_HOI_ITEMS = [
     ],
     ynghia: "Lễ mừng lúa mới không chỉ là nghi lễ mang tính tín ngưỡng nhằm tạ ơn thần linh đã phù hộ cho mùa màng mà còn thể hiện khát vọng về cuộc sống no đủ, bình an của cộng đồng. Đồng thời, đây còn là dịp củng cố sự gắn kết xã hội, duy trì các giá trị văn hóa truyền thống và tái khẳng định mối quan hệ hài hòa giữa con người với tự nhiên và thế giới tâm linh. Thông qua lễ hội, bản sắc văn hóa của người Cơ Tu được bảo tồn và truyền lại một cách sinh động qua nhiều thế hệ.",
     quyTrinh: "Trước hết là cúng riêng tại từng gia đình, sau đó là lễ hội chung của toàn làng được tổ chức khi tất cả các hộ đã thu hoạch xong.",
-    image: "../../../../public/assets/image.png",
-    image01:"../../../../public/assets/Picture1.png",
-    image02:"../../../../public/assets/Picture2.png",
-    image03:"../../../../public/assets/Picture3.png",
-    image04:"../../../../public/assets/Picture4.png",
-    image05:"../../../../public/assets/Picture5.png",
-    image06:"../../../../public/assets/Picture6.png",
-    image07:"../../../../public/assets/Picture7.png",
+    image: image,
+    image01:image01,
+    image02:image02,
+    image03:image03,
+    image04:image04,
+    image05:image05,
+    image06:image06,
+    image07:image07,
     video: "https://www.youtube.com/embed/aFB_53Zz-uY",
   },
   
