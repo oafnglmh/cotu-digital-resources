@@ -2,10 +2,10 @@
 
 // ─── Navigation ───────────────────────────────────────────────────────────────
 export const NAV_ITEMS = [
-  { id: "info",      label: "Thông Tin",           href: "#info" },
-  { id: "vat-the",   label: "Di Sản Vật Thể",      href: "#vat-the" },
-  { id: "phi-vat",   label: "Di Sản Phi Vật Thể",  href: "#phi-vat" },
-  { id: "lien-he",   label: "Liên Hệ",              href: "#lien-he" },
+  { id: "info",      label: "THÔNG TIN",           href: "#info" },
+  { id: "vat-the",   label: "DI SẢN VẬT THỂ",      href: "#vat-the" },
+  { id: "phi-vat",   label: "DI SẢN PHI VẬT THỂ",  href: "#phi-vat" },
+  { id: "lien-he",   label: "LIÊN HỆ",              href: "#lien-he" },
 ];
 
 // ─── Stats (từ docx) ──────────────────────────────────────────────────────────

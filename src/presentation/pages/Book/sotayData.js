@@ -1,10 +1,7 @@
-import { useState, useEffect, useRef } from "react";
-
 const sotayData = [
   {
     page: 1,
     section: "TRANG BÌA",
-    layout: "cover",
     title: "Trang Bìa – Sổ Tay Văn Hoá Người Cơ Tu Tại Thành Phố Đà Nẵng",
     content: `TRƯỜNG ĐẠI HỌC SƯ PHẠM – ĐẠI HỌC ĐÀ NẴNG
 KHOA SỬ - ĐỊA – CHÍNH TRỊ
@@ -33,7 +30,6 @@ VĂN HOÁ NGƯỜI CƠ TU TẠI THÀNH PHỐ ĐÀ NẴNG
   {
     page: 3,
     section: "MỤC LỤC",
-    layout: "toc",
     title: "Mục Lục",
     content: `DI SẢN VẬT THỂ
   - Làng, nhà ở
@@ -56,7 +52,6 @@ DI SẢN PHI VẬT THỂ
 
   {
     page: 4,
-    layout: "image-left",
     section: "DI SẢN VẬT THỂ > Làng, nhà ở",
     title: "Làng Truyền Thống Của Người Cơ Tu",
     content: `LÀNG:
@@ -79,7 +74,6 @@ QUAN HỆ XÃ HỘI:
 
   {
     page: 5,
-    layout: "full-overlay",
     section: "DI SẢN VẬT THỂ > Làng, nhà ở",
     title: "Nhà Gươl",
     content: `KHÔNG GIAN, KIẾN TRÚC:
@@ -102,7 +96,6 @@ TRANG TRÍ VÀ ĐIÊU KHẮC:
 
   {
     page: 6,
-    layout: "image-left",
     section: "DI SẢN VẬT THỂ > Làng, nhà ở",
     title: "Nhà Sàn",
     content: `KHÔNG GIAN, KIẾN TRÚC:
@@ -127,7 +120,6 @@ KHÔNG GIAN SINH HOẠT BÊN TRONG:
     page: 7,
     section: "DI SẢN VẬT THỂ > Trang phục",
     title: "Áo Cộc Tay (A Doóh)",
-    layout: "image-right",
     content: `MÔ TẢ:
 - Áo dệt từ sợi bông, thân áo là một tấm vải rộng khoảng 50 cm và dài khoảng 100 cm, được gấp đôi để tạo thành thân trước và thân sau.
 - Phần cổ được khoét thành một đường dài khoảng 25 cm, hai bên sườn khâu lại tạo thành dáng áo cộc tay với cổ chữ V.
@@ -143,7 +135,6 @@ KHÔNG GIAN SINH HOẠT BÊN TRONG:
     page: 8,
     section: "DI SẢN VẬT THỂ > Trang phục",
     title: "Váy Ngắn (Doóh)",
-    layout: "image-right",
     content: `MÔ TẢ:
 - Váy dệt từ vải thổ cẩm, chiều dài từ 80cm đến và chiều rộng khoảng 70 đến 80cm.
 - Tấm vải được khâu lại tạo thành dạng hình ống.
@@ -160,9 +151,7 @@ KHÔNG GIAN SINH HOẠT BÊN TRONG:
     page: 9,
     section: "DI SẢN VẬT THỂ > Trang phục",
     title: "Váy Dài (Chrờ Dhu)",
-    layout: "image-right",
     content: `MÔ TẢ:
-    
 - Váy dệt từ vải thổ cẩm, có chiều dài khoảng 6m, được khâu lại thành hai lớp, mỗi lớp dài khoảng 3m.
 - Hoa văn trang trí cách điệu, tương tự hoa văn khố của nam giới nhưng được tập trung thành một mảng lớn ở phần dưới thân váy.
 - Các họa tiết trên thân váy thường đứng riêng lẻ bằng các vạch sọc như: hoa văn abloom, lá trầu.
@@ -178,7 +167,6 @@ KHÔNG GIAN SINH HOẠT BÊN TRONG:
     page: 10,
     section: "DI SẢN VẬT THỂ > Trang phục",
     title: "Khố (G'hul)",
-    layout: "image-right",
     content: `MÔ TẢ:
 - Khố là dải vải dài 1,5 - 2m, rộng khoảng 35–40 cm. Khi mặc ngắn đến đầu gối.
 - Có màu chàm đen, hoa văn đơn giản, trang trí bằng chỉ màu hoặc hạt cườm.
@@ -191,7 +179,6 @@ KHÔNG GIAN SINH HOẠT BÊN TRONG:
 
   {
     page: 11,
-    layout: "zigzag",
     section: "DI SẢN VẬT THỂ > Ẩm thực",
     title: "Cơm Lam (Avị Hâr)",
     content: `NGUYÊN LIỆU CHỦ YẾU:
@@ -214,7 +201,6 @@ TRƯỜNG HỢP SỬ DỤNG:
 
   {
     page: 12,
-    layout: "zigzag",
     section: "DI SẢN VẬT THỂ > Ẩm thực",
     title: "Bánh Sừng Trâu (Avị Cuốt)",
     content: `NGUYÊN LIỆU CHỦ YẾU:
@@ -235,7 +221,6 @@ TRƯỜNG HỢP SỬ DỤNG:
 
   {
     page: 13,
-    layout: "zigzag",
     section: "DI SẢN VẬT THỂ > Ẩm thực",
     title: "Thịt Gác Bếp (Pa'riêng)",
     content: `NGUYÊN LIỆU CHỦ YẾU:
@@ -255,7 +240,6 @@ TRƯỜNG HỢP SỬ DỤNG:
 
   {
     page: 14,
-    layout: "zigzag",
     section: "DI SẢN VẬT THỂ > Ẩm thực",
     title: "Canh Thụt (Zirá)",
     content: `NGUYÊN LIỆU CHỦ YẾU:
@@ -276,7 +260,6 @@ TRƯỜNG HỢP SỬ DỤNG:
 
   {
     page: 15,
-    layout: "zigzag",
     section: "DI SẢN VẬT THỂ > Ẩm thực",
     title: "Cá Niên Nướng",
     content: `NGUYÊN LIỆU CHỦ YẾU:
@@ -297,7 +280,6 @@ TRƯỜNG HỢP SỬ DỤNG:
 
   {
     page: 16,
-    layout: "zigzag",
     section: "DI SẢN VẬT THỂ > Ẩm thực",
     title: "Thịt Lam (Pơr'hor Aọc)",
     content: `NGUYÊN LIỆU CHỦ YẾU:
@@ -318,7 +300,6 @@ TRƯỜNG HỢP SỬ DỤNG:
 
   {
     page: 17,
-    layout: "image-left",
     section: "DI SẢN VẬT THỂ > Phương tiện đi lại",
     title: "Thuyền Độc Mộc",
     content: `MÔ TẢ:
@@ -337,7 +318,6 @@ CÔNG DỤNG:
 
   {
     page: 18,
-    layout: "tool-grid",
     section: "DI SẢN VẬT THỂ > Công cụ lao động",
     title: "Rìu (Achải)",
     content: `MÔ TẢ:
@@ -357,7 +337,6 @@ CÔNG DỤNG:
 
   {
     page: 19,
-    layout: "tool-grid",
     section: "DI SẢN VẬT THỂ > Công cụ lao động",
     title: "Gùi (A Đhơ / A R'đh)",
     content: `MÔ TẢ:
@@ -377,7 +356,6 @@ CÔNG DỤNG:
 
   {
     page: 20,
-    layout: "tool-grid",
     section: "DI SẢN VẬT THỂ > Công cụ lao động",
     title: "Gậy Chọc Lỗ (Apắt)",
     content: `MÔ TẢ:
@@ -396,7 +374,6 @@ CÔNG DỤNG:
 
   {
     page: 21,
-    layout: "tool-grid",
     section: "DI SẢN VẬT THỂ > Công cụ lao động",
     title: "Chày Giã Gạo (A Rơl)",
     content: `MÔ TẢ:
@@ -415,7 +392,6 @@ CÔNG DỤNG:
 
   {
     page: 22,
-    layout: "tool-grid",
     section: "DI SẢN VẬT THỂ > Công cụ lao động",
     title: "Công Cụ Săn Bắt Và Khai Thác Tài Nguyên (A Păng)",
     content: `MÔ TẢ:
@@ -439,7 +415,6 @@ CÔNG DỤNG:
 
   {
     page: 23,
-    layout: "quote-feature",
     section: "DI SẢN PHI VẬT THỂ > Lễ hội và nghi lễ truyền thống",
     title: "Lễ Mừng Lúa Mới (Cha Ha Roo Tamêê)",
     content: `LOẠI HÌNH: Lễ hội truyền thống – nghi lễ nông nghiệp gắn với chu kỳ sản xuất lúa rẫy
@@ -473,7 +448,6 @@ d. Phần hội: Điệu múa tung tung da dá kết hợp với không gian c�
 
   {
     page: 24,
-    layout: "timeline",
     section: "DI SẢN PHI VẬT THỂ > Lễ hội và nghi lễ truyền thống",
     title: "Lễ Dựng Nhà Gươl",
     content: `LOẠI HÌNH: Lễ nghi cộng đồng truyền thống của người Cơ Tu, kết hợp giữa nghi lễ tín ngưỡng và hoạt động xây dựng.
@@ -499,7 +473,6 @@ Quá trình dựng nhà Gươl diễn ra theo trình tự chặt chẽ, bắt đ
 
   {
     page: 25,
-    layout: "quote-feature",
     section: "DI SẢN PHI VẬT THỂ > Lễ hội và nghi lễ truyền thống",
     title: "Lễ Kết Nghĩa (Lễ Pơ Ngát / Lễ Hội Pơr'ngoóch)",
     content: `LOẠI HÌNH: Lễ kết nghĩa là nghi lễ cộng đồng truyền thống, mang tính xã hội nhằm thiết lập và củng cố mối quan hệ giữa các làng người Cơ Tu.
@@ -525,7 +498,6 @@ Nghi lễ bắt đầu bằng việc cúng Giàng và tổ tiên. Sau đó, các
 
   {
     page: 26,
-    layout: "asymmetric",
     section: "DI SẢN PHI VẬT THỂ > Tri thức bản địa",
     title: "Tri Thức Canh Tác Nương Rẫy",
     content: `GIỚI THIỆU CHUNG:
@@ -550,7 +522,6 @@ Tri thức này giúp cộng đồng thích nghi với điều kiện tự nhiê
 
   {
     page: 27,
-    layout: "asymmetric",
     section: "DI SẢN PHI VẬT THỂ > Tri thức bản địa",
     title: "Tri Thức Bản Địa Về Y Học Dân Gian",
     content: `GIỚI THIỆU CHUNG:
@@ -568,7 +539,6 @@ Người Cơ Tu sử dụng lá, rễ, thân cây làm thuốc với cách chế
 
   {
     page: 28,
-    layout: "image-left",
     section: "DI SẢN PHI VẬT THỂ > Văn học dân gian",
     title: "Ngôn Ngữ Cơ Tu",
     content: `GIỚI THIỆU CHUNG:
@@ -586,7 +556,6 @@ Ngôn ngữ Cơ Tu là kho tàng lưu giữ tri thức bản địa, phản ánh
 
   {
     page: 29,
-    layout: "full-overlay",
     section: "DI SẢN PHI VẬT THỂ > Văn học dân gian",
     title: "Sự Tích Các Dòng Họ (Alăng, Arất)",
     content: `GIỚI THIỆU CHUNG:
@@ -602,7 +571,6 @@ Truyền thuyết giải thích nguồn gốc các dòng họ, đồng thời ph
 
   {
     page: 30,
-    layout: "full-overlay",
     section: "DI SẢN PHI VẬT THỂ > Văn học dân gian",
     title: "Cổ Tích: Người Mồ Côi Giữ Trâu Làng",
     content: `GIỚI THIỆU CHUNG:
@@ -618,7 +586,6 @@ Câu chuyện đề cao trí thông minh, sự bình tĩnh và lòng dũng cảm
 
   {
     page: 31,
-    layout: "full-overlay",
     section: "DI SẢN PHI VẬT THỂ > Văn học dân gian",
     title: "Cổ Tích: Người Mồ Côi Cưới Vợ",
     content: `GIỚI THIỆU CHUNG:
@@ -634,7 +601,6 @@ Câu chuyện đề cao sự thông minh, kiên trì và bản lĩnh vượt kh�
 
   {
     page: 32,
-    layout: "asymmetric",
     section: "DI SẢN PHI VẬT THỂ > Nghề thủ công",
     title: "Nghề Thủ Công Truyền Thống – Giới Thiệu Chung",
     content: `GIỚI THIỆU CHUNG:
@@ -644,7 +610,6 @@ Nghề thủ công truyền thống của người Cơ Tu là một phần quan 
 
   {
     page: 33,
-    layout: "zigzag",
     section: "DI SẢN PHI VẬT THỂ > Nghề thủ công",
     title: "Dệt Thổ Cẩm",
     content: `1. NGUYÊN LIỆU VÀ CÔNG CỤ:
@@ -660,7 +625,6 @@ Thổ cẩm dùng làm trang phục và vật dụng, thể hiện giới tính,
 
   {
     page: 34,
-    layout: "zigzag",
     section: "DI SẢN PHI VẬT THỂ > Nghề thủ công",
     title: "Nghề Đan Lát",
     content: `1. NGUYÊN LIỆU VÀ CÔNG CỤ:
@@ -676,7 +640,6 @@ Sản phẩm đan lát đa dạng, tiêu biểu là gùi dùng trong sản xuấ
 
   {
     page: 35,
-    layout: "asymmetric",
     section: "DI SẢN PHI VẬT THỂ > Nghề thủ công",
     title: "Điêu Khắc Dân Gian – Giới Thiệu Chung",
     content: `GIỚI THIỆU CHUNG:
@@ -688,7 +651,6 @@ Khác với một số loại hình điêu khắc ở Tây Nguyên mang tính hu
 
   {
     page: 36,
-    layout: "full-overlay",
     section: "DI SẢN PHI VẬT THỂ > Nghề thủ công",
     title: "Điêu Khắc Nhà Gươl",
     content: `1. NGUYÊN LIỆU VÀ CÔNG CỤ CHẾ TÁC:
@@ -704,7 +666,6 @@ Kỹ thuật điêu khắc trong nhà Gươl chủ yếu là chạm nổi và ch
 
   {
     page: 37,
-    layout: "full-overlay",
     section: "DI SẢN PHI VẬT THỂ > Nghề thủ công",
     title: "Điêu Khắc Trên Cột Tế (X'nur)",
     content: `1. NGUYÊN LIỆU VÀ CÔNG CỤ CHẾ TÁC:
@@ -720,7 +681,6 @@ Cột tế không chỉ là một công trình kiến trúc mà còn là một t
 
   {
     page: 38,
-    layout: "full-overlay",
     section: "DI SẢN PHI VẬT THỂ > Nghề thủ công",
     title: "Điêu Khắc Trên Quan Tài Và Nhà Mồ",
     content: `1. NGUYÊN LIỆU VÀ CÔNG CỤ CHẾ TÁC:
@@ -736,7 +696,6 @@ Kỹ thuật điêu khắc trong không gian nhà mồ mang tính tự do và gi
 
   {
     page: 39,
-    layout: "asymmetric",
     section: "DI SẢN PHI VẬT THỂ > Nghề thủ công",
     title: "Làm Vũ Khí, Công Cụ Lao Động (Dao, Rìu…)",
     content: `Nghề rèn truyền thống của người Cơ Tu có lịch sử lâu đời và giữ vai trò quan trọng trong đời sống sản xuất cũng như sinh hoạt hằng ngày của cộng đồng. Từ những nguyên liệu kim loại thô sơ, người thợ rèn đã tạo ra nhiều loại công cụ thiết yếu như dao, rựa, rìu, cuốc… phục vụ trực tiếp cho hoạt động làm nương rẫy, săn bắt và khai thác tài nguyên rừng. Quá trình rèn đòi hỏi kỹ thuật cao, sự khéo léo và kinh nghiệm tích lũy qua nhiều thế hệ, từ việc chọn nguyên liệu, nung kim loại đến tạo hình và tôi luyện sản phẩm. Bên cạnh giá trị sử dụng, các công cụ này còn mang ý nghĩa văn hóa, phản ánh trình độ kỹ thuật và tri thức dân gian của người Cơ Tu. Nghề rèn thường được truyền dạy trong gia đình hoặc cộng đồng, góp phần duy trì và bảo tồn bản sắc văn hóa truyền thống.`,
@@ -745,7 +704,6 @@ Kỹ thuật điêu khắc trong không gian nhà mồ mang tính tự do và gi
 
   {
     page: 40,
-    layout: "image-right",
     section: "DI SẢN PHI VẬT THỂ > Nghề thủ công",
     title: "Làm Đồ Trang Sức Truyền Thống",
     content: `Nghề chế tác trang sức của người Cơ Tu sử dụng vật liệu tự nhiên như hạt cườm, đá, vỏ ốc, răng và nanh động vật, phổ biến là chuỗi hạt nhiều màu và vòng nanh heo rừng. Trang sức không chỉ để làm đẹp mà còn thể hiện địa vị, sự giàu có và sức mạnh.
@@ -756,7 +714,6 @@ Quy trình chế tác đòi hỏi sự tỉ mỉ từ chọn vật liệu đến
 
   {
     page: 41,
-    layout: "full-overlay",
     section: "DI SẢN PHI VẬT THỂ > Nghệ thuật trình diễn dân gian",
     title: "Nghệ Thuật Múa Tung Tung Da Dá",
     content: `KHÁI QUÁT CHUNG:
@@ -781,7 +738,6 @@ Hiện nay, múa tung tung da dá được sân khấu hóa và phục vụ du l
 
   {
     page: 42,
-    layout: "quote-feature",
     section: "DI SẢN PHI VẬT THỂ > Nghệ thuật trình diễn dân gian",
     title: "Nói Lý – Hát Lý",
     content: `KHÁI QUÁT CHUNG:
@@ -803,7 +759,6 @@ Nói lý – hát lý là phương tiện truyền đạt tri thức, kinh nghi�
 
   {
     page: 43,
-    layout: "asymmetric",
     section: "DI SẢN PHI VẬT THỂ > Nghệ thuật trình diễn dân gian",
     title: "Nhạc Cụ Truyền Thống – Đàn Abel (Đàn 'Không Há Miệng')",
     content: `KHÁI QUÁT CHUNG:
@@ -819,7 +774,6 @@ MÔ TẢ (CẤU TẠO VÀ CÁCH DIỄN TẤU):
 
   {
     page: 44,
-    layout: "asymmetric",
     section: "DI SẢN PHI VẬT THỂ > Nghệ thuật trình diễn dân gian",
     title: "Nhạc Cụ Truyền Thống – Đàn Tơm Rech",
     content: `KHÁI QUÁT CHUNG:
@@ -835,7 +789,6 @@ MÔ TẢ (ĐẶC ĐIỂM VÀ VAI TRÒ):
 
   {
     page: 45,
-    layout: "asymmetric",
     section: "DI SẢN PHI VẬT THỂ > Nghệ thuật trình diễn dân gian",
     title: "Nhạc Cụ Truyền Thống – Đàn Tơ Bhréh Alui (Đàn 'Bầu')",
     content: `KHÁI QUÁT CHUNG:
@@ -851,7 +804,6 @@ MÔ TẢ (CẤU TẠO VÀ CÁCH DIỄN TẤU):
 
   {
     page: 46,
-    layout: "closing",
     section: "LỜI KẾT",
     title: "Lời Kết – Closing Remarks",
     content: `[TIẾNG VIỆT]
@@ -876,1247 +828,4 @@ It is hoped that this handbook will serve as a bridge connecting people with the
   }
 ];
 
-
-// ─── DESIGN TOKENS ────────────────────────────────────────────────────
-const C = {
-  bamboo: "#d4e8c2",
-  bambooMid: "#b0d49a",
-  bambooDeep: "#8fb87a",
-  bambooAccent: "#5a7a4a",
-  cream: "#faf6ef",
-  paper: "#f5ede0",
-  paperDark: "#ede0ca",
-  earth: "#8b5e3c",
-  earthLight: "#c4956a",
-  darkGreen: "#2d4a20",
-  forestGreen: "#3d6130",
-  gold: "#c4951a",
-  goldLight: "#e8c060",
-  goldPale: "#f5e4a8",
-  ink: "#1e1a14",
-  muted: "#7a6a58",
-  white: "#ffffff",
-  offWhite: "rgba(255,255,255,0.92)" };
- 
-// ─── BACKGROUND TEXTURES ────────────────────────────────────────────
-const BG = {
-  paper: `
-    radial-gradient(ellipse at 20% 80%, rgba(196,149,106,0.12) 0%, transparent 50%),
-    radial-gradient(ellipse at 80% 20%, rgba(90,122,74,0.08) 0%, transparent 50%),
-    linear-gradient(160deg, #faf6ef 0%, #f5ede0 50%, #f0e6d0 100%)
-  `,
-  forest: `
-    radial-gradient(ellipse at 30% 60%, rgba(45,74,32,0.9) 0%, rgba(30,50,20,0.98) 100%)
-  `,
-  earthWarm: `
-    radial-gradient(ellipse at 70% 30%, rgba(196,149,106,0.3) 0%, transparent 60%),
-    radial-gradient(ellipse at 20% 80%, rgba(139,94,60,0.2) 0%, transparent 50%),
-    linear-gradient(135deg, #f5ede0 0%, #ede0ca 100%)
-  `,
-  bamboo: `
-    repeating-linear-gradient(90deg, transparent, transparent 60px, rgba(90,122,74,0.03) 60px, rgba(90,122,74,0.03) 61px),
-    repeating-linear-gradient(0deg, transparent, transparent 60px, rgba(90,122,74,0.03) 60px, rgba(90,122,74,0.03) 61px),
-    linear-gradient(160deg, #f5ede0 0%, #faf6ef 100%)
-  `,
-  dark: `linear-gradient(135deg, #1a2d12 0%, #2d4a20 40%, #1e3518 100%)`,
-  darkRich: `
-    radial-gradient(ellipse at 20% 30%, rgba(196,149,106,0.15) 0%, transparent 50%),
-    radial-gradient(ellipse at 80% 70%, rgba(90,122,74,0.2) 0%, transparent 50%),
-    linear-gradient(135deg, #1a2d12 0%, #2d4a20 100%)
-  ` };
- 
-// ─── SVG DECORATIONS ─────────────────────────────────────────────────
-const CornerFiber = ({ size = 80, color = "#5a7a4a", opacity = 0.2 }) => (
-  <svg width={size} height={size} viewBox="0 0 80 80" fill="none" style={{ display: "block" }}>
-    <path d="M0 0 L80 0 L80 6 L6 6 L6 80 L0 80 Z" fill={color} opacity={opacity * 0.8} />
-    <path d="M0 0 L44 0 L44 3 L3 3 L3 44 L0 44 Z" fill={color} opacity={opacity * 1.2} />
-    <circle cx="14" cy="14" r="5" fill={color} opacity={opacity * 0.9} />
-    <circle cx="14" cy="14" r="2.5" fill={color} opacity={opacity * 1.5} />
-    <path d="M20 0 L20 20 L0 20" stroke={color} strokeWidth="1" opacity={opacity * 1.2} fill="none" />
-    <path d="M34 0 L34 34 L0 34" stroke={color} strokeWidth="0.5" opacity={opacity * 0.7} fill="none" />
-    <rect x="24" y="24" width="7" height="7" fill={color} opacity={opacity * 0.6} transform="rotate(45 27.5 27.5)" />
-  </svg>
-);
- 
-const WaveDivider = ({ color = "#5a7a4a", opacity = 0.35 }) => (
-  <svg width="100%" height="18" viewBox="0 0 500 18" preserveAspectRatio="none">
-    <path d="M0 9 Q31.25 0 62.5 9 Q93.75 18 125 9 Q156.25 0 187.5 9 Q218.75 18 250 9 Q281.25 0 312.5 9 Q343.75 18 375 9 Q406.25 0 437.5 9 Q468.75 18 500 9"
-      stroke={color} strokeWidth="1.5" fill="none" opacity={opacity} />
-    <path d="M0 13 Q31.25 4 62.5 13 Q93.75 22 125 13 Q156.25 4 187.5 13 Q218.75 22 250 13 Q281.25 4 312.5 13 Q343.75 22 375 13 Q406.25 4 437.5 13 Q468.75 22 500 13"
-      stroke={color} strokeWidth="0.7" fill="none" opacity={opacity * 0.5} />
-  </svg>
-);
- 
-const Diamond = ({ color = "#c4951a", size = 22 }) => (
-  <svg width={size} height={size} viewBox="0 0 22 22" style={{ flexShrink: 0 }}>
-    <rect x="4" y="4" width="14" height="14" fill={color} opacity="0.7" transform="rotate(45 11 11)" />
-    <rect x="7" y="7" width="8" height="8" fill={color} opacity="0.35" transform="rotate(45 11 11)" />
-    <rect x="9.5" y="9.5" width="3" height="3" fill={color} opacity="0.9" transform="rotate(45 11 11)" />
-  </svg>
-);
- 
-const DotPattern = ({ color = "#5a7a4a" }) => (
-  <svg width="120" height="120" viewBox="0 0 120 120" style={{ position: "absolute", opacity: 0.07 }}>
-    {[0,20,40,60,80,100].map(x => [0,20,40,60,80,100].map(y => (
-      <circle key={`${x}-${y}`} cx={x} cy={y} r="1.5" fill={color} />
-    )))}
-  </svg>
-);
- 
-const TrianglePattern = ({ color = "#5a7a4a", opacity = 0.06 }) => (
-  <svg width="200" height="200" viewBox="0 0 200 200" style={{ position: "absolute", opacity }}>
-    {[0,40,80,120,160].map((x,xi) => [0,40,80,120,160].map((y,yi) => (
-      <polygon key={`${xi}-${yi}`} points={`${x},${y+30} ${x+15},${y} ${x+30},${y+30}`} fill={color} />
-    )))}
-  </svg>
-);
- 
-// ─── SECTION BADGE ────────────────────────────────────────────────────
-const SectionBadge = ({ text, variant = "dark" }) => (
-  <div style={{
-    display: "inline-block",
-    background: variant === "dark" ? C.darkGreen : "rgba(45,74,32,0.1)",
-    color: variant === "dark" ? C.goldLight : C.bambooAccent,
-    fontSize: "9px", letterSpacing: "2.5px", textTransform: "uppercase",
-    padding: "4px 12px", fontWeight: 400,
-    border: variant === "dark" ? "none" : `1px solid ${C.bambooAccent}`,
-    marginBottom: "0.6rem" }}>
-    {text}
-  </div>
-);
- 
-// ─── LAYOUTS ─────────────────────────────────────────────────────────
- 
-// 1. COVER
-const CoverLayout = ({ data }) => (
-  <div style={{ position: "relative", width: "100%", height: "100%", overflow: "hidden" }}>
-    <div style={{
-      position: "absolute", inset: 0,
-      backgroundImage: data.img ? `url(${data.img})` : undefined,
-      backgroundSize: "cover", backgroundPosition: "center",
-      filter: "brightness(0.45) saturate(1.3)" }} />
-    <div style={{
-      position: "absolute", inset: 0,
-      background: `
-        radial-gradient(ellipse at 20% 60%, rgba(90,122,74,0.5) 0%, transparent 55%),
-        linear-gradient(155deg, rgba(29,50,20,0.88) 0%, rgba(20,35,15,0.72) 50%, rgba(139,94,60,0.55) 100%)
-      ` }} />
-    {/* Fabric-like texture overlay */}
-    <div style={{
-      position: "absolute", inset: 0, opacity: 0.04,
-      backgroundImage: `repeating-linear-gradient(45deg, #fff 0, #fff 1px, transparent 0, transparent 50%), repeating-linear-gradient(-45deg, #fff 0, #fff 1px, transparent 0, transparent 50%)`,
-      backgroundSize: "8px 8px" }} />
- 
-    {/* Corner decorations */}
-    {[
-      { top: 18, left: 18, transform: "none" },
-      { top: 18, right: 18, transform: "scaleX(-1)" },
-      { bottom: 18, left: 18, transform: "scaleY(-1)" },
-      { bottom: 18, right: 18, transform: "scale(-1)" },
-    ].map((s, i) => (
-      <div key={i} style={{ position: "absolute", ...s }}>
-        <CornerFiber color={C.goldLight} opacity={0.5} />
-      </div>
-    ))}
- 
-    {/* Gold border lines */}
-    <div style={{ position: "absolute", inset: "14px", border: `1px solid rgba(232,192,96,0.25)`, pointerEvents: "none" }} />
-    <div style={{ position: "absolute", inset: "22px", border: `1px solid rgba(232,192,96,0.12)`, pointerEvents: "none" }} />
- 
-    {/* Content */}
-    <div style={{
-      position: "absolute", inset: 0, display: "flex", flexDirection: "column",
-      alignItems: "center", justifyContent: "center", padding: "4rem",
-      textAlign: "center" }}>
-      <div style={{
-        fontSize: "9px", letterSpacing: "4px", color: "rgba(232,192,96,0.7)",
-        textTransform: "uppercase", marginBottom: "0.75rem" }}>
-        {data.content}
-      </div>
-      <div style={{ marginBottom: "1.5rem" }}><WaveDivider color={C.goldLight} opacity={0.4} /></div>
- 
-      <h1 style={{
-        fontSize: "clamp(1.5rem, 3.5vw, 2.6rem)",
-        color: C.white, lineHeight: 1.25, fontWeight: 700,
-        textShadow: "0 2px 20px rgba(0,0,0,0.5)",
-        letterSpacing: "1px", marginBottom: "0.3rem" }}>
-        SỔ TAY VĂN HOÁ
-      </h1>
-      <h2 style={{
-        fontSize: "clamp(1.1rem, 2.5vw, 1.8rem)",
-        color: C.goldLight, fontWeight: 400, letterSpacing: "3px",
-        textTransform: "uppercase", margin: "0 0 0.5rem",
-        textShadow: "0 2px 12px rgba(0,0,0,0.4)" }}>
-        Người Cơ Tu
-      </h2>
-      <p style={{
-        fontSize: "11px", color: "rgba(255,255,255,0.55)", letterSpacing: "3px",
-        textTransform: "uppercase", marginBottom: "2.5rem" }}>
-        Tại Thành Phố Đà Nẵng
-      </p>
- 
-      <div style={{
-        maxWidth: "520px", padding: "1.2rem 2rem",
-        background: "rgba(0,0,0,0.3)",
-        borderLeft: `3px solid ${C.goldLight}`,
-        backdropFilter: "blur(4px)" }}>
-        <p style={{
-          fontStyle: "italic",
-          fontSize: "12.5px", color: "rgba(255,255,255,0.85)",
-          lineHeight: 1.8, margin: 0 }}>
-          "{data.quote}"
-        </p>
-      </div>
- 
-      <p style={{
-        marginTop: "2rem", fontSize: "10px",
-        color: "rgba(255,255,255,0.4)", letterSpacing: "3px" }}>
-        {data.year}
-      </p>
-    </div>
-  </div>
-);
- 
-// 2. INTRO
-const IntroLayout = ({ data }) => (
-  <div style={{ position: "relative", width: "100%", height: "100%", overflow: "hidden" }}>
-    <div style={{
-      position: "absolute", inset: 0,
-      backgroundImage: data.img ? `url(${data.img})` : undefined,
-      backgroundSize: "cover", backgroundPosition: "center",
-      filter: "brightness(0.3) saturate(1.1)" }} />
-    <div style={{
-      position: "absolute", inset: 0,
-      background: `
-        radial-gradient(ellipse at 0% 100%, rgba(45,74,32,0.8) 0%, transparent 60%),
-        linear-gradient(160deg, rgba(20,35,15,0.85) 0%, rgba(30,26,18,0.8) 100%)
-      ` }} />
-    <div style={{
-      position: "absolute", inset: 0, padding: "3rem 3.5rem",
-      display: "flex", flexDirection: "column" }}>
-      {/* Header */}
-      <div style={{ display: "flex", alignItems: "center", gap: "14px", marginBottom: "2.5rem" }}>
-        <Diamond color={C.goldLight} size={28} />
-        <div>
-          <h2 style={{ fontSize: "1.9rem", color: C.white, margin: 0, fontWeight: 700, lineHeight: 1 }}>
-            {data.title}
-          </h2>
-          <p style={{ fontStyle: "italic", fontSize: "13px", color: C.goldLight, margin: "3px 0 0" }}>
-            {data.titleEN}
-          </p>
-        </div>
-      </div>
- 
-      {/* Two columns */}
-      <div style={{ flex: 1, display: "flex", gap: "2rem", overflow: "hidden" }}>
-        {/* VN */}
-        <div style={{
-          flex: 1, display: "flex", flexDirection: "column",
-          background: "rgba(255,255,255,0.1)", backdropFilter: "blur(8px)",
-          border: "1px solid rgba(255,255,255,0.18)",
-          padding: "1.75rem", position: "relative", overflow: "hidden" }}>
-          <div style={{ position: "absolute", top: 12, right: 12, opacity: 0.5 }}>
-            <CornerFiber size={50} color={C.goldLight} opacity={0.4} />
-          </div>
-          <div style={{
-            fontSize: "9px", letterSpacing: "3px", color: C.goldLight,
-            marginBottom: "1rem", fontWeight: 600 }}>
-            ✦ TIẾNG VIỆT
-          </div>
-          <p style={{
-            fontSize: "13px", lineHeight: 1.9, color: "rgba(255,255,255,0.92)",
-            textAlign: "justify", margin: 0, flex: 1 }}>
-            {data.content}
-          </p>
-        </div>
-        {/* EN */}
-        <div style={{
-          flex: 1, display: "flex", flexDirection: "column",
-          background: "rgba(45,74,32,0.35)", backdropFilter: "blur(8px)",
-          border: "1px solid rgba(90,122,74,0.4)",
-          padding: "1.75rem", position: "relative", overflow: "hidden" }}>
-          <div style={{ position: "absolute", bottom: 12, left: 12, opacity: 0.5 }}>
-            <CornerFiber size={50} color={C.bambooAccent} opacity={0.4} />
-          </div>
-          <div style={{
-            fontSize: "9px", letterSpacing: "3px", color: C.bambooDeep,
-            marginBottom: "1rem", fontWeight: 600 }}>
-            ✦ ENGLISH
-          </div>
-          <p style={{
-            fontSize: "12.5px", lineHeight: 1.9, color: "rgba(255,255,255,0.78)",
-            textAlign: "justify", fontStyle: "italic", margin: 0, flex: 1 }}>
-            {data.contentEN}
-          </p>
-        </div>
-      </div>
- 
-      <div style={{ marginTop: "1.5rem" }}>
-        <WaveDivider color={C.goldLight} opacity={0.3} />
-      </div>
-    </div>
-  </div>
-);
- 
-// 3. SPLIT-HERO
-const SplitHeroLayout = ({ data }) => (
-  <div style={{ display: "flex", height: "100%", background: BG.paper }}>
-    <div style={{ flex: "0 0 45%", position: "relative", overflow: "hidden" }}>
-      {data.img && (
-        <div style={{
-          position: "absolute", inset: 0,
-          backgroundImage: `url(${data.img})`,
-          backgroundSize: "cover", backgroundPosition: "center",
-          transition: "transform 0.8s ease" }} />
-      )}
-      <div style={{
-        position: "absolute", inset: 0,
-        background: `linear-gradient(to right, transparent 65%, ${C.paper} 100%), linear-gradient(to top, rgba(20,35,15,0.6) 0%, transparent 50%)` }} />
-      <div style={{
-        position: "absolute", top: 0, left: 0, right: 0, height: "5px",
-        background: `linear-gradient(to right, ${C.darkGreen}, ${C.bambooAccent}, ${C.gold})` }} />
-      <div style={{ position: "absolute", bottom: 24, left: 24 }}>
-        <SectionBadge text={data.section} />
-      </div>
-    </div>
-    <div style={{
-      flex: 1, padding: "3rem 2.5rem",
-      background: BG.paper,
-      display: "flex", flexDirection: "column", justifyContent: "center",
-      overflow: "auto", position: "relative" }}>
-      <div style={{ position: "absolute", top: 20, right: 20, opacity: 0.4 }}>
-        <CornerFiber size={60} color={C.bambooAccent} opacity={0.3} />
-      </div>
-      <DotPattern color={C.bambooAccent} />
-      <div style={{ position: "relative" }}>
-        <div style={{ display: "flex", alignItems: "center", gap: "10px", marginBottom: "1.2rem" }}>
-          <Diamond color={C.gold} size={20} />
-          <h2 style={{ fontSize: "clamp(1.2rem, 2.5vw, 1.75rem)", color: C.darkGreen, margin: 0, fontWeight: 700, lineHeight: 1.3 }}>
-            {data.title}
-          </h2>
-        </div>
-        {data.titleEN && (
-          <p style={{ fontStyle: "italic", fontSize: "12px", color: C.muted, marginBottom: "1.25rem" }}>
-            {data.titleEN}
-          </p>
-        )}
-        <div style={{ borderLeft: `3px solid ${C.bambooAccent}`, paddingLeft: "1.2rem", marginBottom: "1.5rem" }}>
-          <p style={{ fontSize: "13px", lineHeight: 1.85, color: C.ink, margin: 0 }}>{data.content}</p>
-        </div>
-        <WaveDivider color={C.earthLight} opacity={0.4} />
-        {data.contentEN && (
-          <div style={{ borderLeft: `2px solid ${C.earthLight}`, paddingLeft: "1.2rem", marginTop: "1rem" }}>
-            <p style={{ fontSize: "12px", lineHeight: 1.8, color: C.muted, fontStyle: "italic", margin: 0 }}>
-              {data.contentEN}
-            </p>
-          </div>
-        )}
-      </div>
-    </div>
-  </div>
-);
- 
-// 4. TOC
-const TocLayout = ({ data }) => (
-  <div style={{ display: "flex", height: "100%" }}>
-    {/* Left panel */}
-    <div style={{
-      width: "38%", background: BG.darkRich,
-      padding: "3rem 2.5rem", display: "flex", flexDirection: "column",
-      justifyContent: "center", position: "relative", overflow: "hidden" }}>
-      <div style={{ position: "absolute", top: -20, right: -20 }}>
-        <CornerFiber size={150} color={C.goldLight} opacity={0.15} />
-      </div>
-      <div style={{ position: "absolute", bottom: -20, left: -20, transform: "scale(-1)" }}>
-        <CornerFiber size={100} color={C.bambooAccent} opacity={0.15} />
-      </div>
-      <TrianglePattern color={C.goldLight} opacity={0.05} />
- 
-      <div style={{
-        width: 40, height: 3,
-        background: `linear-gradient(to right, ${C.goldLight}, transparent)`,
-        marginBottom: "1.5rem" }} />
-      <h2 style={{ fontSize: "2.2rem", color: C.white, margin: "0 0 0.3rem", fontWeight: 700 }}>
-        {data.title}
-      </h2>
-      <p style={{ color: C.goldLight, fontSize: "13px", fontStyle: "italic", margin: "0 0 2rem" }}>{data.titleEN}</p>
-      <WaveDivider color={C.goldLight} opacity={0.35} />
-      <p style={{ fontSize: "11px", color: "rgba(255,255,255,0.4)", marginTop: "1.5rem", letterSpacing: "1px", lineHeight: 1.7 }}>
-        Sổ tay giới thiệu văn hoá<br />người Cơ Tu tại Đà Nẵng
-      </p>
-    </div>
- 
-    {/* Right panel */}
-    <div style={{
-      flex: 1, padding: "2.5rem 2rem", background: BG.bamboo, overflow: "auto" }}>
-      {data.chapters?.map((ch, ci) => (
-        <div key={ci} style={{ marginBottom: "2rem" }}>
-          <div style={{ display: "flex", alignItems: "center", gap: "12px", marginBottom: "0.8rem" }}>
-            <div style={{
-              width: 32, height: 32, background: ci === 0 ? C.darkGreen : C.earth,
-              borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
-              <span style={{ color: C.white, fontSize: "12px", fontWeight: 700 }}>{ci + 1}</span>
-            </div>
-            <div>
-              <div style={{ fontSize: "15px", fontWeight: 700, color: C.darkGreen }}>{ch.vi}</div>
-              <div style={{ fontSize: "11px", color: C.muted, fontStyle: "italic" }}>{ch.en}</div>
-            </div>
-          </div>
-          <div style={{
-            marginLeft: "44px",
-            borderLeft: `2px solid ${ci === 0 ? C.bamboo : C.paperDark}`,
-            paddingLeft: "1rem",
-            display: "flex", flexDirection: "column", gap: "6px" }}>
-            {ch.sub.map((s, si) => (
-              <div key={si} style={{ display: "flex", gap: "10px", alignItems: "baseline" }}>
-                <div style={{ width: 5, height: 5, background: ci === 0 ? C.bambooAccent : C.earth, borderRadius: "50%", flexShrink: 0, marginTop: 6 }} />
-                <div>
-                  <span style={{ fontSize: "12.5px", color: C.ink }}>{s}</span>
-                  <span style={{ fontSize: "11px", color: C.muted, fontStyle: "italic", marginLeft: "8px" }}>{ch.subEN[si]}</span>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      ))}
-    </div>
-  </div>
-);
- 
-// 5. IMAGE-RIGHT
-const ImageRightLayout = ({ data }) => (
-  <div style={{ display: "flex", height: "100%", background: BG.paper }}>
-    <div style={{
-      flex: 1, padding: "3rem 2.5rem",
-      display: "flex", flexDirection: "column", justifyContent: "center",
-      overflow: "auto", position: "relative" }}>
-      <TrianglePattern color={C.bambooAccent} opacity={0.04} />
-      <div style={{ position: "relative" }}>
-        <SectionBadge text={data.section} variant="light" />
-        <h2 style={{ fontSize: "clamp(1.3rem, 2.5vw, 1.9rem)", color: C.darkGreen, margin: "0.5rem 0 0.25rem", fontWeight: 700, lineHeight: 1.3 }}>
-          {data.title}
-        </h2>
-        {data.titleEN && (
-          <p style={{ fontStyle: "italic", fontSize: "12px", color: C.muted, marginBottom: "1.25rem" }}>
-            {data.titleEN}
-          </p>
-        )}
-        <div style={{ width: 36, height: 2, background: C.bambooAccent, marginBottom: "1.2rem" }} />
-        <p style={{ fontSize: "13px", lineHeight: 1.85, color: C.ink, marginBottom: "1.5rem" }}>{data.content}</p>
-        {data.contentEN && (
-          <div style={{
-            background: `linear-gradient(to right, rgba(90,122,74,0.08), transparent)`,
-            borderLeft: `3px solid ${C.bambooMid}`,
-            padding: "0.8rem 1rem" }}>
-            <p style={{ fontSize: "12px", lineHeight: 1.8, color: C.muted, fontStyle: "italic", margin: 0 }}>
-              {data.contentEN}
-            </p>
-          </div>
-        )}
-      </div>
-    </div>
- 
-    <div style={{ flex: "0 0 44%", position: "relative", overflow: "hidden" }}>
-      {data.img && (
-        <div style={{
-          position: "absolute", inset: 0,
-          backgroundImage: `url(${data.img})`,
-          backgroundSize: "cover", backgroundPosition: "center",
-          transition: "transform 0.7s ease" }}
-          onMouseEnter={e => e.currentTarget.style.transform = "scale(1.05)"}
-          onMouseLeave={e => e.currentTarget.style.transform = "scale(1)"}
-        />
-      )}
-      <div style={{
-        position: "absolute", inset: 0,
-        background: "linear-gradient(to right, rgba(245,237,224,0.5) 0%, transparent 25%)" }} />
-      <div style={{
-        position: "absolute", top: 0, right: 0, bottom: 0, width: "5px",
-        background: `linear-gradient(to bottom, ${C.darkGreen}, ${C.bambooAccent}, ${C.gold})` }} />
-    </div>
-  </div>
-);
- 
-// 6. IMAGE-LEFT
-const ImageLeftLayout = ({ data }) => (
-  <div style={{ display: "flex", height: "100%", background: BG.paper }}>
-    <div style={{ flex: "0 0 44%", position: "relative", overflow: "hidden" }}>
-      {data.img && (
-        <div style={{
-          position: "absolute", inset: 0,
-          backgroundImage: `url(${data.img})`,
-          backgroundSize: "cover", backgroundPosition: "center",
-          transition: "transform 0.7s ease" }}
-          onMouseEnter={e => e.currentTarget.style.transform = "scale(1.05)"}
-          onMouseLeave={e => e.currentTarget.style.transform = "scale(1)"}
-        />
-      )}
-      <div style={{
-        position: "absolute", inset: 0,
-        background: "linear-gradient(to left, rgba(245,237,224,0.5) 0%, transparent 30%)" }} />
-      <div style={{
-        position: "absolute", top: 0, left: 0, bottom: 0, width: "5px",
-        background: `linear-gradient(to bottom, ${C.darkGreen}, ${C.bambooAccent}, ${C.gold})` }} />
-      {data.subtitle && (
-        <div style={{
-          position: "absolute", bottom: 0, left: 0, right: 0,
-          background: "rgba(29,50,20,0.88)", padding: "10px 18px" }}>
-          <p style={{ fontStyle: "italic", fontSize: "12px", color: C.goldLight, margin: 0 }}>
-            {data.subtitle}
-          </p>
-        </div>
-      )}
-    </div>
- 
-    <div style={{
-      flex: 1, padding: "3rem 2.5rem",
-      display: "flex", flexDirection: "column", justifyContent: "center",
-      overflow: "auto", position: "relative" }}>
-      <DotPattern color={C.earth} />
-      <div style={{ position: "relative" }}>
-        <SectionBadge text={data.section} variant="light" />
-        <h2 style={{ fontSize: "clamp(1.3rem, 2.5vw, 1.9rem)", color: C.darkGreen, margin: "0.5rem 0 0.25rem", fontWeight: 700, lineHeight: 1.3 }}>
-          {data.title}
-        </h2>
-        {data.titleEN && (
-          <p style={{ fontStyle: "italic", fontSize: "12px", color: C.muted, marginBottom: "1.25rem" }}>
-            {data.titleEN}
-          </p>
-        )}
-        <div style={{ width: 36, height: 2, background: C.earth, marginBottom: "1.2rem" }} />
-        <p style={{ fontSize: "13px", lineHeight: 1.85, color: C.ink, marginBottom: "1.5rem" }}>{data.content}</p>
-        {data.contentEN && (
-          <div style={{
-            background: `linear-gradient(to right, rgba(139,94,60,0.08), transparent)`,
-            borderLeft: `3px solid ${C.earthLight}`,
-            padding: "0.8rem 1rem" }}>
-            <p style={{ fontSize: "12px", lineHeight: 1.8, color: C.muted, fontStyle: "italic", margin: 0 }}>
-              {data.contentEN}
-            </p>
-          </div>
-        )}
-      </div>
-    </div>
-  </div>
-);
- 
-// 7. FULL-OVERLAY
-const FullOverlayLayout = ({ data }) => (
-  <div style={{ position: "relative", width: "100%", height: "100%", overflow: "hidden" }}>
-    {data.img && (
-      <div style={{
-        position: "absolute", inset: 0,
-        backgroundImage: `url(${data.img})`,
-        backgroundSize: "cover", backgroundPosition: "center",
-        filter: "brightness(0.4) saturate(1.2)" }} />
-    )}
-    <div style={{
-      position: "absolute", inset: 0,
-      background: `
-        radial-gradient(ellipse at 15% 70%, rgba(45,74,32,0.6) 0%, transparent 55%),
-        linear-gradient(to top, rgba(15,28,10,0.97) 0%, rgba(15,28,10,0.65) 45%, rgba(15,28,10,0.2) 100%)
-      ` }} />
-    {/* Texture overlay */}
-    <div style={{
-      position: "absolute", inset: 0, opacity: 0.03,
-      backgroundImage: `repeating-linear-gradient(0deg, rgba(255,255,255,0.5) 0px, rgba(255,255,255,0.5) 1px, transparent 1px, transparent 4px)` }} />
- 
-    {/* Top accent line */}
-    <div style={{
-      position: "absolute", top: 0, left: 0, right: 0, height: "4px",
-      background: `linear-gradient(to right, transparent 5%, ${C.bambooAccent} 20%, ${C.goldLight} 50%, ${C.bambooAccent} 80%, transparent 95%)` }} />
- 
-    <div style={{ position: "absolute", top: 20, right: 20 }}>
-      <CornerFiber color={C.goldLight} size={55} opacity={0.4} />
-    </div>
-    <div style={{ position: "absolute", bottom: 20, left: 20, transform: "scale(-1)" }}>
-      <CornerFiber color={C.bambooAccent} size={40} opacity={0.3} />
-    </div>
- 
-    <div style={{
-      position: "absolute", inset: 0, display: "flex", alignItems: "flex-end",
-      padding: "2.5rem 3rem" }}>
-      <div style={{ display: "flex", gap: "2.5rem", width: "100%", alignItems: "flex-end" }}>
-        <div style={{ flex: 3 }}>
-          <div style={{ fontSize: "9px", letterSpacing: "3px", textTransform: "uppercase", color: C.goldLight, marginBottom: "0.5rem" }}>
-            {data.section}
-          </div>
-          <h2 style={{
-            fontSize: "clamp(1.4rem, 3vw, 2.1rem)",
-            color: C.white, margin: "0 0 1rem", fontWeight: 700, lineHeight: 1.3 }}>
-            {data.title}
-          </h2>
-          {data.titleEN && (
-            <p style={{ fontStyle: "italic", fontSize: "12px", color: C.bambooMid, marginBottom: "1rem" }}>
-              {data.titleEN}
-            </p>
-          )}
-          <p style={{ fontSize: "13px", lineHeight: 1.85, color: "rgba(255,255,255,0.88)", margin: 0 }}>{data.content}</p>
-        </div>
-        {data.contentEN && (
-          <div style={{
-            flex: 2,
-            background: "rgba(255,255,255,0.07)", backdropFilter: "blur(3px)",
-            border: "1px solid rgba(255,255,255,0.12)", padding: "1.5rem",
-            borderTop: `2px solid rgba(232,192,96,0.4)` }}>
-            <div style={{ width: 20, height: 2, background: C.earthLight, marginBottom: "0.8rem" }} />
-            <p style={{ fontSize: "12px", lineHeight: 1.85, color: "rgba(255,255,255,0.72)", fontStyle: "italic", margin: 0 }}>
-              {data.contentEN}
-            </p>
-          </div>
-        )}
-      </div>
-    </div>
-  </div>
-);
- 
-// 8. GRID-ITEMS
-const GridItemsLayout = ({ data }) => (
-  <div style={{ display: "flex", height: "100%", background: BG.earthWarm }}>
-    {data.img && (
-      <div style={{ flex: "0 0 36%", position: "relative", overflow: "hidden" }}>
-        <div style={{
-          position: "absolute", inset: 0,
-          backgroundImage: `url(${data.img})`,
-          backgroundSize: "cover", backgroundPosition: "center" }} />
-        <div style={{
-          position: "absolute", inset: 0,
-          background: `linear-gradient(to right, transparent 60%, ${C.paper} 100%), linear-gradient(to bottom, rgba(45,74,32,0.4) 0%, transparent 40%)` }} />
-        <div style={{
-          position: "absolute", top: 0, left: 0, right: 0, height: "5px",
-          background: `linear-gradient(to right, ${C.darkGreen}, ${C.bambooAccent})` }} />
-      </div>
-    )}
-    <div style={{ flex: 1, padding: "2rem 2.5rem", overflow: "auto" }}>
-      <SectionBadge text={data.section} variant="light" />
-      <h2 style={{ fontSize: "1.7rem", color: C.darkGreen, margin: "0.5rem 0 1.5rem", fontWeight: 700 }}>
-        {data.title}
-      </h2>
-      <div style={{ display: "flex", flexDirection: "column", gap: "0.85rem" }}>
-        {data.items?.map((item, i) => (
-          <div key={i} style={{
-            display: "flex", gap: "0",
-            background: C.white,
-            borderLeft: `4px solid ${i % 2 === 0 ? C.bambooAccent : C.earth}`,
-            overflow: "hidden" }}>
-            <div style={{ flex: 1, padding: "0.9rem 1rem", borderRight: `1px solid ${C.bamboo}` }}>
-              <div style={{ fontWeight: 700, fontSize: "12.5px", color: C.darkGreen, marginBottom: "3px" }}>{item.vi}</div>
-              <p style={{ fontSize: "11.5px", color: C.ink, lineHeight: 1.7, margin: 0 }}>{item.desc}</p>
-            </div>
-            <div style={{ flex: 1, padding: "0.9rem 1rem", background: "rgba(250,246,239,0.6)" }}>
-              <div style={{ fontWeight: 600, fontSize: "12px", color: C.earth, marginBottom: "3px", fontStyle: "italic" }}>{item.en}</div>
-              <p style={{ fontSize: "11px", color: C.muted, lineHeight: 1.7, margin: 0, fontStyle: "italic" }}>{item.descEN}</p>
-            </div>
-          </div>
-        ))}
-      </div>
-    </div>
-  </div>
-);
- 
-// 9. ZIGZAG
-const ZigzagLayout = ({ data }) => (
-  <div style={{ display: "flex", height: "100%", background: BG.paper }}>
-    {/* Left: title panel */}
-    <div style={{
-      flex: "0 0 32%", position: "relative", overflow: "hidden",
-      background: BG.dark }}>
-      {data.img && (
-        <div style={{
-          position: "absolute", inset: 0,
-          backgroundImage: `url(${data.img})`,
-          backgroundSize: "cover", backgroundPosition: "center",
-          filter: "brightness(0.35) saturate(1.2)",
-          mixBlendMode: "luminosity" }} />
-      )}
-      <div style={{
-        position: "absolute", inset: 0,
-        background: "linear-gradient(160deg, rgba(29,50,20,0.9) 0%, rgba(45,74,32,0.75) 100%)" }} />
-      <TrianglePattern color={C.goldLight} opacity={0.06} />
- 
-      <div style={{
-        position: "absolute", inset: 0, display: "flex", flexDirection: "column",
-        justifyContent: "center", padding: "2rem" }}>
-        <div style={{ fontSize: "9px", letterSpacing: "3px", textTransform: "uppercase", color: C.goldLight, marginBottom: "0.75rem" }}>
-          {data.section}
-        </div>
-        <h2 style={{ fontSize: "1.5rem", color: C.white, margin: "0 0 0.5rem", fontWeight: 700, lineHeight: 1.3 }}>
-          {data.title}
-        </h2>
-        {data.titleEN && (
-          <p style={{ fontStyle: "italic", fontSize: "11px", color: C.bambooMid, margin: "0 0 1.2rem" }}>
-            {data.titleEN}
-          </p>
-        )}
-        <WaveDivider color={C.goldLight} opacity={0.4} />
-      </div>
-    </div>
- 
-    {/* Right: items */}
-    <div style={{ flex: 1, padding: "1.25rem 1.75rem", overflow: "auto", display: "flex", flexDirection: "column", gap: "0.75rem" }}>
-      {data.items?.map((item, i) => (
-        <div key={i} style={{
-          background: C.white,
-          borderLeft: `4px solid ${i % 2 === 0 ? C.bambooAccent : C.earthLight}`,
-          padding: "0.9rem 1.1rem",
-          borderBottom: `1px solid ${C.bamboo}`,
-          display: "flex", gap: "1.2rem" }}>
-          <div style={{ flex: 1 }}>
-            <div style={{ fontWeight: 700, fontSize: "12.5px", color: C.darkGreen, marginBottom: "1px" }}>{item.vi}</div>
-            <div style={{ fontSize: "10px", color: C.earth, fontStyle: "italic", marginBottom: "5px" }}>{item.en}</div>
-            <p style={{ fontSize: "11.5px", color: C.ink, lineHeight: 1.7, margin: 0 }}>{item.desc}</p>
-          </div>
-          <div style={{
-            flex: "0 0 38%", borderLeft: `1px solid ${C.bamboo}`,
-            paddingLeft: "1rem" }}>
-            <p style={{ fontSize: "11px", color: C.muted, lineHeight: 1.7, margin: 0, fontStyle: "italic" }}>{item.descEN}</p>
-          </div>
-        </div>
-      ))}
-    </div>
-  </div>
-);
- 
-// 10. TOOL-GRID
-const ToolGridLayout = ({ data }) => (
-  <div style={{
-    height: "100%", background: BG.bamboo,
-    display: "flex", flexDirection: "column", padding: "2.5rem",
-    position: "relative", overflow: "hidden" }}>
-    <TrianglePattern color={C.bambooAccent} opacity={0.04} />
-    <div style={{ position: "absolute", top: 20, right: 20, opacity: 0.3 }}>
-      <CornerFiber size={70} color={C.bambooAccent} opacity={0.5} />
-    </div>
- 
-    <div style={{ position: "relative", display: "flex", alignItems: "center", gap: "12px", marginBottom: "0.75rem" }}>
-      <Diamond color={C.bambooAccent} size={22} />
-      <div>
-        <SectionBadge text={data.section} variant="light" />
-        <h2 style={{ fontSize: "1.7rem", color: C.darkGreen, margin: 0, fontWeight: 700 }}>
-          {data.title}
-        </h2>
-        {data.titleEN && (
-          <p style={{ fontStyle: "italic", fontSize: "12px", color: C.muted, margin: "3px 0 0" }}>
-            {data.titleEN}
-          </p>
-        )}
-      </div>
-    </div>
-    <WaveDivider color={C.bambooAccent} opacity={0.35} />
- 
-    <div style={{
-      flex: 1, display: "grid", gridTemplateColumns: "1fr 1fr",
-      gap: "1rem", marginTop: "1.2rem" }}>
-      {data.tools?.map((tool, i) => (
-        <div key={i} style={{
-          background: C.white, padding: "1.25rem",
-          borderTop: `4px solid ${i % 2 === 0 ? C.bambooAccent : C.earth}`,
-          display: "flex", flexDirection: "column", gap: "0.4rem",
-          boxShadow: "0 2px 8px rgba(0,0,0,0.06)",
-          position: "relative", overflow: "hidden" }}>
-          <div style={{ position: "absolute", bottom: 0, right: 0, opacity: 0.05 }}>
-            <CornerFiber size={60} color={i % 2 === 0 ? C.bambooAccent : C.earth} opacity={1} />
-          </div>
-          <div style={{ fontSize: "2rem" }}>{tool.icon}</div>
-          <div style={{ fontWeight: 700, fontSize: "13.5px", color: C.darkGreen }}>{tool.vi}</div>
-          <div style={{ fontSize: "11px", color: C.earth, fontStyle: "italic" }}>{tool.en}</div>
-          <p style={{ fontSize: "11.5px", lineHeight: 1.7, color: C.ink, margin: 0 }}>{tool.desc}</p>
-          <div style={{ borderTop: `1px dashed ${C.bamboo}`, paddingTop: "6px", marginTop: "4px" }}>
-            <p style={{ fontSize: "10.5px", lineHeight: 1.65, color: C.muted, margin: 0, fontStyle: "italic" }}>{tool.descEN}</p>
-          </div>
-        </div>
-      ))}
-    </div>
-  </div>
-);
- 
-// 11. ASYMMETRIC
-const AsymmetricLayout = ({ data }) => (
-  <div style={{ display: "flex", height: "100%", background: BG.earthWarm }}>
-    <div style={{
-      flex: 1, padding: "3rem 2.5rem 3rem 3rem",
-      display: "flex", flexDirection: "column", justifyContent: "center",
-      overflow: "auto", position: "relative" }}>
-      <DotPattern color={C.earth} />
-      <div style={{ position: "relative" }}>
-        <SectionBadge text={data.section} />
-        {data.subtitle && (
-          <div style={{
-            fontStyle: "italic", fontSize: "12.5px",
-            color: C.earth, marginBottom: "0.5rem" }}>
-            {data.subtitle}
-          </div>
-        )}
-        <h2 style={{
-          fontSize: "clamp(1.3rem, 2.5vw, 1.85rem)",
-          color: C.darkGreen, margin: "0 0 0.25rem", fontWeight: 700, lineHeight: 1.3 }}>
-          {data.title}
-        </h2>
-        {data.titleEN && (
-          <p style={{ fontStyle: "italic", fontSize: "12px", color: C.muted, marginBottom: "1.25rem" }}>
-            {data.titleEN}
-          </p>
-        )}
-        <div style={{
-          width: "80%", height: 2, marginBottom: "1.25rem",
-          background: `linear-gradient(to right, ${C.darkGreen}, ${C.earth}, transparent)` }} />
-        <p style={{ fontSize: "13px", lineHeight: 1.85, color: C.ink, marginBottom: "1.5rem" }}>{data.content}</p>
-        {data.contentEN && (
-          <div style={{
-            background: C.bamboo, padding: "1rem 1.25rem",
-            borderRight: `4px solid ${C.bambooAccent}` }}>
-            <p style={{ fontSize: "12px", lineHeight: 1.8, color: C.darkGreen, fontStyle: "italic", margin: 0 }}>
-              {data.contentEN}
-            </p>
-          </div>
-        )}
-      </div>
-    </div>
- 
-    {data.img && (
-      <div style={{
-        flex: "0 0 40%", position: "relative", overflow: "hidden",
-        margin: "1.5rem 1.5rem 1.5rem 0",
-        boxShadow: "0 8px 30px rgba(0,0,0,0.18)" }}>
-        <div style={{
-          position: "absolute", inset: 0,
-          backgroundImage: `url(${data.img})`,
-          backgroundSize: "cover", backgroundPosition: "center",
-          transition: "transform 0.7s ease" }}
-          onMouseEnter={e => e.currentTarget.style.transform = "scale(1.06)"}
-          onMouseLeave={e => e.currentTarget.style.transform = "scale(1)"}
-        />
-        <div style={{
-          position: "absolute", bottom: 0, left: 0, right: 0, height: "5px",
-          background: `linear-gradient(to right, ${C.bambooAccent}, ${C.goldLight})` }} />
-      </div>
-    )}
-  </div>
-);
- 
-// 12. QUOTE-FEATURE
-const QuoteFeatureLayout = ({ data }) => (
-  <div style={{
-    height: "100%", background: BG.darkRich,
-    display: "flex", flexDirection: "column", padding: "3rem",
-    position: "relative", overflow: "hidden" }}>
-    {data.img && (
-      <div style={{
-        position: "absolute", inset: 0,
-        backgroundImage: `url(${data.img})`,
-        backgroundSize: "cover", backgroundPosition: "center",
-        filter: "brightness(0.18) saturate(0.8)" }} />
-    )}
-    <div style={{
-      position: "absolute", inset: 0,
-      background: `
-        radial-gradient(ellipse at 80% 20%, rgba(196,149,106,0.15) 0%, transparent 50%),
-        radial-gradient(ellipse at 10% 80%, rgba(90,122,74,0.2) 0%, transparent 50%),
-        linear-gradient(135deg, rgba(20,35,15,0.92) 0%, rgba(35,55,25,0.88) 100%)
-      ` }} />
-    <TrianglePattern color={C.goldLight} opacity={0.04} />
-    <div style={{ position: "absolute", top: -20, right: -20, opacity: 0.15 }}>
-      <CornerFiber size={180} color={C.white} opacity={0.6} />
-    </div>
-    <div style={{ position: "absolute", bottom: -20, left: -20, transform: "scale(-1)", opacity: 0.1 }}>
-      <CornerFiber size={130} color={C.bambooAccent} opacity={0.6} />
-    </div>
- 
-    {/* Content */}
-    <div style={{ position: "relative", marginBottom: "1.5rem" }}>
-      <div style={{ fontSize: "9px", letterSpacing: "3px", textTransform: "uppercase", color: C.goldLight, marginBottom: "0.5rem" }}>
-        {data.section}
-      </div>
-      <h2 style={{ fontSize: "clamp(1.4rem, 3vw, 2rem)", color: C.white, margin: "0", fontWeight: 700 }}>
-        {data.title}
-      </h2>
-      {data.titleEN && (
-        <p style={{ fontStyle: "italic", fontSize: "12px", color: C.bambooMid, marginTop: "4px", marginBottom: 0 }}>
-          {data.titleEN}
-        </p>
-      )}
-    </div>
- 
-    {data.badge && (
-      <div style={{
-        display: "inline-block", background: C.gold, color: C.darkGreen,
-        fontSize: "9px", fontWeight: 700, padding: "4px 14px", letterSpacing: "1.5px",
-        marginBottom: "1.5rem", alignSelf: "flex-start", textTransform: "uppercase" }}>{data.badge}</div>
-    )}
- 
-    <div style={{ display: "flex", gap: "2.5rem", flex: 1, overflow: "hidden" }}>
-      <div style={{ flex: 3, overflow: "auto" }}>
-        <p style={{ fontSize: "13px", lineHeight: 1.9, color: "rgba(255,255,255,0.9)" }}>{data.content}</p>
-      </div>
-      <div style={{
-        flex: 2,
-        borderLeft: `2px solid rgba(232,192,96,0.3)`,
-        paddingLeft: "2rem",
-        display: "flex", flexDirection: "column", justifyContent: "center",
-        overflow: "auto" }}>
-        <div style={{ width: 25, height: 2, background: C.earthLight, marginBottom: "1rem" }} />
-        <p style={{ fontSize: "12px", lineHeight: 1.9, color: "rgba(255,255,255,0.65)", fontStyle: "italic", margin: 0 }}>
-          {data.contentEN}
-        </p>
-      </div>
-    </div>
- 
-    <div style={{ marginTop: "1.5rem", position: "relative" }}>
-      <WaveDivider color={C.goldLight} opacity={0.3} />
-    </div>
-  </div>
-);
- 
-// 13. TIMELINE
-const TimelineLayout = ({ data }) => (
-  <div style={{ display: "flex", height: "100%", background: BG.paper }}>
-    <div style={{ flex: 1, padding: "2.5rem", display: "flex", flexDirection: "column", overflow: "auto", position: "relative" }}>
-      <TrianglePattern color={C.bambooAccent} opacity={0.04} />
-      <div style={{ position: "relative" }}>
-        <SectionBadge text={data.section} variant="light" />
-        <h2 style={{ fontSize: "1.7rem", color: C.darkGreen, margin: "0.5rem 0 0.2rem", fontWeight: 700 }}>
-          {data.title}
-        </h2>
-        {data.titleEN && (
-          <h3 style={{ fontSize: "13px", color: C.earth, fontStyle: "italic", margin: "0 0 1.75rem", fontWeight: 400 }}>
-            {data.titleEN}
-          </h3>
-        )}
-      </div>
- 
-      <div style={{ position: "relative", flex: 1 }}>
-        {/* Timeline line */}
-        <div style={{
-          position: "absolute", left: "90px", top: 6, bottom: 6, width: "2px",
-          background: `linear-gradient(to bottom, ${C.bambooAccent}, ${C.earthLight}, ${C.earth})` }} />
- 
-        {data.timeline?.map((t, i) => (
-          <div key={i} style={{ display: "flex", gap: "0", marginBottom: "1.4rem", position: "relative" }}>
-            <div style={{ width: "80px", textAlign: "right", paddingRight: "12px", flexShrink: 0 }}>
-              <div style={{ fontSize: "11px", fontWeight: 700, color: C.bambooAccent, lineHeight: 1.3 }}>{t.month}</div>
-              <div style={{ fontSize: "9.5px", color: C.muted, fontStyle: "italic", lineHeight: 1.3 }}>{t.monthEN}</div>
-            </div>
-            <div style={{
-              position: "absolute", left: "86px", top: "7px",
-              width: "10px", height: "10px", borderRadius: "50%",
-              background: i === 0 ? C.darkGreen : i === data.timeline.length - 1 ? C.earth : C.bambooAccent,
-              border: `2px solid ${C.paper}`, zIndex: 1 }} />
-            <div style={{
-              marginLeft: "28px", paddingLeft: "1.1rem", flex: 1,
-              borderLeft: i === data.timeline.length - 1 ? `2px dashed ${C.earthLight}` : "none" }}>
-              <div style={{ fontSize: "13px", color: C.ink, lineHeight: 1.6, marginBottom: "2px" }}>{t.act}</div>
-              <div style={{ fontSize: "11px", color: C.muted, fontStyle: "italic", lineHeight: 1.6 }}>{t.actEN}</div>
-            </div>
-          </div>
-        ))}
-      </div>
-    </div>
- 
-    {data.img && (
-      <div style={{ flex: "0 0 40%", position: "relative", overflow: "hidden" }}>
-        <div style={{
-          position: "absolute", inset: 0,
-          backgroundImage: `url(${data.img})`,
-          backgroundSize: "cover", backgroundPosition: "center" }} />
-        <div style={{
-          position: "absolute", inset: 0,
-          background: "linear-gradient(to right, rgba(245,237,224,0.5) 0%, transparent 35%)" }} />
-        <div style={{
-          position: "absolute", top: 0, right: 0, bottom: 0, width: "5px",
-          background: `linear-gradient(to bottom, ${C.bambooAccent}, ${C.gold})` }} />
-      </div>
-    )}
-  </div>
-);
- 
-// 14. CLOSING
-const ClosingLayout = ({ data }) => (
-  <div style={{ position: "relative", width: "100%", height: "100%", overflow: "hidden" }}>
-    {data.img && (
-      <div style={{
-        position: "absolute", inset: 0,
-        backgroundImage: `url(${data.img})`,
-        backgroundSize: "cover", backgroundPosition: "center",
-        filter: "brightness(0.3) saturate(1.2)" }} />
-    )}
-    <div style={{
-      position: "absolute", inset: 0,
-      background: `
-        radial-gradient(ellipse at 0% 100%, rgba(45,74,32,0.7) 0%, transparent 55%),
-        radial-gradient(ellipse at 100% 0%, rgba(196,149,106,0.4) 0%, transparent 50%),
-        linear-gradient(145deg, rgba(20,35,15,0.93) 0%, rgba(35,55,25,0.88) 100%)
-      ` }} />
-    <TrianglePattern color={C.goldLight} opacity={0.04} />
- 
-    {/* Corners */}
-    {[
-      { top: 18, left: 18, transform: "none" },
-      { top: 18, right: 18, transform: "scaleX(-1)" },
-      { bottom: 18, left: 18, transform: "scaleY(-1)" },
-      { bottom: 18, right: 18, transform: "scale(-1)" },
-    ].map((s, i) => (
-      <div key={i} style={{ position: "absolute", ...s, opacity: 0.35 }}>
-        <CornerFiber color={C.goldLight} size={55} opacity={0.5} />
-      </div>
-    ))}
- 
-    {/* Gold inner border */}
-    <div style={{ position: "absolute", inset: "16px", border: `1px solid rgba(232,192,96,0.2)`, pointerEvents: "none" }} />
- 
-    {/* Bottom bar */}
-    <div style={{
-      position: "absolute", bottom: 0, left: 0, right: 0, height: "5px",
-      background: `linear-gradient(to right, ${C.bambooAccent}, ${C.goldLight}, ${C.earth})` }} />
- 
-    <div style={{ position: "absolute", inset: 0, display: "flex", padding: "3.5rem", gap: "3rem" }}>
-      {/* Left: VN */}
-      <div style={{ flex: 1, display: "flex", flexDirection: "column", justifyContent: "center" }}>
-        <Diamond color={C.goldLight} size={24} />
-        <div style={{ marginTop: "1rem", marginBottom: "0.5rem" }}>
-          <div style={{ fontSize: "9px", letterSpacing: "3px", textTransform: "uppercase", color: C.goldLight, marginBottom: "0.25rem" }}>
-            {data.section}
-          </div>
-          <h2 style={{ fontSize: "1.8rem", color: C.white, margin: 0, fontWeight: 700 }}>
-            {data.title}
-          </h2>
-        </div>
-        <WaveDivider color={C.goldLight} opacity={0.3} />
-        <p style={{ fontSize: "13px", lineHeight: 1.9, color: "rgba(255,255,255,0.88)", marginTop: "1rem" }}>
-          {data.content}
-        </p>
-      </div>
- 
-      {/* Divider */}
-      <div style={{
-        width: "1px",
-        background: "linear-gradient(to bottom, transparent, rgba(232,192,96,0.4), transparent)" }} />
- 
-      {/* Right: EN */}
-      <div style={{ flex: 1, display: "flex", flexDirection: "column", justifyContent: "center" }}>
-        <h2 style={{ fontSize: "1.4rem", color: C.goldLight, margin: "0 0 1rem", fontWeight: 700 }}>
-          {data.titleEN}
-        </h2>
-        <p style={{
-          fontSize: "12.5px", lineHeight: 1.9,
-          color: "rgba(255,255,255,0.72)", fontStyle: "italic" }}>
-          {data.contentEN}
-        </p>
-        <div style={{ marginTop: "2rem" }}>
-          <WaveDivider color={C.bambooAccent} opacity={0.4} />
-        </div>
-        <p style={{
-          marginTop: "1rem", fontSize: "10px",
-          color: "rgba(255,255,255,0.35)", letterSpacing: "2px" }}>
-          ✦ Đà Nẵng, 2026 ✦
-        </p>
-      </div>
-    </div>
-  </div>
-);
- 
-// ─── LAYOUT MAP ───────────────────────────────────────────────────────
-const LAYOUTS = {
-  cover: CoverLayout,
-  intro: IntroLayout,
-  "split-hero": SplitHeroLayout,
-  toc: TocLayout,
-  "image-right": ImageRightLayout,
-  "image-left": ImageLeftLayout,
-  "full-overlay": FullOverlayLayout,
-  "grid-items": GridItemsLayout,
-  zigzag: ZigzagLayout,
-  "tool-grid": ToolGridLayout,
-  asymmetric: AsymmetricLayout,
-  "quote-feature": QuoteFeatureLayout,
-  timeline: TimelineLayout,
-  closing: ClosingLayout };
- 
-// ─── PAGE INDICATOR ───────────────────────────────────────────────────
-const PageDots = ({ total, current, onChange }) => {
-  const MAX = 15;
-  const step = total > MAX ? Math.ceil(total / MAX) : 1;
-  const dots = [];
-  for (let i = 0; i < total; i += step) dots.push(i);
- 
-  return (
-    <div style={{ display: "flex", gap: "5px", alignItems: "center" }}>
-      {dots.map((idx) => (
-        <button
-          key={idx}
-          onClick={() => onChange(idx)}
-          style={{
-            width: idx === current || (current >= idx && current < idx + step) ? 18 : 6,
-            height: 6, borderRadius: 3, padding: 0, border: "none", cursor: "pointer",
-            background: idx === current || (current >= idx && current < idx + step)
-              ? C.bambooAccent : C.bamboo,
-            transition: "all 0.3s ease" }}
-        />
-      ))}
-    </div>
-  );
-};
- 
-// ─── MAIN COMPONENT ───────────────────────────────────────────────────
-export default function Book() {
-  const [current, setCurrent] = useState(0);
-  const [animating, setAnimating] = useState(false);
-  const [dir, setDir] = useState("next");
-  const [displayed, setDisplayed] = useState(0);
- 
-  const goTo = (index) => {
-    if (animating || index === current || index < 0 || index >= sotayData.length) return;
-    setDir(index > current ? "next" : "prev");
-    setAnimating(true);
-    setTimeout(() => {
-      setCurrent(index);
-      setDisplayed(index);
-      setAnimating(false);
-    }, 370);
-  };
- 
-  useEffect(() => {
-    const fn = (e) => {
-      if (e.key === "ArrowRight") goTo(current + 1);
-      if (e.key === "ArrowLeft") goTo(current - 1);
-    };
-    window.addEventListener("keydown", fn);
-    return () => window.removeEventListener("keydown", fn);
-  });
- 
-  const data = sotayData[displayed];
-  const Layout = LAYOUTS[data.layout] || ImageLeftLayout;
- 
-  return (
-    <div style={{
-      minHeight: "100vh",
-      background: `
-        radial-gradient(ellipse at 20% 30%, rgba(90,122,74,0.12) 0%, transparent 50%),
-        radial-gradient(ellipse at 80% 70%, rgba(139,94,60,0.1) 0%, transparent 50%),
-        linear-gradient(160deg, #f0ece3 0%, #e8dfd0 100%)
-      `,
-      display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center",
-      padding: "1.5rem",
-      fontFamily: "'Lora', 'Merriweather', 'Times New Roman', serif"
-    }}>
-      <style>{`
-        @keyframes pageFlipNext {
-          0%   { opacity: 1; transform: perspective(1000px) rotateY(0deg) scale(1); }
-          35%  { opacity: 0.7; transform: perspective(1000px) rotateY(-10deg) scale(0.98); }
-          65%  { opacity: 0.7; transform: perspective(1000px) rotateY(10deg) scale(0.98); }
-          100% { opacity: 1; transform: perspective(1000px) rotateY(0deg) scale(1); }
-        }
-        @keyframes pageFlipPrev {
-          0%   { opacity: 1; transform: perspective(1000px) rotateY(0deg) scale(1); }
-          35%  { opacity: 0.7; transform: perspective(1000px) rotateY(10deg) scale(0.98); }
-          65%  { opacity: 0.7; transform: perspective(1000px) rotateY(-10deg) scale(0.98); }
-          100% { opacity: 1; transform: perspective(1000px) rotateY(0deg) scale(1); }
-        }
-        @keyframes fadeIn {
-          from { opacity: 0; transform: translateY(8px); }
-          to   { opacity: 1; transform: translateY(0); }
-        }
-        .page-enter { animation: fadeIn 0.45s ease forwards; }
-        .flip-next  { animation: pageFlipNext 0.38s ease; }
-        .flip-prev  { animation: pageFlipPrev 0.38s ease; }
-        .nav-btn:hover { background: rgba(90,122,74,0.15) !important; }
-        .nav-btn:active { transform: scale(0.9) !important; }
-      `}</style>
-
- 
-      {/* Book & Nav Row */}
-      <div style={{
-        display: "flex", alignItems: "center", justifyContent: "center",
-        width: "100%", maxWidth: "1150px", gap: "1.5rem"
-      }}>
-        {/* Left Nav */}
-        <button
-          className="nav-btn"
-          onClick={() => goTo(current - 1)}
-          disabled={current === 0}
-          style={{
-            flexShrink: 0,
-            width: 44, height: 44, borderRadius: "50%", background: "transparent",
-            border: `1.5px solid ${current === 0 ? C.bamboo : C.bambooAccent}`,
-            cursor: current === 0 ? "default" : "pointer",
-            display: "flex", alignItems: "center", justifyContent: "center",
-            color: current === 0 ? C.bamboo : C.bambooAccent,
-            fontSize: "20px", transition: "all 0.2s",
-            opacity: current === 0 ? 0.35 : 1 }}
-        >‹</button>
- 
-        {/* Book */}
-        <div
-          className={animating ? (dir === "next" ? "flip-next" : "flip-prev") : "page-enter"}
-          style={{
-            flex: 1, maxWidth: "1020px",
-            aspectRatio: "1.414 / 1",
-            position: "relative", overflow: "hidden",
-            boxShadow: `
-              0 1px 2px rgba(0,0,0,0.06),
-              0 6px 20px rgba(0,0,0,0.1),
-              0 20px 50px rgba(0,0,0,0.12),
-              0 40px 80px rgba(0,0,0,0.06),
-              inset 4px 0 6px rgba(90,122,74,0.15)
-            `,
-            borderRadius: "1px" }}
-        >
-          <Layout data={data} />
-   
-          {/* Page edge shadows */}
-          <div style={{
-            position: "absolute", right: 0, top: 0, bottom: 0, width: "8px",
-            background: "linear-gradient(to left, rgba(0,0,0,0.18), transparent)",
-            pointerEvents: "none", zIndex: 10 }} />
-          <div style={{
-            position: "absolute", left: 0, top: 0, bottom: 0, width: "5px",
-            background: `linear-gradient(to right, rgba(90,122,74,0.25), transparent)`,
-            pointerEvents: "none", zIndex: 10 }} />
-          <div style={{
-            position: "absolute", bottom: 0, left: 0, right: 0, height: "5px",
-            background: "linear-gradient(to top, rgba(0,0,0,0.1), transparent)",
-            pointerEvents: "none", zIndex: 10 }} />
-
-          {/* Page number inside book at bottom right */}
-          <div style={{
-            position: "absolute", bottom: "1.5rem", right: "2rem", zIndex: 20,
-            fontSize: "11px", color: C.text, fontStyle: "italic", fontWeight: 500,
-            background: "rgba(255, 255, 255, 0.75)",
-            backdropFilter: "blur(4px)",
-            padding: "4px 10px", borderRadius: "10px",
-            boxShadow: "0 2px 8px rgba(0,0,0,0.1)",
-            border: "1px solid rgba(255,255,255,0.4)"
-          }}>
-            {current + 1}
-          </div>
-        </div>
- 
-        {/* Right Nav */}
-        <button
-          className="nav-btn"
-          onClick={() => goTo(current + 1)}
-          disabled={current === sotayData.length - 1}
-          style={{
-            flexShrink: 0,
-            width: 44, height: 44, borderRadius: "50%", background: "transparent",
-            border: `1.5px solid ${current === sotayData.length - 1 ? C.bamboo : C.bambooAccent}`,
-            cursor: current === sotayData.length - 1 ? "default" : "pointer",
-            display: "flex", alignItems: "center", justifyContent: "center",
-            color: current === sotayData.length - 1 ? C.bamboo : C.bambooAccent,
-            fontSize: "20px", transition: "all 0.2s",
-            opacity: current === sotayData.length - 1 ? 0.35 : 1 }}
-        >›</button>
-      </div>
- 
-      {/* Dots and Help text */}
-      <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "0.75rem", marginTop: "1.5rem" }}>
-        <PageDots total={sotayData.length} current={current} onChange={goTo} />
-        <p style={{
-          margin: 0, fontSize: "10px", color: C.muted,
-          letterSpacing: "1.5px", fontStyle: "italic" }}>
-          ← → phím mũi tên để lật trang · use arrow keys to navigate
-        </p>
-      </div>
-    </div>
-  );
-}
- 
+export default sotayData;
