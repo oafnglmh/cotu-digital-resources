@@ -831,7 +831,7 @@ function Hero() {
 // ─── ITEMS vật thể ────────────────────────────────────────────────────────────
 const ITEMS = [
   { name: "Làng", type: "other", icon: "🏘️", desc: "Kiến trúc làng truyền thống" },
-  { name: "Nhà Gươl", type: "other", icon: "🏛️", desc: "Ngôi nhà linh hồn của làng" },
+  { name: "Nhà Ở", type: "other", icon: "🏛️", desc: "Ngôi nhà linh hồn của làng" },
   { name: "Trang Phục", type: "trangphuc", icon: "👘", desc: "Thổ cẩm dệt tay tinh xảo" },
   { name: "Phương Tiện", type: "other", icon: "🛶", desc: "Công cụ đi lại núi rừng" },
   { name: "Ẩm Thực", type: "other", icon: "🍃", desc: "Hương vị đại ngàn Trường Sơn" },
