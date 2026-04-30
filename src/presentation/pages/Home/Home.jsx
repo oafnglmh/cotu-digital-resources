@@ -414,7 +414,7 @@ function Header() {
                   color: scrolled ? C.textDark : "white",
                 }}
               >
-                Cotu Culture
+                COTU CULTURE
               </div>
               <div
                 style={{
@@ -805,7 +805,7 @@ function Hero() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.5, duration: 0.7 }}
           style={{
-            fontSize: "clamp(14px,2vw,18px)",
+            fontSize: "clamp(16px,2vw,20px)",
             color: "rgba(220,240,220,0.85)",
             fontFamily: "'Crimson Pro',serif",
             fontStyle: "italic",
@@ -868,21 +868,21 @@ function Hero() {
 
 // ─── ITEMS vật thể ────────────────────────────────────────────────────────────
 const ITEMS = [
-  { name: "Làng", type: "other", icon: "🏘️", desc: "Kiến trúc làng truyền thống" },
-  { name: "Nhà Ở", type: "other", icon: "🏛️", desc: "Ngôi nhà linh hồn của làng" },
-  { name: "Trang Phục", type: "trangphuc", icon: "👘", desc: "Thổ cẩm dệt tay tinh xảo" },
-  { name: "Phương Tiện", type: "other", icon: "🛶", desc: "Công cụ đi lại núi rừng" },
-  { name: "Ẩm Thực", type: "other", icon: "🍃", desc: "Hương vị đại ngàn Trường Sơn" },
-  { name: "Công Cụ", type: "other", icon: "⚒️", desc: "Vật dụng truyền thống" },
+  { name: "LÀNG", type: "other", icon: "🏘️", desc: "Kiến trúc làng truyền thống" },
+  { name: "NHÀ Ở", type: "other", icon: "🏛️", desc: "Ngôi nhà linh hồn của làng" },
+  { name: "TRANG PHỤC", type: "trangphuc", icon: "👘", desc: "Thổ cẩm dệt tay tinh xảo" },
+  { name: "PHƯƠNG TIỆN", type: "other", icon: "🛶", desc: "Công cụ đi lại núi rừng" },
+  { name: "ẨM THỰC", type: "other", icon: "🍃", desc: "Hương vị đại ngàn Trường Sơn" },
+  { name: "CÔNG CỤ", type: "other", icon: "⚒️", desc: "Vật dụng truyền thống" },
 ];
 
 const ITEMS_PHI = [
-  { name: "Lễ hội", type: "festival", icon: "🥁", desc: "Nghi lễ cộng đồng" },
-  { name: "Phong tục tập quán", type: "other", icon: "🤝", desc: "Nếp sống truyền thống" },
-  { name: "Nghề thủ công", type: "other", icon: "🧵", desc: "Dệt, đan, chế tác" },
-  { name: "Nghệ thuật dân gian", type: "other", icon: "💃", desc: "Hát múa dân gian" },
-  { name: "Văn học dân gian", type: "other", icon: "📜", desc: "Truyện kể, sử thi" },
-  { name: "Tri thức bản địa", type: "other", icon: "🌿", desc: "Hiểu biết về tự nhiên" },
+  { name: "LỄ HỘI", type: "festival", icon: "🥁", desc: "Nghi lễ cộng đồng" },
+  { name: "PHONG TỤC", type: "other", icon: "🤝", desc: "Nếp sống truyền thống" },
+  { name: "NGHỀ THỦ CÔNG", type: "other", icon: "🧵", desc: "Dệt, đan, chế tác" },
+  { name: "NGHỆ THUẬT", type: "other", icon: "💃", desc: "Hát múa dân gian" },
+  { name: "VĂN HỌC DÂN GIAN", type: "other", icon: "📜", desc: "Truyện kể, sử thi" },
+  { name: "TRI THỨC BẢN ĐỊA", type: "other", icon: "🌿", desc: "Hiểu biết về tự nhiên" },
 ];
 
 // ─── INJECT GLOBAL CSS ONCE ───────────────────────────────────────────────────
@@ -1547,7 +1547,7 @@ function DiSanVatThe3D() {
 
       <SectionTitle
         label="Bảo Tàng Số"
-        title="Di Sản Vật Thể"
+        title="DI SẢN VẬT THỂ"
         subtitle="Những hiện vật tiêu biểu của văn hóa Cơ Tu — từ kiến trúc đến trang phục truyền thống"
       />
 
@@ -1641,7 +1641,7 @@ function LeHoiSection() {
             <div style={{ height: 1, width: 36, background: `linear-gradient(90deg,${C.forest},transparent)` }} /> */}
           </div>
           <h2 style={{ fontSize: "clamp(26px,4vw,42px)", fontWeight: 700, fontFamily: "'Playfair Display',serif", color: C.textDark, lineHeight: 1.18, marginBottom: 10 }}>
-            Di Sản Phi Vật Thể
+            DI SẢN PHI VẬT THỂ
           </h2>
           <p style={{ fontSize: 15, fontFamily: "'Crimson Pro',serif", fontStyle: "italic", color: C.textLight, maxWidth: 540, margin: "0 auto" }}>
             Nhịp thở của cộng đồng Cơ Tu — tín ngưỡng, âm nhạc và vũ điệu núi rừng
@@ -1820,8 +1820,8 @@ function LienHeSection() {
       <ThoCamBg opacity={0.05} />
       <div style={{ maxWidth: 640, margin: "0 auto", padding: "80px 24px 0", position: "relative", zIndex: 1 }}>
         <SectionTitle
-          label="Kết nối & Giao lưu"
-          title="Thắc Mắc & Trao Đổi"
+          label="KẾT NỐI & GIAO LƯU"
+          title="THẮC MẮC & TRAO ĐỔI"
           subtitle="Gửi câu hỏi hoặc chia sẻ cảm nhận về văn hóa Cơ Tu"
         />
         <motion.form
@@ -1883,7 +1883,7 @@ function Footer() {
     <footer style={{ background: C.forestDeep, borderTop: `3px solid ${C.gold}` }}>
       <TribalStrip size={4} />
       <div style={{ maxWidth: 1200, margin: "0 auto", padding: "48px 24px 32px", textAlign: "center" }}>
-        <div style={{ fontSize: 22, fontWeight: 700, color: C.goldPale, fontFamily: "'Playfair Display',serif", marginBottom: 4 }}>Cotu Culture</div>
+        <div style={{ fontSize: 22, fontWeight: 700, color: C.goldPale, fontFamily: "'Playfair Display',serif", marginBottom: 4 }}>COTU CULTURE</div>
         <div style={{ fontSize: 11, letterSpacing: ".18em", textTransform: "uppercase", color: C.onDark.textDim, marginBottom: 22 }}>VĂN HOÁ NGƯỜI CƠ TU TẠI THÀNH PHỐ ĐÀ NẴNG</div>
         <DiamondRow count={9} size={8} light />
         <div style={{ marginTop: 22, display: "flex", gap: 20, justifyContent: "center", flexWrap: "wrap", marginBottom: 20 }}>
@@ -1895,7 +1895,7 @@ function Footer() {
           ))}
         </div>
         <div style={{ fontSize: 12, color: `${C.goldPale}25`, fontFamily: "'Crimson Pro',serif" }}>
-          © 2025 Cotu Culture · Bảo tồn và phát huy di sản văn hóa người Cơ Tu
+          © 2025 COTU CULTURE · Bảo tồn và phát huy di sản văn hóa người Cơ Tu
         </div>
       </div>
     </footer>
