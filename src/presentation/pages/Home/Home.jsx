@@ -36,7 +36,6 @@ import {
   NAV_ITEMS,
   STATS,
   TRANG_PHUC_ITEMS,
-  LE_HOI_ITEMS,
   LANG_ITEMS,
   GALLERY,
 } from "../../../data/mockData";
@@ -92,6 +91,36 @@ const C = {
     borderMid: "rgba(245,240,210,0.32)",
   },
 };
+
+
+const LE_HOI_ITEMS = [
+  {
+    id: 1,
+    name: "Lễ Mừng Lúa Mới",
+    thoiGian: "Lễ mừng lúa mới của người Cơ Tu thường được tổ chức vào khoảng tháng 10 âm lịch, khi vụ thu hoạch lúa rẫy đã hoàn tất. Tuy nhiên, do thời điểm thu hoạch của mỗi gia đình có thể khác nhau, nên nghi lễ thường diễn ra theo hai cấp độ: trước hết là cúng riêng tại từng gia đình, sau đó là lễ hội chung của toàn làng được tổ chức khi tất cả các hộ đã thu hoạch xong",
+    diaDiem: "Không gian chính của lễ hội là nhà Gươl – công trình kiến trúc truyền thống nằm ở trung tâm làng, nơi diễn ra các hoạt động sinh hoạt cộng đồng và tín ngưỡng. Ngoài ra, khu vực sân làng xung quanh cột lễ (x’nur) cũng là không gian quan trọng để tiến hành các nghi thức hiến sinh và các hoạt động múa hát, tạo nên một tổng thể không gian văn hóa mang tính biểu tượng cao.",
+    tag: "Lễ hội nông nghiệp",
+    color: "#8B3A1E",
+    hoatDong: [
+      "Lễ cúng Giàng và các thần linh tự nhiên",
+      "Nghi thức dựng cây nêu và đâm trâu hiến sinh",
+      "Sinh hoạt cộng đồng: hát lý, múa tung tung da dá, đánh cồng chiêng và uống rượu cần",
+      "Chuẩn bị cộng đồng: sửa chữa nhà Gươl, chuẩn bị lễ vật, phân công nhiệm vụ",
+    ],
+    ynghia: "Lễ mừng lúa mới không chỉ là nghi lễ mang tính tín ngưỡng nhằm tạ ơn thần linh đã phù hộ cho mùa màng mà còn thể hiện khát vọng về cuộc sống no đủ, bình an của cộng đồng. Đồng thời, đây còn là dịp củng cố sự gắn kết xã hội, duy trì các giá trị văn hóa truyền thống và tái khẳng định mối quan hệ hài hòa giữa con người với tự nhiên và thế giới tâm linh. Thông qua lễ hội, bản sắc văn hóa của người Cơ Tu được bảo tồn và truyền lại một cách sinh động qua nhiều thế hệ.",
+    quyTrinh: "Trước hết là cúng riêng tại từng gia đình, sau đó là lễ hội chung của toàn làng được tổ chức khi tất cả các hộ đã thu hoạch xong.",
+    image: "../../../../public/assets/image.png",
+    image01:"../../../../public/assets/Picture1.png",
+    image02:"../../../../public/assets/Picture2.png",
+    image03:"../../../../public/assets/Picture3.png",
+    image04:"../../../../public/assets/Picture4.png",
+    image05:"../../../../public/assets/Picture5.png",
+    image06:"../../../../public/assets/Picture6.png",
+    image07:"../../../../public/assets/Picture7.png",
+    video: "https://www.youtube.com/embed/aFB_53Zz-uY",
+  },
+  
+];
 
 // ─── Animation variants ───────────────────────────────────────────────────────
 const fadeUp = {
