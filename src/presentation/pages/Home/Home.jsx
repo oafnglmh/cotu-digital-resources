@@ -839,12 +839,12 @@ const ITEMS = [
 ];
 
 const ITEMS_PHI = [
-  { name: "Văn học dân gian", type: "other", icon: "📜", desc: "Truyện kể, sử thi" },
-  { name: "Tri thức bản địa", type: "other", icon: "🌿", desc: "Hiểu biết về tự nhiên" },
-  { name: "Lễ hội & Nghi lễ", type: "festival", icon: "🥁", desc: "Nghi lễ cộng đồng" },
+  { name: "Lễ hội", type: "festival", icon: "🥁", desc: "Nghi lễ cộng đồng" },
   { name: "Phong tục tập quán", type: "other", icon: "🤝", desc: "Nếp sống truyền thống" },
   { name: "Nghề thủ công", type: "other", icon: "🧵", desc: "Dệt, đan, chế tác" },
   { name: "Nghệ thuật dân gian", type: "other", icon: "💃", desc: "Hát múa dân gian" },
+  { name: "Văn học dân gian", type: "other", icon: "📜", desc: "Truyện kể, sử thi" },
+  { name: "Tri thức bản địa", type: "other", icon: "🌿", desc: "Hiểu biết về tự nhiên" },
 ];
 
 // ─── INJECT GLOBAL CSS ONCE ───────────────────────────────────────────────────
@@ -869,8 +869,8 @@ const GLOBAL_CSS = `
   .cc-wrap:hover .cc-particle { animation:cyberParticle 2s infinite !important; }
   .cc-wrap:hover .cc-glare  { opacity:1 !important; }
   .cc-wrap:hover .cc-corner {
-    border-color:rgba(45,106,45,0.85) !important;
-    box-shadow:0 0 8px rgba(45,106,45,0.4) !important;
+    border-color:rgba(255,255,255,1) !important;
+    box-shadow:0 0 12px rgba(255,255,255,0.6) !important;
   }
   .cc-wrap:active { transform:scale(0.96) !important; }
 `;
@@ -1144,59 +1144,59 @@ function CyberCard({ item, onClick }) {
         style={{
           position: "absolute", inset: 0, display: "flex", flexDirection: "column",
           justifyContent: "center", alignItems: "center", borderRadius: 20,
-          background: "linear-gradient(145deg, rgb(15, 40, 15) 0%, rgb(25, 65, 25) 50%, rgb(15, 40, 15) 100%)",
-          border: "1.5px solid rgba(150,220,150,0.18)",
+          background: "linear-gradient(145deg, rgb(115, 175, 115) 0%, rgb(135, 195, 135) 50%, rgb(115, 175, 115) 100%)",
+          border: "1.5px solid rgba(130,190,130,0.6)",
           overflow: "hidden",
-          boxShadow: "0 0 30px rgba(45,106,45,0.4),inset 0 0 20px rgba(0,0,0,0.3)",
+          boxShadow: "0 0 30px rgba(115,175,115,0.4),inset 0 0 20px rgba(255,255,255,0.15)",
         }}
       >
         {/* Glare */}
         <div className="cc-glare" style={{ position: "absolute", inset: 0, opacity: 0, transition: "opacity 300ms", pointerEvents: "none", zIndex: 1, background: "linear-gradient(125deg,rgba(255,255,255,0) 0%,rgba(255,255,255,0.04) 45%,rgba(255,255,255,0.08) 50%,rgba(255,255,255,0.04) 55%,rgba(255,255,255,0) 100%)" }} />
 
         {/* Scan line */}
-        <div style={{ position: "absolute", inset: 0, pointerEvents: "none", zIndex: 1, background: "linear-gradient(to bottom,transparent,rgba(45,106,45,0.07),transparent)", animation: "cyberScan 3s linear infinite" }} />
+        <div style={{ position: "absolute", inset: 0, pointerEvents: "none", zIndex: 1, background: "linear-gradient(to bottom,transparent,rgba(255,255,255,0.15),transparent)", animation: "cyberScan 3s linear infinite" }} />
 
         {/* Cyber lines */}
         {[{ top: "20%", origin: "left", delay: "0s" }, { top: "40%", origin: "right", delay: "1s" }, { top: "60%", origin: "left", delay: "2s" }, { top: "80%", origin: "right", delay: "1.5s" }].map((l, i) => (
-          <div key={i} style={{ position: "absolute", top: l.top, left: 0, width: "100%", height: 1, background: "linear-gradient(90deg,transparent,rgba(45,106,45,0.22),transparent)", transform: "scaleX(0)", transformOrigin: l.origin, animation: `cyberLineGrow 3s linear infinite ${l.delay}`, pointerEvents: "none", zIndex: 1 }} />
+          <div key={i} style={{ position: "absolute", top: l.top, left: 0, width: "100%", height: 1, background: "linear-gradient(90deg,transparent,rgba(255,255,255,0.3),transparent)", transform: "scaleX(0)", transformOrigin: l.origin, animation: `cyberLineGrow 3s linear infinite ${l.delay}`, pointerEvents: "none", zIndex: 1 }} />
         ))}
 
         {/* Corners */}
         {[{ top: 10, left: 10, borderRight: "none", borderBottom: "none" }, { top: 10, right: 10, borderLeft: "none", borderBottom: "none" }, { bottom: 10, left: 10, borderRight: "none", borderTop: "none" }, { bottom: 10, right: 10, borderLeft: "none", borderTop: "none" }].map((s, i) => (
-          <div key={i} className="cc-corner" style={{ position: "absolute", width: 14, height: 14, border: "1.5px solid rgba(45,106,45,0.35)", transition: "all 0.3s ease", pointerEvents: "none", zIndex: 2, ...s }} />
+          <div key={i} className="cc-corner" style={{ position: "absolute", width: 14, height: 14, border: "1.5px solid rgba(255,255,255,0.6)", transition: "all 0.3s ease", pointerEvents: "none", zIndex: 2, ...s }} />
         ))}
 
         {/* Glow blobs */}
         {[{ top: -20, left: -20 }, { top: "50%", right: -30, transform: "translateY(-50%)" }, { bottom: -20, left: "30%" }].map((s, i) => (
-          <div key={i} className="cc-glow" style={{ position: "absolute", width: 100, height: 100, borderRadius: "50%", background: `radial-gradient(circle,rgba(45,106,45,${i === 1 ? 0.28 : 0.22}) 0%,transparent 70%)`, filter: "blur(15px)", opacity: 0, transition: "opacity .3s", pointerEvents: "none", zIndex: 0, ...s }} />
+          <div key={i} className="cc-glow" style={{ position: "absolute", width: 100, height: 100, borderRadius: "50%", background: `radial-gradient(circle,rgba(255,255,255,${i === 1 ? 0.6 : 0.4}) 0%,transparent 70%)`, filter: "blur(15px)", opacity: 0, transition: "opacity .3s", pointerEvents: "none", zIndex: 0, ...s }} />
         ))}
 
         {/* Particles */}
         {[{ px: 1, py: -1, top: "40%", left: "20%" }, { px: -1, py: -1, top: "60%", right: "20%" }, { px: 0.5, py: 1, top: "20%", left: "40%" }, { px: -0.5, py: 1, top: "80%", right: "40%" }, { px: 1, py: 0.5, top: "30%", left: "60%" }, { px: -1, py: 0.5, top: "70%", right: "60%" }].map((p, i) => (
-          <div key={i} className="cc-particle" style={{ position: "absolute", width: 3, height: 3, background: C.goldLight, borderRadius: "50%", opacity: 0, top: p.top, left: p.left || undefined, right: p.right || undefined, "--px": p.px, "--py": p.py, zIndex: 2, pointerEvents: "none" }} />
+          <div key={i} className="cc-particle" style={{ position: "absolute", width: 3, height: 3, background: "#FFF", borderRadius: "50%", opacity: 0, top: p.top, left: p.left || undefined, right: p.right || undefined, "--px": p.px, "--py": p.py, zIndex: 2, pointerEvents: "none" }} />
         ))}
 
         {/* CONTENT */}
         <div style={{ position: "relative", zIndex: 5, textAlign: "center", padding: "0 16px", width: "100%" }}>
           <div className="cc-title" style={{ opacity: 0, transform: "translateY(0px)", transition: "opacity 280ms ease,transform 280ms ease", position: "absolute", top: -62, left: 0, right: 0, pointerEvents: "none" }}>
-            <div style={{ fontSize: 13, fontWeight: 800, letterSpacing: ".12em", fontFamily: "'Playfair Display',serif", background: `linear-gradient(45deg,${C.gold},${C.goldPale},${C.goldLight})`, WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", filter: "drop-shadow(0 0 10px rgba(45,106,45,0.35))" }}>
+            <div style={{ fontSize: 13, fontWeight: 800, letterSpacing: ".12em", fontFamily: "'Playfair Display',serif", background: `linear-gradient(45deg, #1A401A, #2D6A2D)`, WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", filter: "drop-shadow(0 0 10px rgba(255,255,255,0.5))" }}>
               {item.name.toUpperCase()}
             </div>
           </div>
 
-          <div style={{ fontSize: 15, fontWeight: 700, letterSpacing: ".06em", color: C.goldPale, fontFamily: "'Playfair Display',serif", marginBottom: 4 }}>
+          <div style={{ fontSize: 15, fontWeight: 700, letterSpacing: ".06em", color: "#1A401A", fontFamily: "'Playfair Display',serif", marginBottom: 4 }}>
             {item.name}
           </div>
 
-          <div style={{ width: 28, height: 1, margin: "6px auto", background: `linear-gradient(90deg,transparent,${C.goldLight},transparent)` }} />
+          <div style={{ width: 28, height: 1, margin: "6px auto", background: `linear-gradient(90deg,transparent,#1A401A,transparent)` }} />
 
-          <div className="cc-prompt" style={{ fontSize: 10, letterSpacing: ".22em", textTransform: "uppercase", color: "rgba(200,240,200,0.5)", fontFamily: "'Crimson Pro',serif", transition: "opacity 280ms" }}>
+          <div className="cc-prompt" style={{ fontSize: 10, letterSpacing: ".22em", textTransform: "uppercase", color: "#2D6A2D", fontFamily: "'Crimson Pro',serif", transition: "opacity 280ms" }}>
             {item.type === "trangphuc" || item.type === "festival" ? "NHẤN ĐỂ XEM" : "KHÁM PHÁ"}
           </div>
         </div>
 
         <div style={{ position: "absolute", bottom: 18, left: 0, right: 0, textAlign: "center", zIndex: 5, pointerEvents: "none" }}>
-          <div style={{ fontSize: 9, letterSpacing: ".12em", textTransform: "uppercase", color: "rgba(200,240,200,0.3)", fontFamily: "'Crimson Pro',serif" }}>
+          <div style={{ fontSize: 9, letterSpacing: ".12em", textTransform: "uppercase", color: "#1A401A", fontFamily: "'Crimson Pro',serif" }}>
             {item.desc}
           </div>
         </div>
@@ -1489,12 +1489,12 @@ function LeHoiSection() {
       <div style={{ maxWidth: 1390, margin: "0 auto", padding: "80px 24px 0", position: "relative", zIndex: 1 }}>
         <div style={{ textAlign: "center", marginBottom: 56 }}>
           <div style={{ fontSize: 10, letterSpacing: ".35em", textTransform: "uppercase", color: C.forest, fontFamily: "'Crimson Pro',serif", marginBottom: 12, display: "flex", alignItems: "center", justifyContent: "center", gap: 12 }}>
-            <div style={{ height: 1, width: 36, background: `linear-gradient(90deg,transparent,${C.forest})` }} />
+            {/* <div style={{ height: 1, width: 36, background: `linear-gradient(90deg,transparent,${C.forest})` }} />
             Di Sản Phi Vật Thể
-            <div style={{ height: 1, width: 36, background: `linear-gradient(90deg,${C.forest},transparent)` }} />
+            <div style={{ height: 1, width: 36, background: `linear-gradient(90deg,${C.forest},transparent)` }} /> */}
           </div>
           <h2 style={{ fontSize: "clamp(26px,4vw,42px)", fontWeight: 700, fontFamily: "'Playfair Display',serif", color: C.textDark, lineHeight: 1.18, marginBottom: 10 }}>
-            Lễ Hội Truyền Thống
+            Di Sản Phi Vật Thể
           </h2>
           <p style={{ fontSize: 15, fontFamily: "'Crimson Pro',serif", fontStyle: "italic", color: C.textLight, maxWidth: 540, margin: "0 auto" }}>
             Nhịp thở của cộng đồng Cơ Tu — tín ngưỡng, âm nhạc và vũ điệu núi rừng
@@ -1740,7 +1740,7 @@ function Footer() {
         <div style={{ fontSize: 11, letterSpacing: ".18em", textTransform: "uppercase", color: C.onDark.textDim, marginBottom: 22 }}>VĂN HOÁ NGƯỜI CƠ TU TẠI THÀNH PHỐ ĐÀ NẴNG</div>
         <DiamondRow count={9} size={8} light />
         <div style={{ marginTop: 22, display: "flex", gap: 20, justifyContent: "center", flexWrap: "wrap", marginBottom: 20 }}>
-          {["Thông Tin", "Di Sản Vật Thể", "Di Sản Phi Vật Thể", "Mô Hình 3D", "Liên Hệ"].map((l) => (
+          {["Thông Tin", "Di Sản Vật Thể", "Di Sản Phi Vật Thể", "Liên Hệ"].map((l) => (
             <span key={l} style={{ fontSize: 12, color: C.onDark.textDim, cursor: "pointer", fontFamily: "'Crimson Pro',serif", transition: "color .18s" }}
               onMouseEnter={(e) => (e.currentTarget.style.color = C.gold)}
               onMouseLeave={(e) => (e.currentTarget.style.color = C.onDark.textDim)}
@@ -1984,7 +1984,7 @@ export default function Home() {
       <Hero />
       <DiSanVatThe3D />
       <LeHoiSection />
-      <Model3DSection />
+      {/* <Model3DSection /> */}
       <LienHeSection />
       <Footer />
       <AIChatWidget />
