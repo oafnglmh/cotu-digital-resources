@@ -5,7 +5,6 @@ export const NAV_ITEMS = [
   { id: "info",      label: "Thông Tin",           href: "#info" },
   { id: "vat-the",   label: "Di Sản Vật Thể",      href: "#vat-the" },
   { id: "phi-vat",   label: "Di Sản Phi Vật Thể",  href: "#phi-vat" },
-  { id: "model3d",   label: "Mô Hình 3D",           href: "#model3d" },
   { id: "lien-he",   label: "Liên Hệ",              href: "#lien-he" },
 ];
 
@@ -102,44 +101,16 @@ export const LE_HOI_ITEMS = [
     ynghia: "Lễ mừng lúa mới không chỉ là nghi lễ mang tính tín ngưỡng nhằm tạ ơn thần linh đã phù hộ cho mùa màng mà còn thể hiện khát vọng về cuộc sống no đủ, bình an của cộng đồng. Đồng thời, đây còn là dịp củng cố sự gắn kết xã hội, duy trì các giá trị văn hóa truyền thống và tái khẳng định mối quan hệ hài hòa giữa con người với tự nhiên và thế giới tâm linh. Thông qua lễ hội, bản sắc văn hóa của người Cơ Tu được bảo tồn và truyền lại một cách sinh động qua nhiều thế hệ.",
     quyTrinh: "Trước hết là cúng riêng tại từng gia đình, sau đó là lễ hội chung của toàn làng được tổ chức khi tất cả các hộ đã thu hoạch xong.",
     image: "../../../../public/assets/image.png",
+    image01:"../../../../public/assets/Picture1.png",
+    image02:"../../../../public/assets/Picture2.png",
+    image03:"../../../../public/assets/Picture3.png",
+    image04:"../../../../public/assets/Picture4.png",
+    image05:"../../../../public/assets/Picture5.png",
+    image06:"../../../../public/assets/Picture6.png",
+    image07:"../../../../public/assets/Picture7.png",
     video: "https://www.youtube.com/embed/aFB_53Zz-uY",
   },
-  {
-    id: 2,
-    name: "Múa Tung Tung Da Dá",
-    thoiGian: "Các lễ hội lớn trong năm",
-    diaDiem: "Sân làng — trước Nhà Gươl",
-    tag: "Di sản phi vật thể",
-    color: "#2D5A27",
-    hoatDong: [
-      "Nghi lễ tâm linh giao tiếp với thần linh",
-      "Điệu múa cầu mùa màng tốt tươi",
-      "Truyền dạy kỹ năng múa cho thế hệ trẻ",
-      "Gắn kết cộng đồng qua vũ điệu tập thể",
-    ],
-    ynghia: "Là nghi lễ mang tính tâm linh sâu sắc, thể hiện sự giao tiếp với thần linh, cầu mong mùa màng tốt tươi, cuộc sống bình an. Đồng thời gắn kết cộng đồng và gìn giữ bản sắc văn hóa Cơ Tu.",
-    quyTrinh: "Diễn ra trong lễ mừng lúa mới, lễ ăn trâu, lễ cầu mùa — chủ yếu sau thu hoạch hoặc các dịp sinh hoạt cộng đồng lớn.",
-    image: "../../../../public/assets/img10.png",
-    video: null,
-  },
-  {
-    id: 3,
-    name: "Lễ Ăn Trâu (Đâm Trâu)",
-    thoiGian: "3–5 năm / lần",
-    diaDiem: "Trung tâm làng — quanh cột lễ",
-    tag: "Lễ hội lớn",
-    color: "#C9821A",
-    hoatDong: [
-      "Dựng cột lễ x'nur trang trí hoa văn",
-      "Nghi lễ hiến sinh trâu cho thần linh",
-      "Tiếng chiêng trống vang khắp núi rừng",
-      "Các làng lân cận giao lưu, kết nghĩa",
-    ],
-    ynghia: "Lễ hội lớn nhất của người Cơ Tu — tổ chức định kỳ để tạ ơn thần linh và cầu phúc. Thể hiện sự thịnh vượng và đoàn kết cộng đồng.",
-    quyTrinh: "Cả làng cùng chuẩn bị nhiều tháng trước — từ dựng cột lễ, nuôi trâu đến mời các làng lân cận tham dự.",
-    image: "../../../../public/assets/img09.png",
-    video: null,
-  },
+  
 ];
 
 // ─── Làng & kiến trúc ─────────────────────────────────────────────────────────

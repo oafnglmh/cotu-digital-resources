@@ -17,6 +17,8 @@ import {
   Users,
   Maximize2,
   ChevronRight,
+  ChevronLeft,
+  ZoomIn,
   MessageCircle,
   Hash,
   Star,
@@ -892,13 +894,34 @@ function InjectStyles() {
 function LeHoiModal({ initialIndex = 0, onClose }) {
   const [active, setActive] = useState(initialIndex);
   const [showVideo, setShowVideo] = useState(false);
+  const [lightboxImg, setLightboxImg] = useState(null);
+  const [lightboxIdx, setLightboxIdx] = useState(0);
   const item = LE_HOI_ITEMS[active];
 
-  useEffect(() => { setShowVideo(false); }, [active]);
+  // Build gallery array from image01..image07
+  const gallery = ["image01","image02","image03","image04","image05","image06","image07"]
+    .map(k => item[k]).filter(Boolean);
+
+  const openLightbox = (idx) => { setLightboxIdx(idx); setLightboxImg(gallery[idx]); };
+  const closeLightbox = () => setLightboxImg(null);
+  const prevImg = () => { const i = (lightboxIdx - 1 + gallery.length) % gallery.length; setLightboxIdx(i); setLightboxImg(gallery[i]); };
+  const nextImg = () => { const i = (lightboxIdx + 1) % gallery.length; setLightboxIdx(i); setLightboxImg(gallery[i]); };
+
+  useEffect(() => { setShowVideo(false); setLightboxImg(null); }, [active]);
   useEffect(() => {
     document.body.style.overflow = "hidden";
     return () => { document.body.style.overflow = ""; };
   }, []);
+  useEffect(() => {
+    if (!lightboxImg) return;
+    const handler = (e) => {
+      if (e.key === "Escape") closeLightbox();
+      if (e.key === "ArrowLeft") prevImg();
+      if (e.key === "ArrowRight") nextImg();
+    };
+    window.addEventListener("keydown", handler);
+    return () => window.removeEventListener("keydown", handler);
+  }, [lightboxImg, lightboxIdx, gallery]);
 
   function toEmbed(url) {
     if (!url) return null;
@@ -988,39 +1011,71 @@ function LeHoiModal({ initialIndex = 0, onClose }) {
             style={{ display: "grid", gridTemplateColumns: "1fr 1.15fr", gap: 40, alignItems: "start" }}
             className="lh-modal-grid"
           >
-            {/* LEFT — Hình ảnh / Video */}
-            <div className="lh-modal-left" style={{ position: "sticky", top: 110, borderRadius: 16, overflow: "hidden", border: `1px solid rgba(100,180,100,0.2)`, boxShadow: "0 20px 40px rgba(0,0,0,0.4)" }}>
-              <div style={{ position: "relative", aspectRatio: "16/10", backgroundColor: "#0a120a" }}>
-                {showVideo && item.video ? (
-                  <iframe src={toEmbed(item.video)} style={{ width: "100%", height: "100%", border: "none" }} allowFullScreen allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture;web-share" title={item.name} />
-                ) : (
-                  <>
-                    <img
-                      src={item.image}
-                      alt={item.name}
-                      style={{ width: "100%", height: "100%", objectFit: "cover" }}
-                      onError={(e) => { e.target.src = `https://placehold.co/600x480/${(item.color || C.forest).replace("#", "")}/F2F7F0?text=${encodeURIComponent(item.name)}`; }}
-                    />
-                    <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to top,rgba(5,25,5,.6) 0%,transparent 60%)" }} />
-                    
-                    <span style={{ position: "absolute", top: 16, left: 16, fontSize: 10, padding: "4px 14px", borderRadius: 20, background: `${item.color || C.forest}b3`, border: `1px solid ${item.color || C.forest}`, color: "white", letterSpacing: ".12em", textTransform: "uppercase", fontFamily: "'Crimson Pro',serif", backdropFilter: "blur(4px)" }}>
-                      {item.tag}
-                    </span>
-
-                    {item.video && (
-                      <motion.button
-                        whileHover={{ scale: 1.05 }}
-                        whileTap={{ scale: 0.95 }}
-                        onClick={() => setShowVideo(true)}
-                        style={{ position: "absolute", inset: 0, margin: "auto", width: 64, height: 64, borderRadius: "50%", background: "rgba(5,25,5,.7)", border: `2px solid rgba(245,208,128,.6)`, color: "#F5D89A", display: "flex", alignItems: "center", justifyContent: "center", cursor: "pointer", backdropFilter: "blur(6px)", boxShadow: "0 8px 32px rgba(0,0,0,0.5)" }}
-                        aria-label="Xem video"
-                      >
-                        <Play size={24} fill="#F5D89A" style={{ marginLeft: 4 }} />
-                      </motion.button>
-                    )}
-                  </>
-                )}
+            {/* LEFT — Hình ảnh / Video + Slideshow */}
+            <div className="lh-modal-left" style={{ position: "sticky", top: 110, display: "flex", flexDirection: "column", gap: 12 }}>
+              {/* Main image/video */}
+              <div style={{ borderRadius: 16, overflow: "hidden", border: `1px solid rgba(100,180,100,0.2)`, boxShadow: "0 20px 40px rgba(0,0,0,0.4)" }}>
+                <div style={{ position: "relative", aspectRatio: "16/10", backgroundColor: "#0a120a" }}>
+                  {showVideo && item.video ? (
+                    <iframe src={toEmbed(item.video)} style={{ width: "100%", height: "100%", border: "none" }} allowFullScreen allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture;web-share" title={item.name} />
+                  ) : (
+                    <>
+                      <img
+                        src={item.image}
+                        alt={item.name}
+                        style={{ width: "100%", height: "100%", objectFit: "cover" }}
+                        onError={(e) => { e.target.src = `https://placehold.co/600x480/${(item.color || C.forest).replace("#", "")}/F2F7F0?text=${encodeURIComponent(item.name)}`; }}
+                      />
+                      <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to top,rgba(5,25,5,.6) 0%,transparent 60%)" }} />
+                      <span style={{ position: "absolute", top: 16, left: 16, fontSize: 10, padding: "4px 14px", borderRadius: 20, background: `${item.color || C.forest}b3`, border: `1px solid ${item.color || C.forest}`, color: "white", letterSpacing: ".12em", textTransform: "uppercase", fontFamily: "'Crimson Pro',serif", backdropFilter: "blur(4px)" }}>
+                        {item.tag}
+                      </span>
+                      {item.video && (
+                        <motion.button
+                          whileHover={{ scale: 1.05 }}
+                          whileTap={{ scale: 0.95 }}
+                          onClick={() => setShowVideo(true)}
+                          style={{ position: "absolute", inset: 0, margin: "auto", width: 64, height: 64, borderRadius: "50%", background: "rgba(5,25,5,.7)", border: `2px solid rgba(245,208,128,.6)`, color: "#F5D89A", display: "flex", alignItems: "center", justifyContent: "center", cursor: "pointer", backdropFilter: "blur(6px)", boxShadow: "0 8px 32px rgba(0,0,0,0.5)" }}
+                          aria-label="Xem video"
+                        >
+                          <Play size={24} fill="#F5D89A" style={{ marginLeft: 4 }} />
+                        </motion.button>
+                      )}
+                    </>
+                  )}
+                </div>
               </div>
+
+              {/* Image Slideshow */}
+              {gallery.length > 0 && (
+                <div>
+                  <div style={{ fontSize: 10, letterSpacing: ".2em", textTransform: "uppercase", color: C.goldLight, fontFamily: "'Crimson Pro',serif", marginBottom: 8, display: "flex", alignItems: "center", gap: 8 }}>
+                    <div style={{ width: 16, height: 1, background: C.goldLight }} />
+                    Hình ảnh · {gallery.length} ảnh
+                  </div>
+                  <div style={{ display: "flex", gap: 8, overflowX: "auto", paddingBottom: 6, scrollbarWidth: "thin", scrollbarColor: "rgba(100,180,100,0.3) transparent" }}>
+                    {gallery.map((src, idx) => (
+                      <motion.div
+                        key={idx}
+                        whileHover={{ scale: 1.05, y: -2 }}
+                        whileTap={{ scale: 0.97 }}
+                        onClick={() => openLightbox(idx)}
+                        style={{ flexShrink: 0, width: 90, height: 62, borderRadius: 8, overflow: "hidden", cursor: "pointer", border: `1.5px solid rgba(100,180,100,0.25)`, position: "relative" }}
+                      >
+                        <img
+                          src={src}
+                          alt={`Ảnh ${idx + 1}`}
+                          style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }}
+                          onError={(e) => { e.target.src = `https://placehold.co/90x62/2D6A2D/F2F7F0?text=${idx+1}`; }}
+                        />
+                        <div style={{ position: "absolute", inset: 0, background: "rgba(0,0,0,0)", transition: "background 0.2s", display: "flex", alignItems: "center", justifyContent: "center" }} className="thumb-overlay">
+                          <ZoomIn size={16} style={{ color: "white", opacity: 0, transition: "opacity 0.2s" }} className="thumb-zoom" />
+                        </div>
+                      </motion.div>
+                    ))}
+                  </div>
+                </div>
+              )}
             </div>
 
             {/* RIGHT — Nội dung (Semantic HTML) */}
@@ -1102,7 +1157,63 @@ function LeHoiModal({ initialIndex = 0, onClose }) {
           .lh-modal-grid{grid-template-columns:1fr !important; gap: 24px !important;}
           .lh-modal-left{position: relative !important; top: 0 !important;}
         }
+        .thumb-overlay:hover { background: rgba(0,0,0,0.35) !important; }
+        .thumb-overlay:hover .thumb-zoom { opacity: 1 !important; }
       `}</style>
+
+      {/* LIGHTBOX */}
+      <AnimatePresence>
+        {lightboxImg && (
+          <motion.div
+            key="lightbox"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.2 }}
+            onClick={closeLightbox}
+            style={{ position: "fixed", inset: 0, zIndex: 99999999, background: "rgba(0,0,0,0.93)", display: "flex", alignItems: "center", justifyContent: "center", backdropFilter: "blur(8px)" }}
+          >
+            {/* Prev */}
+            <motion.button
+              whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.95 }}
+              onClick={(e) => { e.stopPropagation(); prevImg(); }}
+              style={{ position: "absolute", left: 20, top: "50%", transform: "translateY(-50%)", width: 48, height: 48, borderRadius: "50%", background: "rgba(255,255,255,0.12)", border: "1.5px solid rgba(255,255,255,0.2)", color: "white", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", zIndex: 2 }}
+            ><ChevronLeft size={22} /></motion.button>
+
+            {/* Image */}
+            <motion.img
+              key={lightboxImg}
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.2 }}
+              src={lightboxImg}
+              alt=""
+              onClick={(e) => e.stopPropagation()}
+              style={{ maxWidth: "88vw", maxHeight: "85vh", borderRadius: 12, objectFit: "contain", boxShadow: "0 24px 80px rgba(0,0,0,0.7)" }}
+            />
+
+            {/* Next */}
+            <motion.button
+              whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.95 }}
+              onClick={(e) => { e.stopPropagation(); nextImg(); }}
+              style={{ position: "absolute", right: 20, top: "50%", transform: "translateY(-50%)", width: 48, height: 48, borderRadius: "50%", background: "rgba(255,255,255,0.12)", border: "1.5px solid rgba(255,255,255,0.2)", color: "white", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", zIndex: 2 }}
+            ><ChevronRight size={22} /></motion.button>
+
+            {/* Close */}
+            <motion.button
+              whileHover={{ scale: 1.1, rotate: 90 }} whileTap={{ scale: 0.95 }}
+              onClick={closeLightbox}
+              style={{ position: "absolute", top: 20, right: 20, width: 42, height: 42, borderRadius: "50%", background: "rgba(255,255,255,0.12)", border: "1.5px solid rgba(255,255,255,0.2)", color: "white", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", zIndex: 2 }}
+            ><X size={18} /></motion.button>
+
+            {/* Counter */}
+            <div style={{ position: "absolute", bottom: 24, left: "50%", transform: "translateX(-50%)", fontSize: 13, color: "rgba(255,255,255,0.6)", fontFamily: "'Crimson Pro',serif", letterSpacing: ".1em" }}>
+              {lightboxIdx + 1} / {gallery.length}
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </motion.div>
   );
 
