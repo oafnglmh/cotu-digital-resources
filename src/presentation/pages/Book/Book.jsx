@@ -284,12 +284,90 @@ function PageShell({ children, bgVariant = "a", style = {} }) {
     b: `linear-gradient(145deg, #0a1a0c 0%, #172b1a 30%, #1e3d24 55%, #152918 80%, #0d2010 100%)`,
     c: `linear-gradient(165deg, #111d0e 0%, #1a3015 30%, #243d1a 55%, #1a3015 80%, #0e190b 100%)`,
   };
+
+  // ── MOBILE: normal flow, không dùng position:absolute cho decorations ──
+  if (isMobile) {
+    return (
+      <div style={{
+        width: "100%",
+        position: "relative",
+        background: bgs[bgVariant],
+        fontFamily: "'Be Vietnam Pro','Lora',serif",
+        ...style,
+      }}>
+        {/* Grain - ok vì pointer-events:none */}
+        <div style={{
+          position: "absolute", inset: 0, opacity: 0.03,
+          backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='4'%3E%3Cpath d='M0 0h1v1H0zm2 2h1v1H2z' fill='%23a0d4a0'/%3E%3C/svg%3E")`,
+          pointerEvents: "none",
+        }} />
+
+        {/* Ambient glow */}
+        <div style={{
+          position: "absolute", inset: 0,
+          background: `radial-gradient(ellipse at 30% 40%, rgba(74,138,84,0.15) 0%, transparent 55%),
+                       radial-gradient(ellipse at 75% 70%, rgba(212,168,67,0.08) 0%, transparent 45%)`,
+          pointerEvents: "none",
+        }} />
+
+        {/* TOP decoration — normal flow */}
+        <div style={{ position: "relative", zIndex: 1, flexShrink: 0 }}>
+          <CoTuTriangleStrip height={8} />
+          {/* Top gold line */}
+          <div style={{
+            height: 2, margin: "2px 10px 0",
+            background: `linear-gradient(to right, transparent, ${C.gold}99, ${C.leaf}88, ${C.gold}99, transparent)`,
+          }} />
+        </div>
+
+        {/* Corner ornaments top — absolute ok vì anchor to top */}
+        <div style={{ position: "absolute", top: 16, left: 10, zIndex: 2 }}>
+          <svg width={24} height={24} viewBox="0 0 36 36" fill="none">
+            <rect x={0} y={0} width="22" height="2" fill={C.gold} opacity="0.7" />
+            <rect x={0} y={0} width="2" height="22" fill={C.gold} opacity="0.7" />
+            <rect x={4} y={4} width="12" height="12" fill="none" stroke={C.leaf} strokeWidth="1" opacity="0.5" transform="rotate(45 10 10)" />
+            <circle cx={10} cy={10} r="3" fill={C.gold} opacity="0.5" />
+          </svg>
+        </div>
+        <div style={{ position: "absolute", top: 16, right: 10, zIndex: 2 }}>
+          <svg width={24} height={24} viewBox="0 0 36 36" fill="none">
+            <rect x={14} y={0} width="22" height="2" fill={C.gold} opacity="0.7" />
+            <rect x={34} y={0} width="2" height="22" fill={C.gold} opacity="0.7" />
+            <rect x={18} y={4} width="12" height="12" fill="none" stroke={C.leaf} strokeWidth="1" opacity="0.5" transform="rotate(45 24 10)" />
+            <circle cx={26} cy={10} r="3" fill={C.gold} opacity="0.5" />
+          </svg>
+        </div>
+
+        {/* Frame borders top — absolute ok */}
+        <div style={{ position: "absolute", top: 18, left: 18, right: 18, height: 1, border: `1px solid ${C.gold}33`, borderBottom: "none", borderRadius: 0, pointerEvents: "none", zIndex: 1 }} />
+
+        {/* CONTENT — normal flow, đẩy chiều cao ra */}
+        <div style={{ position: "relative", zIndex: 1 }}>
+          {children}
+        </div>
+
+        {/* BOTTOM decoration — normal flow, xuất hiện SAU content */}
+        {/* Bottom gold line */}
+        <div style={{
+          height: 2, margin: "0 10px 2px",
+          background: `linear-gradient(to right, transparent, ${C.gold}99, ${C.leaf}88, ${C.gold}99, transparent)`,
+          position: "relative", zIndex: 1,
+        }} />
+        {/* Bottom triangle strip */}
+        <div style={{ transform: "scaleY(-1)", position: "relative", zIndex: 1, flexShrink: 0 }}>
+          <CoTuTriangleStrip height={8} />
+        </div>
+      </div>
+    );
+  }
+
+  // ── DESKTOP: giữ nguyên hoàn toàn với position:absolute ──
   return (
     <div style={{
       width: "100%",
       height: "100%",
       position: "relative",
-      overflow: isMobile ? "visible" : "hidden",
+      overflow: "hidden",
       background: bgs[bgVariant],
       fontFamily: "'Be Vietnam Pro','Lora',serif",
       ...style,
@@ -309,33 +387,33 @@ function PageShell({ children, bgVariant = "a", style = {} }) {
       }} />
       {/* Top triangle strip */}
       <div style={{ position: "absolute", top: 0, left: 0, right: 0 }}>
-        <CoTuTriangleStrip height={isMobile ? 8 : 12} />
+        <CoTuTriangleStrip height={12} />
       </div>
       {/* Top gold line */}
       <div style={{
-        position: "absolute", top: isMobile ? 12 : 16, left: isMobile ? 10 : 14, right: isMobile ? 10 : 14,
+        position: "absolute", top: 16, left: 14, right: 14,
         height: 2,
         background: `linear-gradient(to right, transparent, ${C.gold}99, ${C.leaf}88, ${C.gold}99, transparent)`,
       }} />
       {/* Bottom triangle strip */}
       <div style={{ position: "absolute", bottom: 0, left: 0, right: 0, transform: "scaleY(-1)" }}>
-        <CoTuTriangleStrip height={isMobile ? 8 : 12} />
+        <CoTuTriangleStrip height={12} />
       </div>
       {/* Bottom gold line */}
       <div style={{
-        position: "absolute", bottom: isMobile ? 12 : 16, left: isMobile ? 10 : 14, right: isMobile ? 10 : 14,
+        position: "absolute", bottom: 16, left: 14, right: 14,
         height: 2,
         background: `linear-gradient(to right, transparent, ${C.gold}99, ${C.leaf}88, ${C.gold}99, transparent)`,
       }} />
       {/* Corner ornaments */}
       {[
-        { top: isMobile ? 16 : 22, left: isMobile ? 10 : 14 },
-        { top: isMobile ? 16 : 22, right: isMobile ? 10 : 14 },
-        { bottom: isMobile ? 16 : 22, left: isMobile ? 10 : 14 },
-        { bottom: isMobile ? 16 : 22, right: isMobile ? 10 : 14 },
+        { top: 22, left: 14 },
+        { top: 22, right: 14 },
+        { bottom: 22, left: 14 },
+        { bottom: 22, right: 14 },
       ].map((pos, i) => (
         <div key={i} style={{ position: "absolute", ...pos }}>
-          <svg width={isMobile ? 24 : 36} height={isMobile ? 24 : 36} viewBox="0 0 36 36" fill="none">
+          <svg width={36} height={36} viewBox="0 0 36 36" fill="none">
             <rect x={i%2===0?0:14} y={i<2?0:14} width="22" height="2" fill={C.gold} opacity="0.7" />
             <rect x={i%2===0?0:34} y={i<2?0:14} width="2" height="22" fill={C.gold} opacity="0.7" />
             <rect x={i%2===0?4:18} y={i<2?4:18} width="12" height="12" fill="none" stroke={C.leaf} strokeWidth="1" opacity="0.5"
@@ -345,8 +423,8 @@ function PageShell({ children, bgVariant = "a", style = {} }) {
         </div>
       ))}
       {/* Frame */}
-      <div style={{ position: "absolute", inset: isMobile ? 18 : 22, border: `1px solid ${C.gold}33`, pointerEvents: "none" }} />
-      <div style={{ position: "absolute", inset: isMobile ? 21 : 26, border: `1px solid ${C.leaf}22`, pointerEvents: "none" }} />
+      <div style={{ position: "absolute", inset: 22, border: `1px solid ${C.gold}33`, pointerEvents: "none" }} />
+      <div style={{ position: "absolute", inset: 26, border: `1px solid ${C.leaf}22`, pointerEvents: "none" }} />
       {children}
     </div>
   );
@@ -449,7 +527,7 @@ function PageContent({ children, isMobile }) {
     return (
       <div style={{
          width: "100%",
-        padding: "32px 26px 20px",
+        padding: "32px 26px 40px",
         display: "flex",
         flexDirection: "column",
         gap: 0,
@@ -2373,182 +2451,187 @@ export default function SotayCoTu() {
 
   // ── MOBILE LAYOUT ──────────────────────────────────────────────────────────
   if (isMobile) {
-    return (
+  return (
+    <div style={{
+      width: "100vw",
+      height: "100dvh",
+      display: "flex",
+      flexDirection: "column",
+      alignItems: "center",
+      overflowX: "hidden",
+      overflowY: "hidden",
+      background: `linear-gradient(160deg, #050e06 0%, #081508 35%, #0b1c0b 65%, #061008 100%)`,
+      fontFamily: "'Be Vietnam Pro', sans-serif",
+      position: "relative",
+    }}>
+      <style>{`
+        ${fontImport}
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        @keyframes flipNext {
+          0%   { opacity:1; transform:perspective(1600px) rotateY(0deg) scale(1);filter:brightness(1) }
+          30%  { opacity:.65;transform:perspective(1600px) rotateY(-20deg) scale(0.95) translateZ(-30px);filter:brightness(0.6) }
+          60%  { opacity:.5; transform:perspective(1600px) rotateY(-6deg) scale(0.97) translateZ(-12px);filter:brightness(0.55) }
+          80%  { opacity:.75;transform:perspective(1600px) rotateY(3deg) scale(0.985);filter:brightness(0.8) }
+          100% { opacity:1; transform:perspective(1600px) rotateY(0deg) scale(1);filter:brightness(1) }
+        }
+        @keyframes flipPrev {
+          0%   { opacity:1; transform:perspective(1600px) rotateY(0deg) scale(1);filter:brightness(1) }
+          30%  { opacity:.65;transform:perspective(1600px) rotateY(20deg) scale(0.95) translateZ(-30px);filter:brightness(0.6) }
+          60%  { opacity:.5; transform:perspective(1600px) rotateY(6deg) scale(0.97) translateZ(-12px);filter:brightness(0.55) }
+          80%  { opacity:.75;transform:perspective(1600px) rotateY(-3deg) scale(0.985);filter:brightness(0.8) }
+          100% { opacity:1; transform:perspective(1600px) rotateY(0deg) scale(1);filter:brightness(1) }
+        }
+        .flip-next { animation: flipNext 0.5s cubic-bezier(0.4,0,0.2,1) }
+        .flip-prev { animation: flipPrev 0.5s cubic-bezier(0.4,0,0.2,1) }
+        .nav-btn {
+          transition:all 0.2s; border:none; cursor:pointer;
+          display:flex; align-items:center; justify-content:center; outline:none;
+        }
+        .nav-btn:active:not(:disabled){ transform:scale(0.9) !important; }
+        .nav-btn:disabled { cursor:default; opacity:0.2; }
+        .dot { transition:all 0.25s; cursor:pointer; border:none; padding:0; background:none; }
+        .lang-btn { transition:all 0.2s; cursor:pointer; border:none; outline:none; }
+        .lang-btn:hover { opacity:1 !important; }
+        .page-scroll::-webkit-scrollbar { display: none; }
+      `}</style>
+
+      {/* ── Top bar (fixed height) ── */}
       <div style={{
-        width: "100vw",
-        minHeight: "100dvh",
-        background: `linear-gradient(160deg, #050e06 0%, #081508 35%, #0b1c0b 65%, #061008 100%)`,
         display: "flex",
-        flexDirection: "column",
         alignItems: "center",
-        overflowX: "hidden",
-        overflowY: "auto",
-        fontFamily: "'Be Vietnam Pro', sans-serif",
-        position: "relative",
+        justifyContent: "space-between",
+        width: "100%",
+        padding: "10px 12px 6px",
+        flexShrink: 0,
+        zIndex: 100,
+        background: "#050e06",
       }}>
-        <style>{`
-          ${fontImport}
-          *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-          @keyframes flipNext {
-            0%   { opacity:1; transform:perspective(1600px) rotateY(0deg) scale(1);filter:brightness(1) }
-            30%  { opacity:.65;transform:perspective(1600px) rotateY(-20deg) scale(0.95) translateZ(-30px);filter:brightness(0.6) }
-            60%  { opacity:.5; transform:perspective(1600px) rotateY(-6deg) scale(0.97) translateZ(-12px);filter:brightness(0.55) }
-            80%  { opacity:.75;transform:perspective(1600px) rotateY(3deg) scale(0.985);filter:brightness(0.8) }
-            100% { opacity:1; transform:perspective(1600px) rotateY(0deg) scale(1);filter:brightness(1) }
-          }
-          @keyframes flipPrev {
-            0%   { opacity:1; transform:perspective(1600px) rotateY(0deg) scale(1);filter:brightness(1) }
-            30%  { opacity:.65;transform:perspective(1600px) rotateY(20deg) scale(0.95) translateZ(-30px);filter:brightness(0.6) }
-            60%  { opacity:.5; transform:perspective(1600px) rotateY(6deg) scale(0.97) translateZ(-12px);filter:brightness(0.55) }
-            80%  { opacity:.75;transform:perspective(1600px) rotateY(-3deg) scale(0.985);filter:brightness(0.8) }
-            100% { opacity:1; transform:perspective(1600px) rotateY(0deg) scale(1);filter:brightness(1) }
-          }
-          .flip-next { animation: flipNext 0.5s cubic-bezier(0.4,0,0.2,1) }
-          .flip-prev { animation: flipPrev 0.5s cubic-bezier(0.4,0,0.2,1) }
-          .nav-btn {
-            transition:all 0.2s; border:none; cursor:pointer;
-            display:flex; align-items:center; justify-content:center; outline:none;
-          }
-          .nav-btn:active:not(:disabled){ transform:scale(0.9) !important; }
-          .nav-btn:disabled { cursor:default; opacity:0.2; }
-          .dot { transition:all 0.25s; cursor:pointer; border:none; padding:0; background:none; }
-          .lang-btn { transition:all 0.2s; cursor:pointer; border:none; outline:none; }
-          .lang-btn:hover { opacity:1 !important; }
-        `}</style>
-
-        {/* ── Top bar ── */}
         <div style={{
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "space-between",
-          width: "100%",
-          padding: "10px 12px 6px",
-          flexShrink: 0,
-          position: "sticky",
-          top: 0,
-          zIndex: 100,
-          background: `linear-gradient(to bottom, #050e06ee, #050e0600)`,
-          backdropFilter: "blur(8px)",
+          fontSize: 9,
+          letterSpacing: "2px",
+          textTransform: "uppercase",
+          color: C.textMuted,
+          fontFamily: "'Be Vietnam Pro',sans-serif",
+          maxWidth: "60%",
+          overflow: "hidden",
+          textOverflow: "ellipsis",
+          whiteSpace: "nowrap",
         }}>
-          <div style={{
-            fontSize: 9,
-            letterSpacing: "2px",
-            textTransform: "uppercase",
-            color: C.textMuted,
-            fontFamily: "'Be Vietnam Pro',sans-serif",
-            maxWidth: "60%",
-            overflow: "hidden",
-            textOverflow: "ellipsis",
-            whiteSpace: "nowrap",
+          {label} &nbsp;·&nbsp; {current + 1} / {PAGES.length}
+        </div>
+        <div style={{ display: "flex", gap: 6 }}>
+          {["vi", "en"].map(l => (
+            <button key={l} className="lang-btn" onClick={() => setLang(l)} style={{
+              padding: "5px 12px",
+              fontSize: 10,
+              letterSpacing: "2.5px",
+              textTransform: "uppercase",
+              fontFamily: "'Be Vietnam Pro',sans-serif",
+              background: lang === l ? `${C.forestLight}55` : "transparent",
+              border: `1px solid ${lang === l ? C.leaf : C.leaf + "44"}`,
+              color: lang === l ? C.leafLight : C.textMuted,
+              opacity: lang === l ? 1 : 0.55,
+              minHeight: 32,
+              borderRadius: 2,
+            }}>
+              {l === "vi" ? "Việt" : "ENG"}
+            </button>
+          ))}
+        </div>
+      </div>
+
+      {/* ── Nav row (fixed height) ── */}
+      <div style={{
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "space-between",
+        width: "100%",
+        padding: "4px 10px 6px",
+        flexShrink: 0,
+        gap: 8,
+        background: "#050e06",
+        zIndex: 99,
+      }}>
+        <button
+          className="nav-btn"
+          disabled={current === 0}
+          onClick={() => goTo(current - 1)}
+          style={{
+            flexShrink: 0,
+            width: 40, height: 40,
+            borderRadius: "50%",
+            background: current === 0 ? "transparent" : `${C.forestLight}30`,
+            border: `1px solid ${current === 0 ? C.leaf + "22" : C.leaf + "77"}`,
+            color: current === 0 ? `${C.leafLight}22` : C.leafLight,
           }}>
-            {label} &nbsp;·&nbsp; {current + 1} / {PAGES.length}
-          </div>
-          <div style={{ display: "flex", gap: 6 }}>
-            {["vi", "en"].map(l => (
-              <button key={l} className="lang-btn" onClick={() => setLang(l)} style={{
-                padding: "5px 12px",
-                fontSize: 10,
-                letterSpacing: "2.5px",
-                textTransform: "uppercase",
-                fontFamily: "'Be Vietnam Pro',sans-serif",
-                background: lang === l ? `${C.forestLight}55` : "transparent",
-                border: `1px solid ${lang === l ? C.leaf : C.leaf + "44"}`,
-                color: lang === l ? C.leafLight : C.textMuted,
-                opacity: lang === l ? 1 : 0.55,
-                minHeight: 32,
-                borderRadius: 2,
-              }}>
-                {l === "vi" ? "Việt" : "ENG"}
-              </button>
-            ))}
-          </div>
+          <svg width="18" height="18" viewBox="0 0 18 18" fill="currentColor">
+            <polygon points="12,3 6,9 12,15" />
+          </svg>
+        </button>
+
+        <div style={{
+          flex: 1,
+          display: "flex",
+          gap: 3,
+          alignItems: "center",
+          justifyContent: "center",
+          overflow: "hidden",
+          maxHeight: 16,
+        }}>
+          {PAGES.map((_, i) => (
+            <button
+              key={i}
+              className="dot"
+              onClick={() => goTo(i)}
+              style={{
+                width: i === current ? 16 : 4,
+                height: 4,
+                borderRadius: 3,
+                background: i === current ? C.leaf : `${C.leafLight}25`,
+                boxShadow: i === current ? `0 0 8px ${C.leaf}88` : "none",
+                transition: "all 0.3s ease",
+                flexShrink: 0,
+              }}
+            />
+          ))}
         </div>
 
-        {/* ── Nav buttons row (prev / dots / next) ── */}
-        <div style={{
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "space-between",
-          width: "100%",
-          padding: "6px 10px",
-          flexShrink: 0,
-          gap: 8,
-        }}>
-          {/* Prev */}
-          <button
-            className="nav-btn"
-            disabled={current === 0}
-            onClick={() => goTo(current - 1)}
-            style={{
-              flexShrink: 0,
-              width: 40, height: 40,
-              borderRadius: "50%",
-              background: current === 0 ? "transparent" : `${C.forestLight}30`,
-              border: `1px solid ${current === 0 ? C.leaf + "22" : C.leaf + "77"}`,
-              color: current === 0 ? `${C.leafLight}22` : C.leafLight,
-            }}>
-            <svg width="18" height="18" viewBox="0 0 18 18" fill="currentColor">
-              <polygon points="12,3 6,9 12,15" />
-            </svg>
-          </button>
-
-          {/* Dots */}
-          <div style={{
-            flex: 1,
-            display: "flex",
-            gap: 3,
-            alignItems: "center",
-            justifyContent: "center",
-            flexWrap: "nowrap",
-            overflow: "hidden",
-            maxHeight: 16,
+        <button
+          className="nav-btn"
+          disabled={current === PAGES.length - 1}
+          onClick={() => goTo(current + 1)}
+          style={{
+            flexShrink: 0,
+            width: 40, height: 40,
+            borderRadius: "50%",
+            background: current === PAGES.length - 1 ? "transparent" : `${C.forestLight}30`,
+            border: `1px solid ${current === PAGES.length - 1 ? C.leaf + "22" : C.leaf + "77"}`,
+            color: current === PAGES.length - 1 ? `${C.leafLight}22` : C.leafLight,
           }}>
-            {PAGES.map((_, i) => (
-              <button
-                key={i}
-                className="dot"
-                onClick={() => goTo(i)}
-                style={{
-                  width: i === current ? 16 : 4,
-                  height: 4,
-                  borderRadius: 3,
-                  background: i === current ? C.leaf : `${C.leafLight}25`,
-                  boxShadow: i === current ? `0 0 8px ${C.leaf}88` : "none",
-                  transition: "all 0.3s ease",
-                  flexShrink: 0,
-                }}
-              />
-            ))}
-          </div>
+          <svg width="18" height="18" viewBox="0 0 18 18" fill="currentColor">
+            <polygon points="6,3 12,9 6,15" />
+          </svg>
+        </button>
+      </div>
 
-          {/* Next */}
-          <button
-            className="nav-btn"
-            disabled={current === PAGES.length - 1}
-            onClick={() => goTo(current + 1)}
-            style={{
-              flexShrink: 0,
-              width: 40, height: 40,
-              borderRadius: "50%",
-              background: current === PAGES.length - 1 ? "transparent" : `${C.forestLight}30`,
-              border: `1px solid ${current === PAGES.length - 1 ? C.leaf + "22" : C.leaf + "77"}`,
-              color: current === PAGES.length - 1 ? `${C.leafLight}22` : C.leafLight,
-            }}>
-            <svg width="18" height="18" viewBox="0 0 18 18" fill="currentColor">
-              <polygon points="6,3 12,9 6,15" />
-            </svg>
-          </button>
-        </div>
-
-        {/* ── Page full width ── */}
+      {/* ── Scroll container — chiếm phần còn lại, scroll ở đây ── */}
+      <div
+        className="page-scroll"
+        style={{
+          flex: 1,
+          width: "100%",
+          overflowY: "auto",
+          overflowX: "hidden",
+          WebkitOverflowScrolling: "touch",
+          scrollbarWidth: "none",
+        }}
+      >
+        {/* Page content */}
         <div
           className={flipping ? (flipDir === "next" ? "flip-next" : "flip-prev") : ""}
           style={{
             width: "100%",
             position: "relative",
-            boxShadow: `2px 4px 12px rgba(0,0,0,0.6), 8px 10px 24px rgba(0,0,0,0.45)`,
-            borderRadius: 4,
-            overflow: "visible",
           }}
           onTouchStart={handlePointerDown}
           onTouchEnd={handlePointerUp}
@@ -2581,22 +2664,22 @@ export default function SotayCoTu() {
           }} />
         </div>
 
-        {/* ── Hint ── */}
+        {/* Hint */}
         <div style={{
           paddingTop: 10,
-          paddingBottom: 16,
+          paddingBottom: 20,
           fontSize: 9,
           color: C.textMuted,
           letterSpacing: "2px",
           textAlign: "center",
           fontFamily: "'Be Vietnam Pro',sans-serif",
-          flexShrink: 0,
         }}>
           ← vuốt để chuyển trang →
         </div>
       </div>
-    );
-  }
+    </div>
+  );
+}
 
   // ── DESKTOP LAYOUT ─────────────────────────────────────────────────────────
   return (
