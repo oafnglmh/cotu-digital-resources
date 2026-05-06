@@ -2382,6 +2382,7 @@ export default function SotayCoTu() {
         flexDirection: "column",
         alignItems: "center",
         overflowX: "hidden",
+        overflowY: "auto",
         fontFamily: "'Be Vietnam Pro', sans-serif",
         position: "relative",
       }}>
