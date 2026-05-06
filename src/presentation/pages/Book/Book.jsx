@@ -289,7 +289,7 @@ function PageShell({ children, bgVariant = "a", style = {} }) {
       width: "100%",
       height: "100%",
       position: "relative",
-      overflow: "hidden",
+      overflow: isMobile ? "visible" : "hidden",
       background: bgs[bgVariant],
       fontFamily: "'Be Vietnam Pro','Lora',serif",
       ...style,
@@ -448,11 +448,11 @@ function PageContent({ children, isMobile }) {
   if (isMobile) {
     return (
       <div style={{
-         padding: "30px 26px",
+         width: "100%",
+        padding: "32px 26px 20px",
         display: "flex",
         flexDirection: "column",
         gap: 0,
-        width: "100%",
       }}
         className="mobile-scroll"
       >
@@ -2338,20 +2338,16 @@ export default function SotayCoTu() {
   const [lang, setLang] = useState("vi");
   const [dragStart, setDragStart] = useState(null);
   const isMobile = useIsMobile();
- 
-  // ── A4 ratios ──────────────────────────────────────────────────────────────
-  // Desktop: landscape 297×210 → aspectRatio = 297/210 ≈ 1.414
-  // Mobile:  portrait  210×297 → the shell itself is height:100% of a
-  //          scrollable container, so no fixed ratio needed
+
   const PAGE_RATIO_LANDSCAPE = 297 / 210;
- 
+
   const goTo = useCallback((index) => {
     if (flipping || index === current || index < 0 || index >= PAGES.length) return;
     setFlipDir(index > current ? "next" : "prev");
     setFlipping(true);
     setTimeout(() => { setCurrent(index); setFlipping(false); }, 480);
   }, [flipping, current]);
- 
+
   useEffect(() => {
     const fn = (e) => {
       if (e.key === "ArrowRight") goTo(current + 1);
@@ -2360,10 +2356,10 @@ export default function SotayCoTu() {
     window.addEventListener("keydown", fn);
     return () => window.removeEventListener("keydown", fn);
   }, [current, goTo]);
- 
+
   const handlePointerDown = (e) =>
     setDragStart(e.clientX ?? e.touches?.[0]?.clientX);
- 
+
   const handlePointerUp = (e) => {
     if (dragStart === null) return;
     const end = e.clientX ?? e.changedTouches?.[0]?.clientX;
@@ -2371,31 +2367,255 @@ export default function SotayCoTu() {
     if (Math.abs(diff) > 40) diff > 0 ? goTo(current + 1) : goTo(current - 1);
     setDragStart(null);
   };
- 
+
   const PageComp = PAGES[current].component;
   const label    = PAGES[current].label[lang];
- 
+
+  // ── MOBILE LAYOUT ──────────────────────────────────────────────────────────
+  if (isMobile) {
+    return (
+      <div style={{
+        width: "100vw",
+        minHeight: "100dvh",
+        background: `linear-gradient(160deg, #050e06 0%, #081508 35%, #0b1c0b 65%, #061008 100%)`,
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        overflowX: "hidden",
+        fontFamily: "'Be Vietnam Pro', sans-serif",
+        position: "relative",
+      }}>
+        <style>{`
+          ${fontImport}
+          *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+          @keyframes flipNext {
+            0%   { opacity:1; transform:perspective(1600px) rotateY(0deg) scale(1);filter:brightness(1) }
+            30%  { opacity:.65;transform:perspective(1600px) rotateY(-20deg) scale(0.95) translateZ(-30px);filter:brightness(0.6) }
+            60%  { opacity:.5; transform:perspective(1600px) rotateY(-6deg) scale(0.97) translateZ(-12px);filter:brightness(0.55) }
+            80%  { opacity:.75;transform:perspective(1600px) rotateY(3deg) scale(0.985);filter:brightness(0.8) }
+            100% { opacity:1; transform:perspective(1600px) rotateY(0deg) scale(1);filter:brightness(1) }
+          }
+          @keyframes flipPrev {
+            0%   { opacity:1; transform:perspective(1600px) rotateY(0deg) scale(1);filter:brightness(1) }
+            30%  { opacity:.65;transform:perspective(1600px) rotateY(20deg) scale(0.95) translateZ(-30px);filter:brightness(0.6) }
+            60%  { opacity:.5; transform:perspective(1600px) rotateY(6deg) scale(0.97) translateZ(-12px);filter:brightness(0.55) }
+            80%  { opacity:.75;transform:perspective(1600px) rotateY(-3deg) scale(0.985);filter:brightness(0.8) }
+            100% { opacity:1; transform:perspective(1600px) rotateY(0deg) scale(1);filter:brightness(1) }
+          }
+          .flip-next { animation: flipNext 0.5s cubic-bezier(0.4,0,0.2,1) }
+          .flip-prev { animation: flipPrev 0.5s cubic-bezier(0.4,0,0.2,1) }
+          .nav-btn {
+            transition:all 0.2s; border:none; cursor:pointer;
+            display:flex; align-items:center; justify-content:center; outline:none;
+          }
+          .nav-btn:active:not(:disabled){ transform:scale(0.9) !important; }
+          .nav-btn:disabled { cursor:default; opacity:0.2; }
+          .dot { transition:all 0.25s; cursor:pointer; border:none; padding:0; background:none; }
+          .lang-btn { transition:all 0.2s; cursor:pointer; border:none; outline:none; }
+          .lang-btn:hover { opacity:1 !important; }
+        `}</style>
+
+        {/* ── Top bar ── */}
+        <div style={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
+          width: "100%",
+          padding: "10px 12px 6px",
+          flexShrink: 0,
+          position: "sticky",
+          top: 0,
+          zIndex: 100,
+          background: `linear-gradient(to bottom, #050e06ee, #050e0600)`,
+          backdropFilter: "blur(8px)",
+        }}>
+          <div style={{
+            fontSize: 9,
+            letterSpacing: "2px",
+            textTransform: "uppercase",
+            color: C.textMuted,
+            fontFamily: "'Be Vietnam Pro',sans-serif",
+            maxWidth: "60%",
+            overflow: "hidden",
+            textOverflow: "ellipsis",
+            whiteSpace: "nowrap",
+          }}>
+            {label} &nbsp;·&nbsp; {current + 1} / {PAGES.length}
+          </div>
+          <div style={{ display: "flex", gap: 6 }}>
+            {["vi", "en"].map(l => (
+              <button key={l} className="lang-btn" onClick={() => setLang(l)} style={{
+                padding: "5px 12px",
+                fontSize: 10,
+                letterSpacing: "2.5px",
+                textTransform: "uppercase",
+                fontFamily: "'Be Vietnam Pro',sans-serif",
+                background: lang === l ? `${C.forestLight}55` : "transparent",
+                border: `1px solid ${lang === l ? C.leaf : C.leaf + "44"}`,
+                color: lang === l ? C.leafLight : C.textMuted,
+                opacity: lang === l ? 1 : 0.55,
+                minHeight: 32,
+                borderRadius: 2,
+              }}>
+                {l === "vi" ? "Việt" : "ENG"}
+              </button>
+            ))}
+          </div>
+        </div>
+
+        {/* ── Nav buttons row (prev / dots / next) ── */}
+        <div style={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
+          width: "100%",
+          padding: "6px 10px",
+          flexShrink: 0,
+          gap: 8,
+        }}>
+          {/* Prev */}
+          <button
+            className="nav-btn"
+            disabled={current === 0}
+            onClick={() => goTo(current - 1)}
+            style={{
+              flexShrink: 0,
+              width: 40, height: 40,
+              borderRadius: "50%",
+              background: current === 0 ? "transparent" : `${C.forestLight}30`,
+              border: `1px solid ${current === 0 ? C.leaf + "22" : C.leaf + "77"}`,
+              color: current === 0 ? `${C.leafLight}22` : C.leafLight,
+            }}>
+            <svg width="18" height="18" viewBox="0 0 18 18" fill="currentColor">
+              <polygon points="12,3 6,9 12,15" />
+            </svg>
+          </button>
+
+          {/* Dots */}
+          <div style={{
+            flex: 1,
+            display: "flex",
+            gap: 3,
+            alignItems: "center",
+            justifyContent: "center",
+            flexWrap: "nowrap",
+            overflow: "hidden",
+            maxHeight: 16,
+          }}>
+            {PAGES.map((_, i) => (
+              <button
+                key={i}
+                className="dot"
+                onClick={() => goTo(i)}
+                style={{
+                  width: i === current ? 16 : 4,
+                  height: 4,
+                  borderRadius: 3,
+                  background: i === current ? C.leaf : `${C.leafLight}25`,
+                  boxShadow: i === current ? `0 0 8px ${C.leaf}88` : "none",
+                  transition: "all 0.3s ease",
+                  flexShrink: 0,
+                }}
+              />
+            ))}
+          </div>
+
+          {/* Next */}
+          <button
+            className="nav-btn"
+            disabled={current === PAGES.length - 1}
+            onClick={() => goTo(current + 1)}
+            style={{
+              flexShrink: 0,
+              width: 40, height: 40,
+              borderRadius: "50%",
+              background: current === PAGES.length - 1 ? "transparent" : `${C.forestLight}30`,
+              border: `1px solid ${current === PAGES.length - 1 ? C.leaf + "22" : C.leaf + "77"}`,
+              color: current === PAGES.length - 1 ? `${C.leafLight}22` : C.leafLight,
+            }}>
+            <svg width="18" height="18" viewBox="0 0 18 18" fill="currentColor">
+              <polygon points="6,3 12,9 6,15" />
+            </svg>
+          </button>
+        </div>
+
+        {/* ── Page full width ── */}
+        <div
+          className={flipping ? (flipDir === "next" ? "flip-next" : "flip-prev") : ""}
+          style={{
+            width: "100%",
+            position: "relative",
+            boxShadow: `2px 4px 12px rgba(0,0,0,0.6), 8px 10px 24px rgba(0,0,0,0.45)`,
+            borderRadius: 4,
+            overflow: "visible",
+          }}
+          onTouchStart={handlePointerDown}
+          onTouchEnd={handlePointerUp}
+        >
+          <PageComp lang={lang} />
+
+          {/* Page number badge */}
+          <div style={{
+            position: "absolute",
+            bottom: 14, right: 14,
+            zIndex: 20,
+            background: "rgba(8,20,8,0.78)",
+            backdropFilter: "blur(4px)",
+            color: C.textMuted,
+            fontSize: 9,
+            letterSpacing: "2px",
+            padding: "2px 8px",
+            border: `1px solid ${C.leaf}22`,
+            fontFamily: "'Be Vietnam Pro',sans-serif",
+            borderRadius: 2,
+          }}>
+            {current + 1}
+          </div>
+
+          {/* Spine highlight */}
+          <div style={{
+            position: "absolute", left: 0, top: 0, bottom: 0, width: 8,
+            background: `linear-gradient(to right, ${C.leaf}28, transparent)`,
+            pointerEvents: "none", zIndex: 10,
+          }} />
+        </div>
+
+        {/* ── Hint ── */}
+        <div style={{
+          paddingTop: 10,
+          paddingBottom: 16,
+          fontSize: 9,
+          color: C.textMuted,
+          letterSpacing: "2px",
+          textAlign: "center",
+          fontFamily: "'Be Vietnam Pro',sans-serif",
+          flexShrink: 0,
+        }}>
+          ← vuốt để chuyển trang →
+        </div>
+      </div>
+    );
+  }
+
+  // ── DESKTOP LAYOUT ─────────────────────────────────────────────────────────
   return (
     <div style={{
       width: "100vw",
-      // Desktop: one screen, no scroll. Mobile: auto height, scrollable outer shell.
-      height:    isMobile ? "auto"    : "100vh",
-      minHeight: isMobile ? "100dvh"  : "auto",
+      height: "100vh",
       background: `linear-gradient(160deg, #050e06 0%, #081508 35%, #0b1c0b 65%, #061008 100%)`,
       display: "flex",
       flexDirection: "column",
       alignItems: "center",
-      justifyContent: isMobile ? "flex-start" : "center",
-      overflowY:  isMobile ? "auto"   : "hidden",
+      justifyContent: "center",
+      overflowY: "hidden",
       overflowX: "hidden",
       fontFamily: "'Be Vietnam Pro', sans-serif",
       position: "relative",
-      padding: isMobile ? "12px 0 28px" : "10px 0",
+      padding: "10px 0",
     }}>
       <style>{`
         ${fontImport}
         *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
- 
         @keyframes flipNext {
           0%   { opacity:1; transform:perspective(1600px) rotateY(0deg) scale(1);filter:brightness(1) }
           30%  { opacity:.65;transform:perspective(1600px) rotateY(-20deg) scale(0.95) translateZ(-30px);filter:brightness(0.6) }
@@ -2411,88 +2631,70 @@ export default function SotayCoTu() {
           100% { opacity:1; transform:perspective(1600px) rotateY(0deg) scale(1);filter:brightness(1) }
         }
         @keyframes shimmer { 0%,100%{opacity:0.3} 50%{opacity:0.7} }
- 
         .flip-next { animation: flipNext 0.5s cubic-bezier(0.4,0,0.2,1) }
         .flip-prev { animation: flipPrev 0.5s cubic-bezier(0.4,0,0.2,1) }
- 
         .nav-btn {
           transition:all 0.2s; border:none; cursor:pointer;
           display:flex; align-items:center; justify-content:center; outline:none;
         }
         .nav-btn:hover:not(:disabled) { transform:scale(1.12) !important; }
-        .nav-btn:active:not(:disabled){ transform:scale(0.9)  !important; }
+        .nav-btn:active:not(:disabled){ transform:scale(0.9) !important; }
         .nav-btn:disabled { cursor:default; opacity:0.2; }
- 
         .dot { transition:all 0.25s; cursor:pointer; border:none; padding:0; background:none; }
         .dot:hover { transform:scale(1.5); }
- 
         .lang-btn { transition:all 0.2s; cursor:pointer; border:none; outline:none; }
         .lang-btn:hover { opacity:1 !important; }
- 
-        /* hide scrollbar inside mobile page shell */
-        .mobile-scroll { scrollbar-width:none; -webkit-overflow-scrolling:touch; }
-        .mobile-scroll::-webkit-scrollbar { display:none; }
       `}</style>
- 
-      {/* ── Ambient particles (desktop only) ────────────────────────────────── */}
-      {!isMobile && (
-        <div style={{ position:"absolute", inset:0, pointerEvents:"none", overflow:"hidden" }}>
-          {Array.from({ length: 18 }).map((_, i) => (
-            <div key={i} style={{
-              position: "absolute",
-              width:  i % 3 === 0 ? 3 : 2,
-              height: i % 3 === 0 ? 3 : 2,
-              background: i % 2 === 0 ? C.leaf : C.gold,
-              borderRadius: "50%",
-              left: `${4 + i * 5.2}%`,
-              top:  `${8 + (i % 7) * 13}%`,
-              opacity: 0.12,
-              animation: `shimmer ${2 + (i % 4)}s ease-in-out infinite`,
-              animationDelay: `${(i * 0.4) % 3}s`,
-            }} />
-          ))}
-        </div>
-      )}
- 
-      {/* ── Top bar ──────────────────────────────────────────────────────────── */}
+
+      {/* Ambient particles */}
+      <div style={{ position: "absolute", inset: 0, pointerEvents: "none", overflow: "hidden" }}>
+        {Array.from({ length: 18 }).map((_, i) => (
+          <div key={i} style={{
+            position: "absolute",
+            width: i % 3 === 0 ? 3 : 2,
+            height: i % 3 === 0 ? 3 : 2,
+            background: i % 2 === 0 ? C.leaf : C.gold,
+            borderRadius: "50%",
+            left: `${4 + i * 5.2}%`,
+            top: `${8 + (i % 7) * 13}%`,
+            opacity: 0.12,
+            animation: `shimmer ${2 + (i % 4)}s ease-in-out infinite`,
+            animationDelay: `${(i * 0.4) % 3}s`,
+          }} />
+        ))}
+      </div>
+
+      {/* Top bar */}
       <div style={{
         display: "flex",
         alignItems: "center",
         justifyContent: "space-between",
         width: "100%",
-        maxWidth: isMobile ? "100%" : "calc(100vw - 40px)",
-        paddingBottom: isMobile ? 6 : 8,
-        paddingLeft:  isMobile ? 12 : 0,
-        paddingRight: isMobile ? 12 : 0,
+        maxWidth: "calc(100vw - 40px)",
+        paddingBottom: 8,
         flexShrink: 0,
       }}>
         <div style={{
-          fontSize: isMobile ? 9 : "clamp(8px,0.9vw,10px)",
+          fontSize: "clamp(8px,0.9vw,10px)",
           letterSpacing: "2px",
           textTransform: "uppercase",
           color: C.textMuted,
           fontFamily: "'Be Vietnam Pro',sans-serif",
-          maxWidth: isMobile ? "60%" : "auto",
-          overflow: "hidden",
-          textOverflow: "ellipsis",
-          whiteSpace: "nowrap",
         }}>
           {label} &nbsp;·&nbsp; {current + 1} / {PAGES.length}
         </div>
- 
-        <div style={{ display:"flex", gap:6 }}>
-          {["vi","en"].map(l => (
+        <div style={{ display: "flex", gap: 6 }}>
+          {["vi", "en"].map(l => (
             <button key={l} className="lang-btn" onClick={() => setLang(l)} style={{
-              padding: isMobile ? "5px 12px" : "4px 14px",
-              fontSize: isMobile ? 10 : 9,
+              padding: "4px 14px",
+              fontSize: 9,
               letterSpacing: "2.5px",
               textTransform: "uppercase",
               fontFamily: "'Be Vietnam Pro',sans-serif",
               background: lang === l ? `${C.forestLight}55` : "transparent",
               border: `1px solid ${lang === l ? C.leaf : C.leaf + "44"}`,
-              color:  lang === l ? C.leafLight : C.textMuted,
+              color: lang === l ? C.leafLight : C.textMuted,
               opacity: lang === l ? 1 : 0.55,
-              minHeight: isMobile ? 34 : "auto",
               borderRadius: 2,
             }}>
               {l === "vi" ? "Việt" : "ENG"}
@@ -2500,21 +2702,17 @@ export default function SotayCoTu() {
           ))}
         </div>
       </div>
- 
-      {/* ── Book + Nav row ───────────────────────────────────────────────────── */}
+
+      {/* Book + Nav row */}
       <div style={{
         display: "flex",
-        alignItems: isMobile ? "flex-start" : "center",
-        gap: isMobile ? "clamp(4px,2vw,10px)" : "clamp(8px,1.2vw,18px)",
+        alignItems: "center",
+        gap: "clamp(8px,1.2vw,18px)",
         width: "100%",
-        maxWidth: isMobile ? "100%" : "calc(100vw - 40px)",
-        paddingLeft:  isMobile ? 4 : 0,
-        paddingRight: isMobile ? 4 : 0,
-        // Desktop: stretch to fill remaining height
-        flex: isMobile ? "none" : 1,
+        maxWidth: "calc(100vw - 40px)",
+        flex: 1,
         minHeight: 0,
       }}>
- 
         {/* Prev */}
         <button
           className="nav-btn"
@@ -2522,78 +2720,60 @@ export default function SotayCoTu() {
           onClick={() => goTo(current - 1)}
           style={{
             flexShrink: 0,
-            width:  isMobile ? 36 : 40,
-            height: isMobile ? 36 : 40,
+            width: 40, height: 40,
             borderRadius: "50%",
             background: current === 0 ? "transparent" : `${C.forestLight}30`,
             border: `1px solid ${current === 0 ? C.leaf + "22" : C.leaf + "77"}`,
-            color:  current === 0 ? `${C.leafLight}22` : C.leafLight,
-            // On mobile: sticky so always visible while page content scrolls
-            alignSelf: isMobile ? "flex-start" : "auto",
-            position:  isMobile ? "sticky"      : "static",
-            top:       isMobile ? "calc(50dvh - 20px)" : "auto",
+            color: current === 0 ? `${C.leafLight}22` : C.leafLight,
           }}>
           <svg width="18" height="18" viewBox="0 0 18 18" fill="currentColor">
             <polygon points="12,3 6,9 12,15" />
           </svg>
         </button>
- 
-        {/* ── Page container ─────────────────────────────────────────────────── */}
+
+        {/* Page container */}
         <div style={{
           flex: 1,
           minWidth: 0,
           position: "relative",
-          height: isMobile ? "auto" : "100%",
+          height: "100%",
           display: "flex",
-          alignItems: isMobile ? "flex-start" : "center",
+          alignItems: "center",
           justifyContent: "center",
         }}>
-          {/* Glow halo (desktop) */}
-          {!isMobile && (
-            <div style={{
-              position: "absolute", inset: -8,
-              background: `linear-gradient(135deg, ${C.leaf}15, ${C.gold}0a, ${C.leaf}10)`,
-              filter: "blur(14px)",
-              zIndex: 0, borderRadius: 4,
-            }} />
-          )}
+          {/* Glow halo */}
+          <div style={{
+            position: "absolute", inset: -8,
+            background: `linear-gradient(135deg, ${C.leaf}15, ${C.gold}0a, ${C.leaf}10)`,
+            filter: "blur(14px)",
+            zIndex: 0, borderRadius: 4,
+          }} />
           {/* Drop shadow */}
           <div style={{
             position: "absolute",
-            bottom: isMobile ? -6 : -14,
-            left: "5%", right: "5%",
-            height: isMobile ? 10 : 22,
+            bottom: -14, left: "5%", right: "5%",
+            height: 22,
             background: "rgba(0,0,0,0.55)",
             filter: "blur(18px)",
             zIndex: 0,
           }} />
- 
-          {/* ── The page itself ───────────────────────────────────────────────── */}
+
+          {/* The page */}
           <div
             className={flipping ? (flipDir === "next" ? "flip-next" : "flip-prev") : ""}
             style={{
-              // Desktop: fill height, maintain A4-landscape ratio via aspectRatio
-              // Mobile:  full width, natural height (content scrolls inside shell)
-              ...(isMobile
-                ? { width: "100%", height: "auto" }
-                : {
-                    height: "100%",
-                    width: "auto",
-                    aspectRatio: `${PAGE_RATIO_LANDSCAPE}`,
-                    maxWidth: "100%",
-                  }
-              ),
+              height: "100%",
+              width: "auto",
+              aspectRatio: `${PAGE_RATIO_LANDSCAPE}`,
+              maxWidth: "100%",
               position: "relative",
               zIndex: 1,
-              boxShadow: isMobile
-                ? `2px 4px 12px rgba(0,0,0,0.6), 8px 10px 24px rgba(0,0,0,0.45)`
-                : `2px 4px 8px rgba(0,0,0,0.7), 8px 12px 30px rgba(0,0,0,0.6),
-                   20px 25px 60px rgba(0,0,0,0.5), inset 0 0 0 1px ${C.gold}22`,
-              cursor: isMobile ? "default" : "grab",
+              boxShadow: `2px 4px 8px rgba(0,0,0,0.7), 8px 12px 30px rgba(0,0,0,0.6),
+                          20px 25px 60px rgba(0,0,0,0.5), inset 0 0 0 1px ${C.gold}22`,
+              cursor: "grab",
               userSelect: "none",
-              // Desktop clips overflow (fixed-size box), mobile allows natural height
-              overflow: isMobile ? "visible" : "hidden",
-              borderRadius: isMobile ? 4 : 2,
+              overflow: "hidden",
+              borderRadius: 2,
             }}
             onMouseDown={handlePointerDown}
             onMouseUp={handlePointerUp}
@@ -2601,31 +2781,19 @@ export default function SotayCoTu() {
             onTouchStart={handlePointerDown}
             onTouchEnd={handlePointerUp}
           >
-            {/*
-              PageShell uses position:absolute for its inner layout on desktop.
-              On mobile the inner PageContent wrapper already handles its own
-              absolute + overflow:auto scroll container.
-            */}
-            <div style={{
-              width: "100%",
-              // Desktop: fill the fixed-height aspect-ratio box
-              // Mobile: auto — PageShell height will grow with content
-              height: isMobile ? "auto" : "100%",
-              position: "relative",
-            }}>
+            <div style={{ width: "100%", height: "100%", position: "relative" }}>
               <PageComp lang={lang} />
             </div>
- 
+
             {/* Page number badge */}
             <div style={{
               position: "absolute",
-              bottom: isMobile ? 10 : 14,
-              right:  isMobile ? 10 : 16,
+              bottom: 14, right: 16,
               zIndex: 20,
               background: "rgba(8,20,8,0.78)",
               backdropFilter: "blur(4px)",
               color: C.textMuted,
-              fontSize: isMobile ? 9 : 8,
+              fontSize: 8,
               letterSpacing: "2px",
               padding: "2px 8px",
               border: `1px solid ${C.leaf}22`,
@@ -2634,28 +2802,28 @@ export default function SotayCoTu() {
             }}>
               {current + 1}
             </div>
- 
+
             {/* Spine highlight */}
             <div style={{
-              position: "absolute", left:0, top:0, bottom:0, width:8,
+              position: "absolute", left: 0, top: 0, bottom: 0, width: 8,
               background: `linear-gradient(to right, ${C.leaf}28, transparent)`,
-              pointerEvents: "none", zIndex:10,
+              pointerEvents: "none", zIndex: 10,
             }} />
             {/* Right edge shadow */}
             <div style={{
-              position: "absolute", right:0, top:0, bottom:0, width:12,
+              position: "absolute", right: 0, top: 0, bottom: 0, width: 12,
               background: `linear-gradient(to left, rgba(0,0,0,0.28), transparent)`,
-              pointerEvents: "none", zIndex:10,
+              pointerEvents: "none", zIndex: 10,
             }} />
             {/* Top sheen */}
             <div style={{
-              position: "absolute", top:0, left:0, right:0, height:3,
+              position: "absolute", top: 0, left: 0, right: 0, height: 3,
               background: `linear-gradient(to bottom, rgba(255,255,255,0.06), transparent)`,
-              pointerEvents: "none", zIndex:10,
+              pointerEvents: "none", zIndex: 10,
             }} />
           </div>
         </div>
- 
+
         {/* Next */}
         <button
           className="nav-btn"
@@ -2663,37 +2831,28 @@ export default function SotayCoTu() {
           onClick={() => goTo(current + 1)}
           style={{
             flexShrink: 0,
-            width:  isMobile ? 36 : 40,
-            height: isMobile ? 36 : 40,
+            width: 40, height: 40,
             borderRadius: "50%",
             background: current === PAGES.length - 1 ? "transparent" : `${C.forestLight}30`,
             border: `1px solid ${current === PAGES.length - 1 ? C.leaf + "22" : C.leaf + "77"}`,
-            color:  current === PAGES.length - 1 ? `${C.leafLight}22` : C.leafLight,
-            alignSelf: isMobile ? "flex-start" : "auto",
-            position:  isMobile ? "sticky"      : "static",
-            top:       isMobile ? "calc(50dvh - 20px)" : "auto",
+            color: current === PAGES.length - 1 ? `${C.leafLight}22` : C.leafLight,
           }}>
           <svg width="18" height="18" viewBox="0 0 18 18" fill="currentColor">
             <polygon points="6,3 12,9 6,15" />
           </svg>
         </button>
       </div>
- 
-      {/* ── Dot navigation ───────────────────────────────────────────────────── */}
+
+      {/* Dot navigation */}
       <div style={{
         display: "flex",
-        gap: isMobile ? 3 : 4,
-        paddingTop:   isMobile ? 8  : 10,
-        paddingLeft:  isMobile ? 8  : 0,
-        paddingRight: isMobile ? 8  : 0,
+        gap: 4,
+        paddingTop: 10,
         alignItems: "center",
         flexWrap: "wrap",
         justifyContent: "center",
-        maxWidth: isMobile ? "100%" : "calc(100vw - 40px)",
+        maxWidth: "calc(100vw - 40px)",
         flexShrink: 0,
-        // On mobile clip so dots don't push layout taller
-        maxHeight: isMobile ? 28 : "none",
-        overflow:  isMobile ? "hidden" : "visible",
       }}>
         {PAGES.map((_, i) => (
           <button
@@ -2701,8 +2860,8 @@ export default function SotayCoTu() {
             className="dot"
             onClick={() => goTo(i)}
             style={{
-              width:  i === current ? (isMobile ? 16 : 20) : (isMobile ? 4 : 5),
-              height: isMobile ? 4 : 5,
+              width: i === current ? 20 : 5,
+              height: 5,
               borderRadius: 3,
               background: i === current ? C.leaf : `${C.leafLight}25`,
               boxShadow: i === current ? `0 0 10px ${C.leaf}88` : "none",
@@ -2711,21 +2870,18 @@ export default function SotayCoTu() {
           />
         ))}
       </div>
- 
-      {/* ── Hint text ─────────────────────────────────────────────────────────── */}
+
+      {/* Hint */}
       <div style={{
-        paddingTop:    isMobile ? 5 : 7,
-        paddingBottom: isMobile ? 6 : 0,
-        fontSize: isMobile ? 9 : 8,
+        paddingTop: 7,
+        fontSize: 8,
         color: C.textMuted,
         letterSpacing: "2px",
         textAlign: "center",
         fontFamily: "'Be Vietnam Pro',sans-serif",
         flexShrink: 0,
       }}>
-        {isMobile
-          ? "← vuốt để chuyển trang →"
-          : "← → lật trang · kéo để chuyển"}
+        ← → lật trang · kéo để chuyển
       </div>
     </div>
   );
