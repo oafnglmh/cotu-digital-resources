@@ -46,7 +46,7 @@ const C = {
   textMuted: "rgba(180,220,180,0.55)",
 };
 
-// ─── RESPONSIVE HOOK ──────────────────────────────────────────────────────────
+// ─── RESPONSIVE HOOKS ─────────────────────────────────────────────────────────
 function useIsMobile() {
   const [isMobile, setIsMobile] = useState(
     typeof window !== "undefined" ? window.innerWidth < 768 : false
@@ -59,19 +59,7 @@ function useIsMobile() {
   return isMobile;
 }
 
-function useIsTablet() {
-  const [isTablet, setIsTablet] = useState(
-    typeof window !== "undefined" ? window.innerWidth < 1024 : false
-  );
-  useEffect(() => {
-    const fn = () => setIsTablet(window.innerWidth < 1024);
-    window.addEventListener("resize", fn);
-    return () => window.removeEventListener("resize", fn);
-  }, []);
-  return isTablet;
-}
-
-// ─── GOOGLE FONTS IMPORT ──────────────────────────────────────────────────────
+// ─── GOOGLE FONTS ─────────────────────────────────────────────────────────────
 const fontImport = `
 @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Lora:ital,wght@0,400;0,500;0,600;1,400&family=Be+Vietnam+Pro:wght@300;400;500;600;700&display=swap');
 `;
@@ -148,7 +136,7 @@ function DiamondRow({ gap = 8 }) {
 
 function SectionDivider() {
   return (
-    <div style={{ display: "flex", alignItems: "center", gap: 10, margin: "10px 0" }}>
+    <div style={{ display: "flex", alignItems: "center", gap: 10, margin: "8px 0" }}>
       <div style={{ flex: 1, height: 1, background: `linear-gradient(to right, transparent, ${C.gold}88)` }} />
       <DiamondRow gap={5} />
       <div style={{ flex: 1, height: 1, background: `linear-gradient(to left, transparent, ${C.gold}88)` }} />
@@ -156,6 +144,7 @@ function SectionDivider() {
   );
 }
 
+// ─── IMAGE SLIDER ─────────────────────────────────────────────────────────────
 function ImageSlider({ images }) {
   const [cur, setCur] = useState(0);
   const [hovered, setHovered] = useState(false);
@@ -177,7 +166,8 @@ function ImageSlider({ images }) {
   }, [cur, hovered, go]);
 
   const img = images[cur];
-  const sliderHeight = isMobile ? 220 : 480;
+  // Mobile: taller slider for portrait feel
+  const sliderHeight = isMobile ? 260 : 480;
 
   return (
     <div style={{ width: "100%", display: "flex", flexDirection: "column", gap: 8 }}>
@@ -210,37 +200,28 @@ function ImageSlider({ images }) {
           />
         ))}
 
-        <div
-          style={{
-            position: "absolute",
-            inset: 0,
-            background: "linear-gradient(to top, rgba(10,25,12,0.6) 0%, transparent 40%)",
-            pointerEvents: "none",
-          }}
-        />
+        <div style={{
+          position: "absolute", inset: 0,
+          background: "linear-gradient(to top, rgba(10,25,12,0.6) 0%, transparent 40%)",
+          pointerEvents: "none",
+        }} />
 
-        <div
-          style={{
-            position: "absolute",
-            bottom: 0,
-            left: 0,
-            right: 0,
-            padding: isMobile ? "24px 10px 10px" : "36px 14px 14px",
-            background: "linear-gradient(to top, rgba(5,15,7,0.95) 0%, rgba(5,15,7,0.5) 60%, transparent 100%)",
-            transform: hovered ? "translateY(0)" : "translateY(100%)",
-            transition: "transform 0.3s ease",
-          }}
-        >
-          <div style={{ fontSize: isMobile ? 12 : 13, fontWeight: 600, color: C.cream, marginBottom: 4 }}>
+        <div style={{
+          position: "absolute",
+          bottom: 0, left: 0, right: 0,
+          padding: "36px 14px 14px",
+          background: "linear-gradient(to top, rgba(5,15,7,0.95) 0%, rgba(5,15,7,0.5) 60%, transparent 100%)",
+          transform: hovered ? "translateY(0)" : "translateY(100%)",
+          transition: "transform 0.3s ease",
+        }}>
+          <div style={{ fontSize: 13, fontWeight: 600, color: C.cream, marginBottom: 4 }}>
             {img.title}
           </div>
-          <div style={{ fontSize: isMobile ? 10 : 11, color: "#b0c8b0", lineHeight: 1.45, marginBottom: 4 }}>
+          <div style={{ fontSize: 11, color: "#b0c8b0", lineHeight: 1.45, marginBottom: 4 }}>
             {img.caption}
           </div>
           {img.source && (
-            <div style={{ fontSize: 10, color: C.textMuted }}>
-              {img.source}
-            </div>
+            <div style={{ fontSize: 10, color: C.textMuted }}>{img.source}</div>
           )}
         </div>
 
@@ -249,14 +230,7 @@ function ImageSlider({ images }) {
 
         {!hovered && (
           <div style={{ position: "absolute", bottom: 0, left: 0, right: 0, height: 2, background: "rgba(255,255,255,0.1)" }}>
-            <div
-              key={cur}
-              style={{
-                height: "100%",
-                background: C.goldLight,
-                animation: "progress5s 5s linear forwards",
-              }}
-            />
+            <div key={cur} style={{ height: "100%", background: C.goldLight, animation: "progress5s 5s linear forwards" }} />
           </div>
         )}
       </div>
@@ -264,25 +238,17 @@ function ImageSlider({ images }) {
       <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 10 }}>
         <div style={{ display: "flex", gap: 5 }}>
           {images.map((_, i) => (
-            <div
-              key={i}
-              onClick={() => go(i)}
-              style={{
-                width: i === cur ? 16 : 6,
-                height: 6,
-                borderRadius: 3,
-                background: i === cur ? C.goldLight : `${C.goldLight}44`,
-                cursor: "pointer",
-                transition: "all 0.2s",
-              }}
-            />
+            <div key={i} onClick={() => go(i)} style={{
+              width: i === cur ? 16 : 6, height: 6,
+              borderRadius: 3,
+              background: i === cur ? C.goldLight : `${C.goldLight}44`,
+              cursor: "pointer",
+              transition: "all 0.2s",
+            }} />
           ))}
         </div>
-        <span style={{ fontSize: 10, color: C.textMuted }}>
-          {cur + 1} / {total}
-        </span>
+        <span style={{ fontSize: 10, color: C.textMuted }}>{cur + 1} / {total}</span>
       </div>
-
       <style>{`@keyframes progress5s { from { width: 0% } to { width: 100% } }`}</style>
     </div>
   );
@@ -294,13 +260,13 @@ function arrowStyle(side, isMobile) {
     top: "50%",
     [side]: 8,
     transform: "translateY(-50%)",
-    width: isMobile ? 36 : 28,
-    height: isMobile ? 36 : 28,
+    width: isMobile ? 40 : 28,
+    height: isMobile ? 40 : 28,
     borderRadius: "50%",
     border: `1px solid ${C.gold}66`,
     background: "rgba(10,25,12,0.7)",
     color: C.goldLight,
-    fontSize: isMobile ? 22 : 20,
+    fontSize: isMobile ? 24 : 20,
     lineHeight: 1,
     cursor: "pointer",
     display: "flex",
@@ -310,8 +276,9 @@ function arrowStyle(side, isMobile) {
   };
 }
 
-// ─── PAGE SHELL ───────────────────────────────────────────────────────────────
+// ─── PAGE SHELL (A4 Portrait on mobile) ───────────────────────────────────────
 function PageShell({ children, bgVariant = "a", style = {} }) {
+  const isMobile = useIsMobile();
   const bgs = {
     a: `linear-gradient(155deg, #0d2010 0%, #152918 25%, #1a3a1f 50%, #122015 75%, #0a1a0c 100%)`,
     b: `linear-gradient(145deg, #0a1a0c 0%, #172b1a 30%, #1e3d24 55%, #152918 80%, #0d2010 100%)`,
@@ -319,46 +286,56 @@ function PageShell({ children, bgVariant = "a", style = {} }) {
   };
   return (
     <div style={{
-      width: "100%", height: "100%",
-      position: "relative", overflow: "hidden",
+      width: "100%",
+      height: "100%",
+      position: "relative",
+      overflow: "hidden",
       background: bgs[bgVariant],
       fontFamily: "'Be Vietnam Pro','Lora',serif",
       ...style,
     }}>
+      {/* Grain */}
       <div style={{
         position: "absolute", inset: 0, opacity: 0.03,
         backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='4'%3E%3Cpath d='M0 0h1v1H0zm2 2h1v1H2z' fill='%23a0d4a0'/%3E%3C/svg%3E")`,
+        pointerEvents: "none",
       }} />
+      {/* Ambient glow */}
       <div style={{
         position: "absolute", inset: 0,
         background: `radial-gradient(ellipse at 30% 40%, rgba(74,138,84,0.15) 0%, transparent 55%),
                      radial-gradient(ellipse at 75% 70%, rgba(212,168,67,0.08) 0%, transparent 45%)`,
         pointerEvents: "none",
       }} />
+      {/* Top triangle strip */}
       <div style={{ position: "absolute", top: 0, left: 0, right: 0 }}>
-        <CoTuTriangleStrip height={12} />
+        <CoTuTriangleStrip height={isMobile ? 8 : 12} />
       </div>
+      {/* Top gold line */}
       <div style={{
-        position: "absolute", top: 16, left: 14, right: 14,
+        position: "absolute", top: isMobile ? 12 : 16, left: isMobile ? 10 : 14, right: isMobile ? 10 : 14,
         height: 2,
         background: `linear-gradient(to right, transparent, ${C.gold}99, ${C.leaf}88, ${C.gold}99, transparent)`,
       }} />
+      {/* Bottom triangle strip */}
       <div style={{ position: "absolute", bottom: 0, left: 0, right: 0, transform: "scaleY(-1)" }}>
-        <CoTuTriangleStrip height={12} />
+        <CoTuTriangleStrip height={isMobile ? 8 : 12} />
       </div>
+      {/* Bottom gold line */}
       <div style={{
-        position: "absolute", bottom: 16, left: 14, right: 14,
+        position: "absolute", bottom: isMobile ? 12 : 16, left: isMobile ? 10 : 14, right: isMobile ? 10 : 14,
         height: 2,
         background: `linear-gradient(to right, transparent, ${C.gold}99, ${C.leaf}88, ${C.gold}99, transparent)`,
       }} />
+      {/* Corner ornaments */}
       {[
-        { top: 22, left: 14 },
-        { top: 22, right: 14 },
-        { bottom: 22, left: 14 },
-        { bottom: 22, right: 14 },
+        { top: isMobile ? 16 : 22, left: isMobile ? 10 : 14 },
+        { top: isMobile ? 16 : 22, right: isMobile ? 10 : 14 },
+        { bottom: isMobile ? 16 : 22, left: isMobile ? 10 : 14 },
+        { bottom: isMobile ? 16 : 22, right: isMobile ? 10 : 14 },
       ].map((pos, i) => (
         <div key={i} style={{ position: "absolute", ...pos }}>
-          <svg width="36" height="36" viewBox="0 0 36 36" fill="none">
+          <svg width={isMobile ? 24 : 36} height={isMobile ? 24 : 36} viewBox="0 0 36 36" fill="none">
             <rect x={i%2===0?0:14} y={i<2?0:14} width="22" height="2" fill={C.gold} opacity="0.7" />
             <rect x={i%2===0?0:34} y={i<2?0:14} width="2" height="22" fill={C.gold} opacity="0.7" />
             <rect x={i%2===0?4:18} y={i<2?4:18} width="12" height="12" fill="none" stroke={C.leaf} strokeWidth="1" opacity="0.5"
@@ -367,15 +344,16 @@ function PageShell({ children, bgVariant = "a", style = {} }) {
           </svg>
         </div>
       ))}
-      <div style={{ position: "absolute", inset: 22, border: `1px solid ${C.gold}33`, pointerEvents: "none" }} />
-      <div style={{ position: "absolute", inset: 26, border: `1px solid ${C.leaf}22`, pointerEvents: "none" }} />
+      {/* Frame */}
+      <div style={{ position: "absolute", inset: isMobile ? 18 : 22, border: `1px solid ${C.gold}33`, pointerEvents: "none" }} />
+      <div style={{ position: "absolute", inset: isMobile ? 21 : 26, border: `1px solid ${C.leaf}22`, pointerEvents: "none" }} />
       {children}
     </div>
   );
 }
 
 // ─── CONTENT CARD ─────────────────────────────────────────────────────────────
-function ContentCard({ color, label, items, icon: IconChar }) {
+function ContentCard({ color, label, items }) {
   const isMobile = useIsMobile();
   return (
     <div style={{
@@ -395,7 +373,7 @@ function ContentCard({ color, label, items, icon: IconChar }) {
       <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 6 }}>
         <div style={{ width: 8, height: 8, background: color, transform: "rotate(45deg)", flexShrink: 0 }} />
         <span style={{
-          fontSize: isMobile ? 11 : "clamp(7.5px,0.9vw,9px)",
+          fontSize: isMobile ? 10 : "clamp(7.5px,0.9vw,9px)",
           letterSpacing: "2px",
           textTransform: "uppercase",
           color,
@@ -404,14 +382,14 @@ function ContentCard({ color, label, items, icon: IconChar }) {
         }}>{label}</span>
         <div style={{ flex: 1, height: 1, background: `linear-gradient(to right, ${color}66, transparent)` }} />
       </div>
-      <div style={{ display: "flex", flexDirection: "column", gap: isMobile ? 6 : 4 }}>
+      <div style={{ display: "flex", flexDirection: "column", gap: isMobile ? 5 : 4 }}>
         {items.map((item, i) => (
           <div key={i} style={{ display: "flex", alignItems: "flex-start", gap: 8 }}>
-            <svg width="6" height="6" viewBox="0 0 6 6" style={{ flexShrink: 0, marginTop: isMobile ? 6 : 5 }}>
+            <svg width="6" height="6" viewBox="0 0 6 6" style={{ flexShrink: 0, marginTop: isMobile ? 5 : 4 }}>
               <polygon points="3,0 6,3 3,6 0,3" fill={color} opacity="0.8" />
             </svg>
             <span style={{
-              fontSize: isMobile ? 13 : "clamp(8.5px,1vw,10px)",
+              fontSize: isMobile ? 12.5 : "clamp(8.5px,1vw,10px)",
               color: C.textMain,
               lineHeight: 1.7,
               fontFamily: "'Be Vietnam Pro',sans-serif",
@@ -424,53 +402,7 @@ function ContentCard({ color, label, items, icon: IconChar }) {
   );
 }
 
-// ─── LEFT TITLE PANEL ─────────────────────────────────────────────────────────
-function TitlePanel({ breadcrumb, title, titleEn, subtitle, children, lang }) {
-  const isMobile = useIsMobile();
-  return (
-    <div style={{
-      display: "flex", flexDirection: "column", justifyContent: "center",
-      height: "100%", gap: 0,
-    }}>
-      <div style={{
-        fontSize: isMobile ? 10 : "clamp(7px,0.8vw,8.5px)",
-        letterSpacing: "2.5px",
-        textTransform: "uppercase",
-        color: C.textMuted,
-        marginBottom: 10,
-        display: "flex", alignItems: "center", gap: 8,
-        fontFamily: "'Be Vietnam Pro',sans-serif",
-      }}>
-        <div style={{ width: 20, height: 1, background: `${C.leaf}55` }} />
-        {breadcrumb}
-      </div>
-      <div style={{
-        fontSize: isMobile ? 20 : "clamp(16px,1.9vw,24px)",
-        fontWeight: 700,
-        color: C.ink,
-        lineHeight: 1.15,
-        fontFamily: "'Playfair Display',serif",
-        textShadow: `0 0 10px rgba(139,69,19,0.15)`,
-      }}>
-        {lang === "vi" ? title : (titleEn || title)}
-      </div>
-      {subtitle && (
-        <div style={{
-          fontSize: isMobile ? 11 : "clamp(9px,1vw,11px)",
-          fontStyle: "italic",
-          color: C.clay,
-          letterSpacing: "1.5px",
-          marginTop: 4,
-          marginBottom: 10,
-          fontFamily: "'Lora',serif",
-        }}>{subtitle}</div>
-      )}
-      <SectionDivider />
-      {children}
-    </div>
-  );
-}
-
+// ─── VERTICAL DIVIDER ─────────────────────────────────────────────────────────
 function VDivider() {
   return (
     <div style={{
@@ -481,21 +413,21 @@ function VDivider() {
   );
 }
 
-// ─── HORIZONTAL DIVIDER (mobile) ──────────────────────────────────────────────
-function HDivider() {
+// ─── HORIZONTAL DIVIDER ───────────────────────────────────────────────────────
+function HDivider({ margin = "6px 0" }) {
   return (
     <div style={{
       height: 1, width: "100%", flexShrink: 0,
       background: `linear-gradient(to right, transparent, ${C.gold}55 20%, ${C.leaf}44 80%, transparent)`,
-      margin: "8px 0",
+      margin,
     }} />
   );
 }
 
 // ─── PAGE FOOTER ──────────────────────────────────────────────────────────────
-function PageFooter({ lang }) {
+function PageFooter() {
   return (
-    <div style={{ display: "flex", alignItems: "center", gap: 10, marginTop: 12 }}>
+    <div style={{ display: "flex", alignItems: "center", gap: 10, marginTop: 10 }}>
       <div style={{ flex: 1, height: 1, background: `linear-gradient(to right, ${C.leaf}44, transparent)` }} />
       <span style={{
         fontSize: 8,
@@ -509,130 +441,226 @@ function PageFooter({ lang }) {
   );
 }
 
-// ═══════════════════════════════════════════════════════════════════════════════
-// PAGES
-// ═══════════════════════════════════════════════════════════════════════════════
+// ─── MOBILE PAGE CONTENT WRAPPER ──────────────────────────────────────────────
+// On mobile: portrait scroll container inside the A4 shell
+// On desktop: absolute positioned as before
+function PageContent({ children, isMobile }) {
+  if (isMobile) {
+    return (
+      <div style={{
+         padding: "30px 26px",
+        display: "flex",
+        flexDirection: "column",
+        gap: 0,
+        width: "100%",
+      }}
+        className="mobile-scroll"
+      >
+        {children}
+      </div>
+    );
+  }
+  return (
+    <div style={{
+      position: "absolute",
+      top: 36, bottom: 36, left: 40, right: 40,
+      display: "flex",
+      flexDirection: "row",
+      alignItems: "stretch",
+    }}>
+      {children}
+    </div>
+  );
+}
 
+// ─── MOBILE SECTION TITLE ─────────────────────────────────────────────────────
+function MobileBreadcrumb({ text }) {
+  return (
+    <div style={{
+      fontSize: 9,
+      letterSpacing: "2px",
+      textTransform: "uppercase",
+      color: C.textMuted,
+      fontFamily: "'Be Vietnam Pro',sans-serif",
+      display: "flex", alignItems: "center", gap: 6,
+      marginBottom: 6,
+    }}>
+      <div style={{ width: 16, height: 1, background: `${C.leaf}55` }} />
+      {text}
+    </div>
+  );
+}
+
+// ─── MOBILE IMAGE BLOCK ───────────────────────────────────────────────────────
+function MobileImageBlock({ imgUrl, height = 200 }) {
+  if (!imgUrl) return null;
+  return (
+    <div style={{
+      width: "100%",
+      height,
+      position: "relative",
+      border: `1px solid ${C.gold}44`,
+      borderRadius: 3,
+      overflow: "hidden",
+      flexShrink: 0,
+      marginBottom: 10,
+      marginTop: 4,
+    }}>
+      <div style={{
+        position: "absolute", inset: 0,
+        backgroundImage: `url('${imgUrl}')`,
+        backgroundSize: "cover",
+        backgroundPosition: "center top",
+      }} />
+      <div style={{
+        position: "absolute", inset: 0,
+        background: `linear-gradient(to top, rgba(10,25,12,0.45), transparent 40%)`,
+        pointerEvents: "none",
+      }} />
+    </div>
+  );
+}
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// PAGE 1: COVER
+// ═══════════════════════════════════════════════════════════════════════════════
 function Page1Cover({ lang }) {
   const isMobile = useIsMobile();
-  return (
-    <PageShell bgVariant="a">
-      {!isMobile && (
-        <>
-          <div style={{
-            position: "absolute",
-            right: "15%", top: "50%",
-            transform: "translate(50%, -50%) rotate(45deg)",
-            width: "35vw", height: "35vw",
-            maxWidth: 280, maxHeight: 280,
-            border: `1px solid ${C.gold}22`,
-            opacity: 0.3,
-          }} />
-          <div style={{
-            position: "absolute",
-            right: "15%", top: "50%",
-            transform: "translate(50%, -50%) rotate(45deg)",
-            width: "28vw", height: "28vw",
-            maxWidth: 220, maxHeight: 220,
-            border: `1px solid ${C.leaf}33`,
-            opacity: 0.4,
-          }} />
-        </>
-      )}
 
-      <div style={{
-        position: "absolute",
-        top: 36, bottom: 36, left: 40, right: 40,
-        display: "flex",
-        flexDirection: isMobile ? "column" : "row",
-        alignItems: isMobile ? "flex-start" : "stretch",
-        overflowY: isMobile ? "auto" : "visible",
-        gap: isMobile ? 16 : 0,
-      }}>
-        {/* Left — Title */}
-        <div style={{
-          width: isMobile ? "100%" : "52%",
-          flexShrink: 0,
-          display: "flex", flexDirection: "column",
-          justifyContent: "center",
-          paddingRight: isMobile ? 0 : 32,
-        }}>
+  if (isMobile) {
+    return (
+      <PageShell bgVariant="a">
+        <PageContent isMobile={true}>
+          {/* Institution */}
           <div style={{
-            fontSize: isMobile ? 9 : "clamp(7px,0.8vw,8.5px)",
-            letterSpacing: isMobile ? "2px" : "4px",
-            textTransform: "uppercase",
-            color: C.textMuted,
-            marginBottom: 8,
-            fontFamily: "'Be Vietnam Pro',sans-serif",
-            lineHeight: 2,
+            fontSize: 9, letterSpacing: "2px", textTransform: "uppercase",
+            color: C.textMuted, fontFamily: "'Be Vietnam Pro',sans-serif",
+            lineHeight: 2, textAlign: "center", marginBottom: 4,
           }}>
             Trường Đại Học Sư Phạm – Đại Học Đà Nẵng<br />
             Khoa Sử – Địa – Chính Trị
           </div>
+
           <SectionDivider />
+
+          {/* Ornament */}
+          <div style={{ display: "flex", justifyContent: "center", margin: "10px 0" }}>
+            <svg width="64" height="64" viewBox="0 0 80 80" fill="none">
+              <rect x="30" y="30" width="20" height="20" fill={C.gold} opacity="0.8" transform="rotate(45 40 40)" />
+              {[0,90,180,270].map(angle => (
+                <g key={angle} transform={`rotate(${angle} 40 40)`}>
+                  <rect x="38" y="4" width="4" height="22" fill={C.leaf} opacity="0.6" />
+                  <polygon points="36,4 44,4 40,0" fill={C.gold} opacity="0.8" />
+                </g>
+              ))}
+              {[[14,14],[66,14],[14,66],[66,66]].map(([x,y],i) => (
+                <rect key={i} x={x-5} y={y-5} width="10" height="10" fill={C.clay} opacity="0.6" transform={`rotate(45 ${x} ${y})`} />
+              ))}
+            </svg>
+          </div>
+
+          {/* Label */}
           <div style={{
-            fontSize: isMobile ? 9 : "clamp(8px,1vw,10px)",
-            letterSpacing: isMobile ? "4px" : "6px",
-            color: C.moss,
-            textTransform: "uppercase",
-            margin: "10px 0 6px",
-            fontFamily: "'Be Vietnam Pro',sans-serif",
+            fontSize: 9, letterSpacing: "5px", color: C.moss, textTransform: "uppercase",
+            fontFamily: "'Be Vietnam Pro',sans-serif", textAlign: "center", marginBottom: 6,
           }}>
             ✦ &nbsp;{lang === "vi" ? "Sổ Tay" : "Field Guide"}&nbsp; ✦
           </div>
+
+          {/* Title */}
           <div style={{
-            fontSize: isMobile ? 36 : "clamp(38px,4.8vw,58px)",
-            fontWeight: 700,
-            color: C.ink,
-            lineHeight: 1.0,
+            fontSize: 42, fontWeight: 700, color: C.ink, lineHeight: 1.0,
             fontFamily: "'Playfair Display',serif",
-            textShadow: `0 0 15px rgba(107,63,32,0.2)`,
+            textAlign: "center",
           }}>
             {lang === "vi" ? "Văn Hoá" : "Culture"}
           </div>
           <div style={{
-            fontSize: isMobile ? 28 : "clamp(32px,4.0vw,50px)",
-            fontWeight: 700,
-            color: C.forestMid,
-            lineHeight: 1.05,
-            fontFamily: "'Playfair Display',serif",
-            textShadow: `0 0 15px rgba(107,63,32,0.15)`,
-            marginTop: 2,
+            fontSize: 32, fontWeight: 700, color: C.forestMid, lineHeight: 1.05,
+            fontFamily: "'Playfair Display',serif", textAlign: "center", marginBottom: 4,
           }}>
             {lang === "vi" ? "Người Cơ Tu" : "The Cơ Tu"}
           </div>
           <div style={{
-            fontSize: isMobile ? 10 : "clamp(9px,1vw,12px)",
-            fontStyle: "italic",
-            color: C.clay,
-            letterSpacing: isMobile ? "2px" : "4px",
-            textTransform: "uppercase",
-            margin: "10px 0 16px",
-            fontFamily: "'Lora',serif",
+            fontSize: 11, fontStyle: "italic", color: C.clay, letterSpacing: "3px",
+            textTransform: "uppercase", textAlign: "center",
+            fontFamily: "'Lora',serif", marginBottom: 12,
           }}>
             {lang === "vi" ? "Tại Thành Phố Đà Nẵng" : "In Da Nang City"}
           </div>
+
           <SectionDivider />
+
+          {/* Quote */}
           <div style={{
-            marginTop: 12,
-            fontSize: 9,
-            letterSpacing: "3px",
-            color: C.textMuted,
-            fontFamily: "'Be Vietnam Pro',sans-serif",
-          }}>✦ &nbsp;Đà Nẵng, 2026&nbsp; ✦</div>
+            background: `linear-gradient(135deg, rgba(10,25,12,0.7), ${C.forest}88)`,
+            borderLeft: `3px solid ${C.gold}88`,
+            borderRight: `3px solid ${C.gold}88`,
+            padding: "14px 14px",
+            marginTop: 12, marginBottom: 12,
+            position: "relative",
+          }}>
+            <div style={{
+              position: "absolute", top: 4, left: 10,
+              fontSize: 44, fontFamily: "'Playfair Display',serif",
+              color: `${C.gold}22`, lineHeight: 0.7,
+            }}>"</div>
+            <p style={{
+              fontStyle: "italic", fontSize: 12, color: C.textMain,
+              lineHeight: 1.9, textAlign: "center", margin: 0,
+              position: "relative", zIndex: 1,
+              fontFamily: "'Lora',serif",
+            }}>
+              {lang === "vi"
+                ? "Giữa đại ngàn Trường Sơn, văn hóa Cơ Tu không chỉ là ký ức của núi rừng — mà là nhịp thở sống động của một dân tộc giữ hồn qua từng thế hệ."
+                : "Amid the Trường Sơn highlands, Cơ Tu culture is not merely a memory of forests — it is the living breath of a people preserving their soul across generations."}
+            </p>
+          </div>
+
+          <CoTuBorder color={C.gold} />
+
+          <div style={{
+            fontSize: 9, letterSpacing: "3px", color: C.textMuted,
+            fontFamily: "'Be Vietnam Pro',sans-serif", textAlign: "center", marginTop: 10,
+          }}>
+            ✦ &nbsp;Đà Nẵng, 2026&nbsp; ✦
+          </div>
+        </PageContent>
+      </PageShell>
+    );
+  }
+
+  // Desktop
+  return (
+    <PageShell bgVariant="a">
+      <div style={{
+        position: "absolute",
+        top: 36, bottom: 36, left: 40, right: 40,
+        display: "flex", flexDirection: "row", alignItems: "stretch",
+      }}>
+        <div style={{ width: "52%", flexShrink: 0, display: "flex", flexDirection: "column", justifyContent: "center", paddingRight: 32 }}>
+          <div style={{ fontSize: "clamp(7px,0.8vw,8.5px)", letterSpacing: "4px", textTransform: "uppercase", color: C.textMuted, marginBottom: 8, fontFamily: "'Be Vietnam Pro',sans-serif", lineHeight: 2 }}>
+            Trường Đại Học Sư Phạm – Đại Học Đà Nẵng<br />Khoa Sử – Địa – Chính Trị
+          </div>
+          <SectionDivider />
+          <div style={{ fontSize: "clamp(8px,1vw,10px)", letterSpacing: "6px", color: C.moss, textTransform: "uppercase", margin: "10px 0 6px", fontFamily: "'Be Vietnam Pro',sans-serif" }}>
+            ✦ &nbsp;{lang === "vi" ? "Sổ Tay" : "Field Guide"}&nbsp; ✦
+          </div>
+          <div style={{ fontSize: "clamp(38px,4.8vw,58px)", fontWeight: 700, color: C.ink, lineHeight: 1.0, fontFamily: "'Playfair Display',serif" }}>
+            {lang === "vi" ? "Văn Hoá" : "Culture"}
+          </div>
+          <div style={{ fontSize: "clamp(32px,4.0vw,50px)", fontWeight: 700, color: C.forestMid, lineHeight: 1.05, fontFamily: "'Playfair Display',serif", marginTop: 2 }}>
+            {lang === "vi" ? "Người Cơ Tu" : "The Cơ Tu"}
+          </div>
+          <div style={{ fontSize: "clamp(9px,1vw,12px)", fontStyle: "italic", color: C.clay, letterSpacing: "4px", textTransform: "uppercase", margin: "10px 0 16px", fontFamily: "'Lora',serif" }}>
+            {lang === "vi" ? "Tại Thành Phố Đà Nẵng" : "In Da Nang City"}
+          </div>
+          <SectionDivider />
+          <div style={{ marginTop: 12, fontSize: 9, letterSpacing: "3px", color: C.textMuted, fontFamily: "'Be Vietnam Pro',sans-serif" }}>✦ &nbsp;Đà Nẵng, 2026&nbsp; ✦</div>
         </div>
-
-        {isMobile ? <HDivider /> : <VDivider />}
-
-        {/* Right — Quote & ornament */}
-        <div style={{
-          flex: 1,
-          display: "flex", flexDirection: "column",
-          alignItems: "center", justifyContent: "center",
-          paddingLeft: isMobile ? 0 : 28, gap: 16,
-          paddingBottom: isMobile ? 8 : 0,
-        }}>
-          <svg width={isMobile ? 60 : 80} height={isMobile ? 60 : 80} viewBox="0 0 80 80" fill="none">
+        <VDivider />
+        <div style={{ flex: 1, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", paddingLeft: 28, gap: 16 }}>
+          <svg width="80" height="80" viewBox="0 0 80 80" fill="none">
             <rect x="30" y="30" width="20" height="20" fill={C.gold} opacity="0.8" transform="rotate(45 40 40)" />
             {[0,90,180,270].map(angle => (
               <g key={angle} transform={`rotate(${angle} 40 40)`}>
@@ -640,39 +668,11 @@ function Page1Cover({ lang }) {
                 <polygon points="36,4 44,4 40,0" fill={C.gold} opacity="0.8" />
               </g>
             ))}
-            {[[14,14],[66,14],[14,66],[66,66]].map(([x,y],i) => (
-              <rect key={i} x={x-5} y={y-5} width="10" height="10" fill={C.clay} opacity="0.6" transform={`rotate(45 ${x} ${y})`} />
-            ))}
           </svg>
-
-          <div style={{
-            width: "100%",
-            background: `linear-gradient(135deg, rgba(10,25,12,0.7), ${C.forest}88)`,
-            borderLeft: `3px solid ${C.gold}88`,
-            borderRight: `3px solid ${C.gold}88`,
-            padding: isMobile ? "14px 14px" : "18px 20px",
-            position: "relative",
-          }}>
-            <div style={{
-              position: "absolute", top: 4, left: 10,
-              fontSize: isMobile ? 36 : 52,
-              fontFamily: "'Playfair Display',serif",
-              color: `${C.gold}22`,
-              lineHeight: 0.7,
-            }}>"</div>
-            <p style={{
-              fontStyle: "italic",
-              fontSize: isMobile ? 12 : "clamp(10px,1.2vw,13px)",
-              color: C.textMain,
-              lineHeight: 1.9,
-              textAlign: "center",
-              margin: 0,
-              position: "relative", zIndex: 1,
-              fontFamily: "'Lora',serif",
-            }}>
-              {lang === "vi"
-                ? "Giữa đại ngàn Trường Sơn, văn hóa Cơ Tu không chỉ là ký ức của núi rừng — mà là nhịp thở sống động của một dân tộc giữ hồn qua từng thế hệ."
-                : "Amid the Trường Sơn highlands, Cơ Tu culture is not merely a memory of forests — it is the living breath of a people preserving their soul across generations."}
+          <div style={{ width: "100%", background: `linear-gradient(135deg, rgba(10,25,12,0.7), ${C.forest}88)`, borderLeft: `3px solid ${C.gold}88`, borderRight: `3px solid ${C.gold}88`, padding: "18px 20px", position: "relative" }}>
+            <div style={{ position: "absolute", top: 4, left: 10, fontSize: 52, fontFamily: "'Playfair Display',serif", color: `${C.gold}22`, lineHeight: 0.7 }}>"</div>
+            <p style={{ fontStyle: "italic", fontSize: "clamp(10px,1.2vw,13px)", color: C.textMain, lineHeight: 1.9, textAlign: "center", margin: 0, position: "relative", zIndex: 1, fontFamily: "'Lora',serif" }}>
+              {lang === "vi" ? "Giữa đại ngàn Trường Sơn, văn hóa Cơ Tu không chỉ là ký ức của núi rừng — mà là nhịp thở sống động của một dân tộc giữ hồn qua từng thế hệ." : "Amid the Trường Sơn highlands, Cơ Tu culture is not merely a memory of forests — it is the living breath of a people preserving their soul across generations."}
             </p>
           </div>
           <CoTuBorder color={C.gold} />
@@ -682,200 +682,122 @@ function Page1Cover({ lang }) {
   );
 }
 
-// ─── GENERIC LEFT-RIGHT LAYOUT ───────────────────────────────────────────────
-function GenericPage({ lang, breadcrumb, title, titleEn, subtitle, badge, sections, bgVariant = "b", imgUrl }) {
-  const isMobile = useIsMobile();
-
-  return (
-    <PageShell bgVariant={bgVariant}>
-      <div style={{
-        position: "absolute",
-        top: 36, bottom: 36, left: 40, right: 40,
-        display: "flex",
-        flexDirection: isMobile ? "column" : "row",
-        alignItems: "stretch",
-        overflowY: isMobile ? "auto" : "visible",
-      }}>
-        {/* Left title */}
-        <div style={{
-          width: isMobile ? "100%" : "36%",
-          flexShrink: 0,
-          paddingRight: isMobile ? 0 : 20,
-          paddingTop: 4, paddingBottom: 4,
-        }}>
-          <TitlePanel breadcrumb={breadcrumb} title={title} titleEn={titleEn} subtitle={subtitle} lang={lang}>
-            {badge && (
-              <div style={{
-                marginTop: 14,
-                background: `linear-gradient(135deg, rgba(60,30,10,0.08), ${C.leaf}15)`,
-                borderLeft: `3px solid ${C.leaf}bb`,
-                padding: "8px 12px",
-              }}>
-                <div style={{ fontSize: isMobile ? 9 : 7, letterSpacing: "2px", textTransform: "uppercase", color: C.textMuted, marginBottom: 3, fontFamily: "'Be Vietnam Pro',sans-serif" }}>
-                  Phân Loại
-                </div>
-                <div style={{ fontSize: isMobile ? 11 : 8.5, color: C.forestMid, lineHeight: 1.6, fontFamily: "'Be Vietnam Pro',sans-serif" }}>{badge}</div>
-              </div>
-            )}
-            {imgUrl && !isMobile && (
-              <div style={{
-                marginTop: 16,
-                width: "100%",
-                height: 350,
-                position: "relative",
-                border: `1px solid ${C.gold}44`,
-                borderRadius: 2,
-                overflow: "hidden",
-                boxShadow: `0 4px 15px rgba(0,0,0,0.3)`,
-              }}>
-                <div style={{
-                  position: "absolute", inset: 0,
-                  backgroundImage: `url('${imgUrl}')`,
-                  backgroundSize: "cover",
-                  backgroundPosition: "center",
-                }} />
-                <div style={{ position: "absolute", inset: 0, background: `linear-gradient(to top, rgba(60,30,10,0.3), transparent 50%)`, pointerEvents: "none" }} />
-              </div>
-            )}
-            {!isMobile && (
-              <>
-                <div style={{ marginTop: 14, display: "flex", gap: 6 }}>
-                  {[7,12,7].map((s,i) => (
-                    <CoTuDiamond key={i} size={s} color={i===1 ? C.gold : C.leaf} />
-                  ))}
-                </div>
-                <div style={{ marginTop: 12 }}><CoTuBorder /></div>
-                <PageFooter lang={lang} />
-              </>
-            )}
-          </TitlePanel>
-        </div>
-
-        {isMobile ? <HDivider /> : <VDivider />}
-
-        {/* Mobile image */}
-        {imgUrl && isMobile && (
-          <div style={{
-            width: "100%",
-            height: 180,
-            position: "relative",
-            border: `1px solid ${C.gold}44`,
-            borderRadius: 2,
-            overflow: "hidden",
-            marginBottom: 8,
-            flexShrink: 0,
-          }}>
-            <div style={{
-              position: "absolute", inset: 0,
-              backgroundImage: `url('${imgUrl}')`,
-              backgroundSize: "cover",
-              backgroundPosition: "center",
-            }} />
-            <div style={{ position: "absolute", inset: 0, background: `linear-gradient(to top, rgba(60,30,10,0.3), transparent 50%)`, pointerEvents: "none" }} />
-          </div>
-        )}
-
-        {/* Right — content cards */}
-        <div style={{
-          flex: 1,
-          display: "flex", flexDirection: "column",
-          justifyContent: isMobile ? "flex-start" : "center",
-          paddingLeft: isMobile ? 0 : 22,
-          paddingRight: 4,
-          gap: isMobile ? 10 : 8,
-          overflow: "hidden",
-        }}>
-          {sections.map((sec, i) => <ContentCard key={i} {...sec} />)}
-          {isMobile && <PageFooter lang={lang} />}
-        </div>
-      </div>
-    </PageShell>
-  );
-}
-
-// ─── PAGE 2: INTRO ────────────────────────────────────────────────────────────
+// ═══════════════════════════════════════════════════════════════════════════════
+// PAGE 2: INTRODUCTION
+// ═══════════════════════════════════════════════════════════════════════════════
 function Page2Intro({ lang }) {
   const isMobile = useIsMobile();
   const content = lang === "vi"
     ? "Văn hóa của người Cơ Tu tại Đà Nẵng là một bộ phận đặc sắc trong bức tranh văn hóa miền Trung, được hình thành và phát triển trên nền tảng gắn bó lâu đời với không gian núi rừng Trường Sơn, thể hiện qua nhiều yếu tố độc đáo như kiến trúc nhà cộng đồng, trang phục truyền thống, lễ hội và các phong tục tập quán; được thực hiện trong khuôn khổ đề tài \"Xây dựng nguồn tài nguyên số cho văn hóa người Cơ Tu tại thành phố Đà Nẵng,\" cuốn sổ tay này không hướng đến việc trình bày toàn diện mà tập trung lựa chọn giới thiệu một số di tích và giá trị văn hóa tiêu biểu, mang tính đại diện mà nhóm nghiên cứu đã khảo sát và tổng hợp, với cách trình bày ngắn gọn, rõ ràng và gần gũi, phù hợp với nhiều đối tượng bạn đọc, qua đó góp phần lan tỏa nhận thức, nuôi dưỡng niềm tự hào và thúc đẩy việc bảo tồn, phát huy các giá trị văn hóa truyền thống trong bối cảnh hiện đại."
     : "The culture of the Cơ Tu people in Da Nang is a distinctive part of Central Vietnam's cultural landscape, formed and developed through a long-standing connection with the Trường Sơn mountainous region. It is expressed through unique elements such as communal architecture, traditional costumes, festivals, and customs. Conducted within the framework of the project \"Building Digital Resources for Cơ Tu Culture in Da Nang City,\" this handbook does not aim to be comprehensive but instead focuses on presenting selected representative cultural sites and values surveyed and compiled by the research team. The content is designed to be concise, clear, and accessible to a wide range of readers, contributing to raising awareness, fostering pride, and promoting the preservation and development of traditional cultural values in a modern context.";
 
-  return (
-    <PageShell bgVariant="a">
-      <div style={{
-        position: "absolute",
-        top: 36, bottom: 36, left: 40, right: 40,
-        display: "flex",
-        flexDirection: isMobile ? "column" : "row",
-        alignItems: "stretch",
-        overflowY: isMobile ? "auto" : "visible",
-      }}>
-        <div style={{
-          width: isMobile ? "100%" : "42%",
-          flexShrink: 0,
-          paddingRight: isMobile ? 0 : 24,
-          display: "flex", flexDirection: "column", justifyContent: "center"
-        }}>
-          <div style={{ fontSize: isMobile ? 9 : 8, letterSpacing: "3px", textTransform: "uppercase", color: C.textMuted, marginBottom: 10, fontFamily: "'Be Vietnam Pro',sans-serif", display: "flex", alignItems: "center", gap: 8 }}>
-            <div style={{ width: 18, height: 1, background: `${C.leaf}55` }} />
-            {lang === "vi" ? "Trang Giới Thiệu" : "Introduction"}
-          </div>
-          <div style={{ fontSize: isMobile ? 28 : "clamp(28px,3.5vw,42px)", fontWeight: 700, color: C.ink, lineHeight: 1.05, fontFamily: "'Playfair Display',serif", textShadow: `0 0 15px rgba(107,63,32,0.15)` }}>
+  const highlights = [
+    { label: lang === "vi" ? "Kiến trúc cộng đồng" : "Community Architecture", desc: lang === "vi" ? "Nhà Gươl – linh hồn của làng Cơ Tu" : "The Gươl house — soul of the Cơ Tu village", color: C.leaf },
+    { label: lang === "vi" ? "Trang phục & Dệt thổ cẩm" : "Costume & Weaving", desc: lang === "vi" ? "Hoa văn đặc trưng, kỹ thuật truyền đời" : "Distinctive patterns, time-honored craft", color: C.gold },
+    { label: lang === "vi" ? "Lễ hội & Phong tục" : "Festivals & Customs", desc: lang === "vi" ? "Bảo tồn bản sắc qua từng nghi lễ" : "Preserving identity through ritual", color: C.clay },
+  ];
+
+  if (isMobile) {
+    return (
+      <PageShell bgVariant="a">
+        <PageContent isMobile={true}>
+          <MobileBreadcrumb text={lang === "vi" ? "Trang Giới Thiệu" : "Introduction"} />
+          <div style={{ fontSize: 30, fontWeight: 700, color: C.ink, lineHeight: 1.05, fontFamily: "'Playfair Display',serif" }}>
             {lang === "vi" ? "Giới Thiệu" : "Introduction"}
           </div>
-          <div style={{ fontSize: isMobile ? 11 : 11, fontStyle: "italic", color: C.clay, letterSpacing: "2px", marginBottom: 14, marginTop: 4, fontFamily: "'Lora',serif" }}>
+          <div style={{ fontSize: 12, fontStyle: "italic", color: C.clay, letterSpacing: "2px", marginBottom: 8, marginTop: 4, fontFamily: "'Lora',serif" }}>
+            {lang === "vi" ? "Introduction" : "Giới Thiệu"}
+          </div>
+          <SectionDivider />
+
+          {/* Highlights */}
+          <div style={{ display: "flex", flexDirection: "column", gap: 8, marginTop: 10 }}>
+            {highlights.map((h, i) => (
+              <div key={i} style={{
+                display: "flex", alignItems: "center", gap: 10,
+                background: `linear-gradient(135deg, rgba(60,30,10,0.06), ${h.color}15)`,
+                borderLeft: `3px solid ${h.color}bb`,
+                padding: "10px 12px",
+              }}>
+                <CoTuDiamond size={10} color={h.color} />
+                <div>
+                  <div style={{ fontSize: 13, fontWeight: 600, color: C.ink, fontFamily: "'Be Vietnam Pro',sans-serif" }}>{h.label}</div>
+                  <div style={{ fontSize: 11, color: C.textMuted, marginTop: 2, fontStyle: "italic", fontFamily: "'Lora',serif" }}>{h.desc}</div>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          <HDivider margin="12px 0" />
+
+          {/* About section */}
+          <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 10 }}>
+            <DiamondRow gap={6} />
+            <div style={{ fontSize: 10, letterSpacing: "2.5px", textTransform: "uppercase", color: C.forestMid, fontFamily: "'Be Vietnam Pro',sans-serif" }}>
+              {lang === "vi" ? "Về Cuốn Sổ Tay" : "About This Book"}
+            </div>
+          </div>
+
+          <div style={{
+            background: `linear-gradient(135deg, rgba(60,30,10,0.08), ${C.leaf}12)`,
+            borderTop: `2px solid ${C.gold}77`,
+            borderBottom: `1px solid ${C.gold}33`,
+            padding: "14px 14px",
+            position: "relative",
+          }}>
+            <div style={{ position: "absolute", top: 0, left: 0, width: 60, height: 2, background: `linear-gradient(to right, ${C.gold}, transparent)` }} />
+            <p style={{
+              fontSize: 13, color: C.ink, lineHeight: 1.9, margin: 0,
+              textAlign: "justify", fontFamily: "'Be Vietnam Pro',sans-serif", fontWeight: 400,
+            }}>{content}</p>
+          </div>
+
+          <CoTuBorder />
+          <PageFooter />
+        </PageContent>
+      </PageShell>
+    );
+  }
+
+  // Desktop
+  return (
+    <PageShell bgVariant="a">
+      <div style={{ position: "absolute", top: 36, bottom: 36, left: 40, right: 40, display: "flex", flexDirection: "row", alignItems: "stretch" }}>
+        <div style={{ width: "42%", flexShrink: 0, paddingRight: 24, display: "flex", flexDirection: "column", justifyContent: "center" }}>
+          <div style={{ fontSize: 8, letterSpacing: "3px", textTransform: "uppercase", color: C.textMuted, marginBottom: 10, fontFamily: "'Be Vietnam Pro',sans-serif", display: "flex", alignItems: "center", gap: 8 }}>
+            <div style={{ width: 18, height: 1, background: `${C.leaf}55` }} />{lang === "vi" ? "Trang Giới Thiệu" : "Introduction"}
+          </div>
+          <div style={{ fontSize: "clamp(28px,3.5vw,42px)", fontWeight: 700, color: C.ink, lineHeight: 1.05, fontFamily: "'Playfair Display',serif" }}>
+            {lang === "vi" ? "Giới Thiệu" : "Introduction"}
+          </div>
+          <div style={{ fontSize: 11, fontStyle: "italic", color: C.clay, letterSpacing: "2px", marginBottom: 14, marginTop: 4, fontFamily: "'Lora',serif" }}>
             {lang === "vi" ? "Introduction" : "Giới Thiệu"}
           </div>
           <SectionDivider />
           <div style={{ marginTop: 16, display: "flex", flexDirection: "column", gap: 10 }}>
-            {[
-              { label: lang === "vi" ? "Kiến trúc cộng đồng" : "Community Architecture", desc: lang === "vi" ? "Nhà Gươl – linh hồn của làng Cơ Tu" : "The Gươl house — soul of the Cơ Tu village", color: C.leaf },
-              { label: lang === "vi" ? "Trang phục & Dệt thổ cẩm" : "Costume & Weaving", desc: lang === "vi" ? "Hoa văn đặc trưng, kỹ thuật truyền đời" : "Distinctive patterns, time-honored craft", color: C.gold },
-              { label: lang === "vi" ? "Lễ hội & Phong tục" : "Festivals & Customs", desc: lang === "vi" ? "Bảo tồn bản sắc qua từng nghi lễ" : "Preserving identity through ritual", color: C.clay },
-            ].map((h, i) => (
-              <div key={i} style={{
-                display: "flex", alignItems: "center", gap: 12,
-                background: `linear-gradient(135deg, rgba(60,30,10,0.06), ${h.color}15)`,
-                borderLeft: `3px solid ${h.color}bb`,
-                padding: isMobile ? "10px 12px" : "8px 14px",
-              }}>
+            {highlights.map((h, i) => (
+              <div key={i} style={{ display: "flex", alignItems: "center", gap: 12, background: `linear-gradient(135deg, rgba(60,30,10,0.06), ${h.color}15)`, borderLeft: `3px solid ${h.color}bb`, padding: "8px 14px" }}>
                 <CoTuDiamond size={10} color={h.color} />
                 <div>
-                  <div style={{ fontSize: isMobile ? 13 : 9.5, fontWeight: 600, color: C.ink, fontFamily: "'Be Vietnam Pro',sans-serif" }}>{h.label}</div>
-                  <div style={{ fontSize: isMobile ? 11 : 9, color: C.textMuted, marginTop: 2, fontStyle: "italic", fontFamily: "'Lora',serif" }}>{h.desc}</div>
+                  <div style={{ fontSize: 9.5, fontWeight: 600, color: C.ink, fontFamily: "'Be Vietnam Pro',sans-serif" }}>{h.label}</div>
+                  <div style={{ fontSize: 9, color: C.textMuted, marginTop: 2, fontStyle: "italic", fontFamily: "'Lora',serif" }}>{h.desc}</div>
                 </div>
               </div>
             ))}
           </div>
           <div style={{ marginTop: 16 }}><CoTuBorder /></div>
         </div>
-
-        {isMobile ? <HDivider /> : <VDivider />}
-
-        <div style={{ flex: 1, paddingLeft: isMobile ? 0 : 26, display: "flex", flexDirection: "column", justifyContent: "center" }}>
+        <VDivider />
+        <div style={{ flex: 1, paddingLeft: 26, display: "flex", flexDirection: "column", justifyContent: "center" }}>
           <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 16 }}>
             <DiamondRow gap={6} />
-            <div style={{ fontSize: isMobile ? 10 : 10, letterSpacing: "3px", textTransform: "uppercase", color: C.forestMid, opacity: 0.85, fontFamily: "'Be Vietnam Pro',sans-serif" }}>
+            <div style={{ fontSize: 10, letterSpacing: "3px", textTransform: "uppercase", color: C.forestMid, opacity: 0.85, fontFamily: "'Be Vietnam Pro',sans-serif" }}>
               {lang === "vi" ? "Về Cuốn Sổ Tay" : "About This Book"}
             </div>
           </div>
-          <div style={{
-            background: `linear-gradient(135deg, rgba(60,30,10,0.08), ${C.leaf}12)`,
-            borderTop: `2px solid ${C.gold}77`,
-            borderBottom: `1px solid ${C.gold}33`,
-            padding: isMobile ? "16px 14px" : "20px 22px",
-            position: "relative",
-          }}>
+          <div style={{ background: `linear-gradient(135deg, rgba(60,30,10,0.08), ${C.leaf}12)`, borderTop: `2px solid ${C.gold}77`, borderBottom: `1px solid ${C.gold}33`, padding: "20px 22px", position: "relative" }}>
             <div style={{ position: "absolute", top: 0, left: 0, width: 60, height: 2, background: `linear-gradient(to right, ${C.gold}, transparent)` }} />
-            <p style={{
-              fontSize: isMobile ? 13 : "clamp(10.5px,1.2vw,13px)",
-              color: C.ink,
-              lineHeight: 1.95,
-              margin: 0,
-              textAlign: "justify",
-              fontFamily: "'Be Vietnam Pro',sans-serif",
-              fontWeight: 400,
-            }}>{content}</p>
+            <p style={{ fontSize: "clamp(10.5px,1.2vw,13px)", color: C.ink, lineHeight: 1.95, margin: 0, textAlign: "justify", fontFamily: "'Be Vietnam Pro',sans-serif", fontWeight: 400 }}>{content}</p>
           </div>
           <div style={{ display: "flex", alignItems: "center", gap: 14, marginTop: 16 }}>
             <div style={{ flex: 1, height: 1, background: `linear-gradient(to right, ${C.leaf}44, transparent)` }} />
@@ -888,7 +810,9 @@ function Page2Intro({ lang }) {
   );
 }
 
-// ─── PAGE 3: TOC ──────────────────────────────────────────────────────────────
+// ═══════════════════════════════════════════════════════════════════════════════
+// PAGE 3: TABLE OF CONTENTS
+// ═══════════════════════════════════════════════════════════════════════════════
 function Page3Toc({ lang }) {
   const isMobile = useIsMobile();
   const vatThe = [
@@ -912,8 +836,7 @@ function Page3Toc({ lang }) {
       display: "flex", alignItems: "center",
       borderLeft: `2px solid ${color}99`,
       background: `linear-gradient(135deg, rgba(60,30,10,0.05), ${color}12)`,
-      padding: isMobile ? "8px 12px" : "5px 12px", marginBottom: 4,
-      gap: 10,
+      padding: isMobile ? "8px 10px" : "5px 12px", marginBottom: 4, gap: 10,
     }}>
       <CoTuDiamond size={6} color={color} />
       <span style={{ flex: 1, fontSize: isMobile ? 13 : "clamp(9.5px,1.1vw,11.5px)", color: C.ink, fontFamily: "'Be Vietnam Pro',sans-serif" }}>{label}</span>
@@ -922,58 +845,95 @@ function Page3Toc({ lang }) {
     </div>
   );
 
-  return (
-    <PageShell bgVariant="b">
-      <div style={{
-        position: "absolute", top: 36, bottom: 36, left: 40, right: 40,
-        display: "flex",
-        flexDirection: isMobile ? "column" : "row",
-        alignItems: "stretch",
-        overflowY: isMobile ? "auto" : "visible",
-      }}>
-        <div style={{
-          width: isMobile ? "100%" : "38%",
-          flexShrink: 0,
-          paddingRight: isMobile ? 0 : 20,
-          display: "flex", flexDirection: "column", justifyContent: "center"
-        }}>
-          <div style={{ fontSize: isMobile ? 9 : 8, letterSpacing: "3px", textTransform: "uppercase", color: C.textMuted, marginBottom: 10, fontFamily: "'Be Vietnam Pro',sans-serif", display: "flex", alignItems: "center", gap: 8 }}>
-            <div style={{ width: 18, height: 1, background: `${C.leaf}55` }} />
-            {lang === "vi" ? "Nội Dung" : "Contents"}
-          </div>
-          <div style={{ fontSize: isMobile ? 28 : "clamp(28px,3.5vw,44px)", fontWeight: 700, color: C.ink, lineHeight: 1.05, fontFamily: "'Playfair Display',serif", textShadow: `0 0 15px rgba(107,63,32,0.15)` }}>
+  if (isMobile) {
+    return (
+      <PageShell bgVariant="b">
+        <PageContent isMobile={true}>
+          <MobileBreadcrumb text={lang === "vi" ? "Nội Dung" : "Contents"} />
+          <div style={{ fontSize: 32, fontWeight: 700, color: C.ink, lineHeight: 1.05, fontFamily: "'Playfair Display',serif" }}>
             {lang === "vi" ? "Mục Lục" : "Contents"}
           </div>
-          <div style={{ fontSize: isMobile ? 11 : 12, fontStyle: "italic", color: C.clay, letterSpacing: "2px", marginBottom: 16, marginTop: 4, fontFamily: "'Lora',serif" }}>
+          <div style={{ fontSize: 12, fontStyle: "italic", color: C.clay, letterSpacing: "2px", marginBottom: 10, marginTop: 4, fontFamily: "'Lora',serif" }}>
             {lang === "vi" ? "Table of Contents" : "Mục Lục"}
           </div>
           <SectionDivider />
-          <div style={{ display: "flex", gap: 12, marginTop: 18, flexWrap: "wrap" }}>
+
+          {/* Count badges */}
+          <div style={{ display: "flex", gap: 12, marginTop: 10, marginBottom: 12 }}>
             {[
               { n: "05", label: lang === "vi" ? "Vật thể" : "Tangible", color: C.leaf },
               { n: "06", label: lang === "vi" ? "Phi vật thể" : "Intangible", color: C.gold },
             ].map((item, i) => (
               <div key={i} style={{
-                textAlign: "center",
+                textAlign: "center", flex: 1,
                 background: `linear-gradient(135deg, rgba(60,30,10,0.08), ${item.color}15)`,
-                padding: isMobile ? "8px 16px" : "10px 20px",
+                padding: "10px 16px",
                 borderTop: `2px solid ${item.color}cc`,
-                boxShadow: `0 0 24px rgba(139,69,19,0.08)`,
               }}>
-                <div style={{ fontSize: isMobile ? 26 : "clamp(22px,2.8vw,32px)", fontWeight: 700, color: item.color, fontFamily: "'Playfair Display',serif" }}>{item.n}</div>
-                <div style={{ fontSize: isMobile ? 9 : 8, letterSpacing: "1.5px", color: C.textMuted, textTransform: "uppercase", marginTop: 3, fontFamily: "'Be Vietnam Pro',sans-serif" }}>{item.label}</div>
+                <div style={{ fontSize: 28, fontWeight: 700, color: item.color, fontFamily: "'Playfair Display',serif" }}>{item.n}</div>
+                <div style={{ fontSize: 9, letterSpacing: "1.5px", color: C.textMuted, textTransform: "uppercase", marginTop: 3, fontFamily: "'Be Vietnam Pro',sans-serif" }}>{item.label}</div>
               </div>
             ))}
           </div>
-          {!isMobile && <div style={{ marginTop: 20 }}><CoTuBorder /></div>}
-        </div>
 
-        {isMobile ? <HDivider /> : <VDivider />}
-
-        <div style={{ flex: 1, display: "flex", flexDirection: "column", justifyContent: "center", paddingLeft: isMobile ? 0 : 24, paddingRight: 6 }}>
+          {/* Tangible */}
           <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 8 }}>
             <CoTuDiamond size={10} color={C.leaf} />
-            <span style={{ fontSize: isMobile ? 10 : "clamp(7.5px,0.88vw,9px)", letterSpacing: "3px", textTransform: "uppercase", color: C.leaf, fontFamily: "'Be Vietnam Pro',sans-serif", fontWeight: 600 }}>
+            <span style={{ fontSize: 10, letterSpacing: "2.5px", textTransform: "uppercase", color: C.leaf, fontFamily: "'Be Vietnam Pro',sans-serif", fontWeight: 600 }}>
+              {lang === "vi" ? "Di Sản Vật Thể" : "Tangible Heritage"}
+            </span>
+            <div style={{ flex: 1, height: 1, background: `linear-gradient(to right, ${C.leaf}55, transparent)` }} />
+          </div>
+          {vatThe.map((item, i) => <TocRow key={i} label={item.label} pg={item.pg} color={C.leaf} />)}
+
+          <div style={{ height: 10 }} />
+
+          {/* Intangible */}
+          <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 8 }}>
+            <CoTuDiamond size={10} color={C.gold} />
+            <span style={{ fontSize: 10, letterSpacing: "2.5px", textTransform: "uppercase", color: C.gold, fontFamily: "'Be Vietnam Pro',sans-serif", fontWeight: 600 }}>
+              {lang === "vi" ? "Di Sản Phi Vật Thể" : "Intangible Heritage"}
+            </span>
+            <div style={{ flex: 1, height: 1, background: `linear-gradient(to right, ${C.gold}55, transparent)` }} />
+          </div>
+          {phiVatThe.map((item, i) => <TocRow key={i} label={item.label} pg={item.pg} color={C.gold} />)}
+
+          <PageFooter />
+        </PageContent>
+      </PageShell>
+    );
+  }
+
+  // Desktop
+  return (
+    <PageShell bgVariant="b">
+      <div style={{ position: "absolute", top: 36, bottom: 36, left: 40, right: 40, display: "flex", flexDirection: "row", alignItems: "stretch" }}>
+        <div style={{ width: "38%", flexShrink: 0, paddingRight: 20, display: "flex", flexDirection: "column", justifyContent: "center" }}>
+          <div style={{ fontSize: 8, letterSpacing: "3px", textTransform: "uppercase", color: C.textMuted, marginBottom: 10, fontFamily: "'Be Vietnam Pro',sans-serif", display: "flex", alignItems: "center", gap: 8 }}>
+            <div style={{ width: 18, height: 1, background: `${C.leaf}55` }} />{lang === "vi" ? "Nội Dung" : "Contents"}
+          </div>
+          <div style={{ fontSize: "clamp(28px,3.5vw,44px)", fontWeight: 700, color: C.ink, lineHeight: 1.05, fontFamily: "'Playfair Display',serif" }}>
+            {lang === "vi" ? "Mục Lục" : "Contents"}
+          </div>
+          <div style={{ fontSize: 12, fontStyle: "italic", color: C.clay, letterSpacing: "2px", marginBottom: 16, marginTop: 4, fontFamily: "'Lora',serif" }}>
+            {lang === "vi" ? "Table of Contents" : "Mục Lục"}
+          </div>
+          <SectionDivider />
+          <div style={{ display: "flex", gap: 12, marginTop: 18, flexWrap: "wrap" }}>
+            {[{ n: "05", label: lang === "vi" ? "Vật thể" : "Tangible", color: C.leaf }, { n: "06", label: lang === "vi" ? "Phi vật thể" : "Intangible", color: C.gold }].map((item, i) => (
+              <div key={i} style={{ textAlign: "center", background: `linear-gradient(135deg, rgba(60,30,10,0.08), ${item.color}15)`, padding: "10px 20px", borderTop: `2px solid ${item.color}cc` }}>
+                <div style={{ fontSize: "clamp(22px,2.8vw,32px)", fontWeight: 700, color: item.color, fontFamily: "'Playfair Display',serif" }}>{item.n}</div>
+                <div style={{ fontSize: 8, letterSpacing: "1.5px", color: C.textMuted, textTransform: "uppercase", marginTop: 3, fontFamily: "'Be Vietnam Pro',sans-serif" }}>{item.label}</div>
+              </div>
+            ))}
+          </div>
+          <div style={{ marginTop: 20 }}><CoTuBorder /></div>
+        </div>
+        <VDivider />
+        <div style={{ flex: 1, display: "flex", flexDirection: "column", justifyContent: "center", paddingLeft: 24, paddingRight: 6 }}>
+          <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 8 }}>
+            <CoTuDiamond size={10} color={C.leaf} />
+            <span style={{ fontSize: "clamp(7.5px,0.88vw,9px)", letterSpacing: "3px", textTransform: "uppercase", color: C.leaf, fontFamily: "'Be Vietnam Pro',sans-serif", fontWeight: 600 }}>
               {lang === "vi" ? "Di Sản Vật Thể" : "Tangible Heritage"}
             </span>
             <div style={{ flex: 1, height: 1, background: `linear-gradient(to right, ${C.leaf}55, transparent)` }} />
@@ -982,101 +942,177 @@ function Page3Toc({ lang }) {
           <div style={{ height: 10 }} />
           <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 8 }}>
             <CoTuDiamond size={10} color={C.gold} />
-            <span style={{ fontSize: isMobile ? 10 : "clamp(7.5px,0.88vw,9px)", letterSpacing: "3px", textTransform: "uppercase", color: C.gold, fontFamily: "'Be Vietnam Pro',sans-serif", fontWeight: 600 }}>
+            <span style={{ fontSize: "clamp(7.5px,0.88vw,9px)", letterSpacing: "3px", textTransform: "uppercase", color: C.gold, fontFamily: "'Be Vietnam Pro',sans-serif", fontWeight: 600 }}>
               {lang === "vi" ? "Di Sản Phi Vật Thể" : "Intangible Heritage"}
             </span>
             <div style={{ flex: 1, height: 1, background: `linear-gradient(to right, ${C.gold}55, transparent)` }} />
           </div>
           {phiVatThe.map((item, i) => <TocRow key={i} label={item.label} pg={item.pg} color={C.gold} />)}
-          <PageFooter lang={lang} />
+          <PageFooter />
         </div>
       </div>
     </PageShell>
   );
 }
 
-// ─── HELPER TO MAKE CONTENT PAGES ─────────────────────────────────────────────
-function makePage(breadcrumb, title, titleEn, subtitle, getSections, imgUrl) {
-  return function({ lang }) {
-    const sections = getSections(lang);
+// ═══════════════════════════════════════════════════════════════════════════════
+// GENERIC PAGE (Left-Right on desktop, Top-Down on mobile)
+// ═══════════════════════════════════════════════════════════════════════════════
+function GenericPage({ lang, breadcrumb, title, titleEn, subtitle, badge, sections, bgVariant = "b", imgUrl }) {
+  const isMobile = useIsMobile();
+
+  if (isMobile) {
     return (
-      <GenericPage
-        lang={lang}
-        breadcrumb={breadcrumb}
-        title={title} titleEn={titleEn}
-        subtitle={lang === "vi" ? subtitle.vi : subtitle.en}
-        sections={sections}
-        imgUrl={imgUrl}
-      />
+      <PageShell bgVariant={bgVariant}>
+        <PageContent isMobile={true}>
+          <MobileBreadcrumb text={breadcrumb} />
+          <div style={{ fontSize: 26, fontWeight: 700, color: C.ink, lineHeight: 1.1, fontFamily: "'Playfair Display',serif" }}>
+            {lang === "vi" ? title : (titleEn || title)}
+          </div>
+          {subtitle && (
+            <div style={{ fontSize: 11, fontStyle: "italic", color: C.clay, letterSpacing: "1.5px", marginTop: 3, fontFamily: "'Lora',serif" }}>
+              {subtitle}
+            </div>
+          )}
+          <SectionDivider />
+
+          {badge && (
+            <div style={{ background: `linear-gradient(135deg, rgba(60,30,10,0.08), ${C.leaf}15)`, borderLeft: `3px solid ${C.leaf}bb`, padding: "8px 12px", marginBottom: 6 }}>
+              <div style={{ fontSize: 9, letterSpacing: "2px", textTransform: "uppercase", color: C.textMuted, marginBottom: 3, fontFamily: "'Be Vietnam Pro',sans-serif" }}>Phân Loại</div>
+              <div style={{ fontSize: 12, color: C.forestMid, lineHeight: 1.6, fontFamily: "'Be Vietnam Pro',sans-serif" }}>{badge}</div>
+            </div>
+          )}
+
+          {imgUrl && <MobileImageBlock imgUrl={imgUrl} height={220} />}
+
+          <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+            {sections.map((sec, i) => <ContentCard key={i} {...sec} />)}
+          </div>
+
+          <div style={{ marginTop: 8, display: "flex", gap: 6 }}>
+            {[7,12,7].map((s,i) => <CoTuDiamond key={i} size={s} color={i===1 ? C.gold : C.leaf} />)}
+          </div>
+          <CoTuBorder />
+          <PageFooter />
+        </PageContent>
+      </PageShell>
     );
-  };
+  }
+
+  // Desktop
+  return (
+    <PageShell bgVariant={bgVariant}>
+      <div style={{ position: "absolute", top: 36, bottom: 36, left: 40, right: 40, display: "flex", flexDirection: "row", alignItems: "stretch" }}>
+        <div style={{ width: "36%", flexShrink: 0, paddingRight: 20, paddingTop: 4, paddingBottom: 4 }}>
+          <div style={{ display: "flex", flexDirection: "column", justifyContent: "center", height: "100%", gap: 0 }}>
+            <div style={{ fontSize: "clamp(7px,0.8vw,8.5px)", letterSpacing: "2.5px", textTransform: "uppercase", color: C.textMuted, marginBottom: 10, display: "flex", alignItems: "center", gap: 8, fontFamily: "'Be Vietnam Pro',sans-serif" }}>
+              <div style={{ width: 20, height: 1, background: `${C.leaf}55` }} />{breadcrumb}
+            </div>
+            <div style={{ fontSize: "clamp(16px,1.9vw,24px)", fontWeight: 700, color: C.ink, lineHeight: 1.15, fontFamily: "'Playfair Display',serif" }}>
+              {lang === "vi" ? title : (titleEn || title)}
+            </div>
+            {subtitle && <div style={{ fontSize: "clamp(9px,1vw,11px)", fontStyle: "italic", color: C.clay, letterSpacing: "1.5px", marginTop: 4, marginBottom: 10, fontFamily: "'Lora',serif" }}>{subtitle}</div>}
+            <SectionDivider />
+            {badge && (
+              <div style={{ marginTop: 14, background: `linear-gradient(135deg, rgba(60,30,10,0.08), ${C.leaf}15)`, borderLeft: `3px solid ${C.leaf}bb`, padding: "8px 12px" }}>
+                <div style={{ fontSize: 7, letterSpacing: "2px", textTransform: "uppercase", color: C.textMuted, marginBottom: 3, fontFamily: "'Be Vietnam Pro',sans-serif" }}>Phân Loại</div>
+                <div style={{ fontSize: 8.5, color: C.forestMid, lineHeight: 1.6, fontFamily: "'Be Vietnam Pro',sans-serif" }}>{badge}</div>
+              </div>
+            )}
+            {imgUrl && (
+              <div style={{ marginTop: 16, width: "100%", height: 350, position: "relative", border: `1px solid ${C.gold}44`, borderRadius: 2, overflow: "hidden" }}>
+                <div style={{ position: "absolute", inset: 0, backgroundImage: `url('${imgUrl}')`, backgroundSize: "cover", backgroundPosition: "center" }} />
+                <div style={{ position: "absolute", inset: 0, background: `linear-gradient(to top, rgba(60,30,10,0.3), transparent 50%)`, pointerEvents: "none" }} />
+              </div>
+            )}
+            <div style={{ marginTop: 14, display: "flex", gap: 6 }}>
+              {[7,12,7].map((s,i) => <CoTuDiamond key={i} size={s} color={i===1 ? C.gold : C.leaf} />)}
+            </div>
+            <div style={{ marginTop: 12 }}><CoTuBorder /></div>
+            <PageFooter />
+          </div>
+        </div>
+        <VDivider />
+        <div style={{ flex: 1, display: "flex", flexDirection: "column", justifyContent: "center", paddingLeft: 22, paddingRight: 4, gap: 8, overflow: "hidden" }}>
+          {sections.map((sec, i) => <ContentCard key={i} {...sec} />)}
+        </div>
+      </div>
+    </PageShell>
+  );
 }
 
-// ─── TRANG PHỤC TEMPLATE ──────────────────────────────────────────────────────
+// ═══════════════════════════════════════════════════════════════════════════════
+// TRANG PHỤC TEMPLATE
+// ═══════════════════════════════════════════════════════════════════════════════
 function makeTrangPhuc(title, titleEn, subtitle, getSec, imgUrl) {
   return function({ lang }) {
     const sections = getSec(lang);
     const isMobile = useIsMobile();
-    return (
-      <PageShell bgVariant="c">
-        <div style={{
-          position: "absolute", top: 36, bottom: 36, left: 40, right: 40,
-          display: "flex",
-          flexDirection: isMobile ? "column" : "row",
-          alignItems: "stretch",
-          overflowY: isMobile ? "auto" : "visible",
-        }}>
-          <div style={{ flex: 1, paddingRight: isMobile ? 0 : 20, display: "flex", flexDirection: "column", justifyContent: "center" }}>
-            <div style={{ fontSize: isMobile ? 9 : 7.5, letterSpacing: "2.5px", textTransform: "uppercase", color: C.textMuted, marginBottom: 8, fontFamily: "'Be Vietnam Pro',sans-serif" }}>
-              {lang === "vi" ? "Di Sản Vật Thể › Trang Phục" : "Tangible Heritage › Clothing"}
-            </div>
-            <div style={{ fontSize: isMobile ? 20 : "clamp(18px,2.2vw,28px)", fontWeight: 700, color: C.cream, lineHeight: 1.15, fontFamily: "'Playfair Display',serif", textShadow: `0 0 25px ${C.leaf}66` }}>
+
+    if (isMobile) {
+      return (
+        <PageShell bgVariant="c">
+          <PageContent isMobile={true}>
+            <MobileBreadcrumb text={lang === "vi" ? "Di Sản Vật Thể › Trang Phục" : "Tangible Heritage › Clothing"} />
+            <div style={{ fontSize: 24, fontWeight: 700, color: C.cream, lineHeight: 1.15, fontFamily: "'Playfair Display',serif" }}>
               {lang === "vi" ? title : titleEn}
             </div>
-            <div style={{ fontSize: isMobile ? 11 : "clamp(9px,1vw,11px)", fontStyle: "italic", color: C.goldLight, marginBottom: 10, marginTop: 4, fontFamily: "'Lora',serif" }}>
-              {subtitle}
+            <div style={{ fontSize: 11, fontStyle: "italic", color: C.goldLight, marginBottom: 8, marginTop: 4, fontFamily: "'Lora',serif" }}>{subtitle}</div>
+            <SectionDivider />
+
+            {imgUrl && <MobileImageBlock imgUrl={imgUrl} height={240} />}
+
+            <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+              {sections.map((sec, i) => <ContentCard key={i} {...sec} />)}
             </div>
+
+            <HDivider margin="10px 0" />
+            <div style={{ textAlign: "center" }}>
+              <div style={{ fontSize: 9, letterSpacing: "3px", textTransform: "uppercase", color: C.textMuted, fontFamily: "'Be Vietnam Pro',sans-serif" }}>
+                {lang === "vi" ? "Trang Phục Truyền Thống · Người Cơ Tu" : "Traditional Clothing · Cơ Tu People"}
+              </div>
+            </div>
+            <CoTuBorder color={C.clay} />
+            <PageFooter />
+          </PageContent>
+        </PageShell>
+      );
+    }
+
+    // Desktop
+    return (
+      <PageShell bgVariant="c">
+        <div style={{ position: "absolute", top: 36, bottom: 36, left: 40, right: 40, display: "flex", flexDirection: "row", alignItems: "stretch" }}>
+          <div style={{ flex: 1, paddingRight: 20, display: "flex", flexDirection: "column", justifyContent: "center" }}>
+            <div style={{ fontSize: 7.5, letterSpacing: "2.5px", textTransform: "uppercase", color: C.textMuted, marginBottom: 8, fontFamily: "'Be Vietnam Pro',sans-serif" }}>
+              {lang === "vi" ? "Di Sản Vật Thể › Trang Phục" : "Tangible Heritage › Clothing"}
+            </div>
+            <div style={{ fontSize: "clamp(18px,2.2vw,28px)", fontWeight: 700, color: C.cream, lineHeight: 1.15, fontFamily: "'Playfair Display',serif" }}>
+              {lang === "vi" ? title : titleEn}
+            </div>
+            <div style={{ fontSize: "clamp(9px,1vw,11px)", fontStyle: "italic", color: C.goldLight, marginBottom: 10, marginTop: 4, fontFamily: "'Lora',serif" }}>{subtitle}</div>
             <SectionDivider />
             <div style={{ marginTop: 10, display: "flex", flexDirection: "column", gap: 10 }}>
               {sections.map((sec, i) => <ContentCard key={i} {...sec} />)}
             </div>
-            <PageFooter lang={lang} />
+            <PageFooter />
           </div>
-
-          {isMobile ? <HDivider /> : <VDivider />}
-
-          <div style={{
-            width: isMobile ? "100%" : "36%",
-            flexShrink: 0,
-            paddingLeft: isMobile ? 0 : 18,
-            display: "flex", flexDirection: "column",
-            alignItems: "center", justifyContent: "center", gap: 14,
-            paddingBottom: isMobile ? 8 : 0,
-          }}>
+          <VDivider />
+          <div style={{ width: "36%", flexShrink: 0, paddingLeft: 18, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: 14 }}>
             {imgUrl ? (
-              <div style={{
-                width: "100%",
-                height: isMobile ? 200 : 520,
-                position: "relative",
-                border: `1px solid ${C.gold}44`, borderRadius: 2, overflow: "hidden",
-                boxShadow: `0 4px 15px rgba(0,0,0,0.3)`,
-              }}>
+              <div style={{ width: "100%", height: 520, position: "relative", border: `1px solid ${C.gold}44`, borderRadius: 2, overflow: "hidden" }}>
                 <div style={{ position: "absolute", inset: 0, backgroundImage: `url('${imgUrl}')`, backgroundSize: "cover", backgroundPosition: "center top" }} />
                 <div style={{ position: "absolute", inset: 0, background: `linear-gradient(to top, rgba(10,25,12,0.4), transparent 30%)`, pointerEvents: "none" }} />
               </div>
             ) : (
-              <svg width="120" height="120" viewBox="0 0 120 120" fill="none">
-                <rect x="10" y="10" width="100" height="100" stroke={C.gold} strokeWidth="1.5" fill="none" opacity="0.5" />
-                <polygon points="60,20 100,60 60,100 20,60" stroke={C.gold} strokeWidth="1.5" fill={`${C.gold}12`} opacity="0.8" />
-                <circle cx="60" cy="60" r="8" fill={C.gold} opacity="0.8" />
-              </svg>
+              <svg width="120" height="120" viewBox="0 0 120 120" fill="none"><rect x="10" y="10" width="100" height="100" stroke={C.gold} strokeWidth="1.5" fill="none" opacity="0.5" /><polygon points="60,20 100,60 60,100 20,60" stroke={C.gold} strokeWidth="1.5" fill={`${C.gold}12`} opacity="0.8" /><circle cx="60" cy="60" r="8" fill={C.gold} opacity="0.8" /></svg>
             )}
             <CoTuBorder color={C.clay} />
             <div style={{ textAlign: "center" }}>
-              <div style={{ fontSize: isMobile ? 9 : 7.5, letterSpacing: "3px", textTransform: "uppercase", color: C.textMuted, fontFamily: "'Be Vietnam Pro',sans-serif" }}>
+              <div style={{ fontSize: 7.5, letterSpacing: "3px", textTransform: "uppercase", color: C.textMuted, fontFamily: "'Be Vietnam Pro',sans-serif" }}>
                 {lang === "vi" ? "Trang Phục Truyền Thống" : "Traditional Clothing"}
               </div>
-              <div style={{ fontSize: isMobile ? 9 : 7.5, letterSpacing: "2px", textTransform: "uppercase", color: C.textMuted, marginTop: 3, fontFamily: "'Be Vietnam Pro',sans-serif" }}>
+              <div style={{ fontSize: 7.5, letterSpacing: "2px", textTransform: "uppercase", color: C.textMuted, marginTop: 3, fontFamily: "'Be Vietnam Pro',sans-serif" }}>
                 {lang === "vi" ? "Người Cơ Tu" : "Cơ Tu People"}
               </div>
             </div>
@@ -1088,71 +1124,76 @@ function makeTrangPhuc(title, titleEn, subtitle, getSec, imgUrl) {
   };
 }
 
-// ─── ẨM THỰC TEMPLATE ────────────────────────────────────────────────────────
+// ═══════════════════════════════════════════════════════════════════════════════
+// ẨM THỰC TEMPLATE
+// ═══════════════════════════════════════════════════════════════════════════════
 function makeAmThuc(title, titleEn, subtitle, getSec, imgUrl) {
   return function({ lang }) {
     const sections = getSec(lang);
     const isMobile = useIsMobile();
-    return (
-      <PageShell bgVariant="a">
-        <div style={{
-          position: "absolute", top: 36, bottom: 36, left: 40, right: 40,
-          display: "flex",
-          flexDirection: isMobile ? "column" : "row",
-          alignItems: "stretch",
-          overflowY: isMobile ? "auto" : "visible",
-        }}>
-          <div style={{ flex: 1, paddingRight: isMobile ? 0 : 20, display: "flex", flexDirection: "column", justifyContent: "center" }}>
-            <div style={{ fontSize: isMobile ? 9 : 7.5, letterSpacing: "2.5px", textTransform: "uppercase", color: C.textMuted, marginBottom: 8, fontFamily: "'Be Vietnam Pro',sans-serif" }}>
-              {lang === "vi" ? "Di Sản Vật Thể › Ẩm Thực" : "Tangible Heritage › Cuisine"}
-            </div>
-            <div style={{ fontSize: isMobile ? 20 : "clamp(18px,2.2vw,28px)", fontWeight: 700, color: C.cream, lineHeight: 1.15, fontFamily: "'Playfair Display',serif", textShadow: `0 0 25px ${C.leaf}66` }}>
+
+    if (isMobile) {
+      return (
+        <PageShell bgVariant="a">
+          <PageContent isMobile={true}>
+            <MobileBreadcrumb text={lang === "vi" ? "Di Sản Vật Thể › Ẩm Thực" : "Tangible Heritage › Cuisine"} />
+            <div style={{ fontSize: 24, fontWeight: 700, color: C.cream, lineHeight: 1.15, fontFamily: "'Playfair Display',serif" }}>
               {lang === "vi" ? title : titleEn}
             </div>
-            <div style={{ fontSize: isMobile ? 11 : "clamp(9px,1vw,11px)", fontStyle: "italic", color: C.goldLight, marginBottom: 10, marginTop: 4, fontFamily: "'Lora',serif" }}>
-              {subtitle}
+            <div style={{ fontSize: 11, fontStyle: "italic", color: C.goldLight, marginBottom: 8, marginTop: 4, fontFamily: "'Lora',serif" }}>{subtitle}</div>
+            <SectionDivider />
+
+            {imgUrl && <MobileImageBlock imgUrl={imgUrl} height={220} />}
+
+            <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+              {sections.map((sec, i) => <ContentCard key={i} {...sec} />)}
             </div>
+
+            <HDivider margin="10px 0" />
+            <div style={{ textAlign: "center" }}>
+              <div style={{ fontSize: 9, letterSpacing: "3px", textTransform: "uppercase", color: C.textMuted, fontFamily: "'Be Vietnam Pro',sans-serif" }}>
+                {lang === "vi" ? "Ẩm Thực Truyền Thống · Người Cơ Tu" : "Traditional Cuisine · Cơ Tu People"}
+              </div>
+            </div>
+            <CoTuBorder color={C.clay} />
+            <PageFooter />
+          </PageContent>
+        </PageShell>
+      );
+    }
+
+    // Desktop
+    return (
+      <PageShell bgVariant="a">
+        <div style={{ position: "absolute", top: 36, bottom: 36, left: 40, right: 40, display: "flex", flexDirection: "row", alignItems: "stretch" }}>
+          <div style={{ flex: 1, paddingRight: 20, display: "flex", flexDirection: "column", justifyContent: "center" }}>
+            <div style={{ fontSize: 7.5, letterSpacing: "2.5px", textTransform: "uppercase", color: C.textMuted, marginBottom: 8, fontFamily: "'Be Vietnam Pro',sans-serif" }}>
+              {lang === "vi" ? "Di Sản Vật Thể › Ẩm Thực" : "Tangible Heritage › Cuisine"}
+            </div>
+            <div style={{ fontSize: "clamp(18px,2.2vw,28px)", fontWeight: 700, color: C.cream, lineHeight: 1.15, fontFamily: "'Playfair Display',serif" }}>
+              {lang === "vi" ? title : titleEn}
+            </div>
+            <div style={{ fontSize: "clamp(9px,1vw,11px)", fontStyle: "italic", color: C.goldLight, marginBottom: 10, marginTop: 4, fontFamily: "'Lora',serif" }}>{subtitle}</div>
             <SectionDivider />
             <div style={{ marginTop: 10, display: "flex", flexDirection: "column", gap: 10 }}>
               {sections.map((sec, i) => <ContentCard key={i} {...sec} />)}
             </div>
-            <PageFooter lang={lang} />
+            <PageFooter />
           </div>
-
-          {isMobile ? <HDivider /> : <VDivider />}
-
-          <div style={{
-            width: isMobile ? "100%" : "36%",
-            flexShrink: 0,
-            paddingLeft: isMobile ? 0 : 18,
-            display: "flex", flexDirection: "column",
-            alignItems: "center", justifyContent: "center", gap: 14,
-            paddingBottom: isMobile ? 8 : 0,
-          }}>
+          <VDivider />
+          <div style={{ width: "36%", flexShrink: 0, paddingLeft: 18, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: 14 }}>
             {imgUrl ? (
-              <div style={{
-                width: "100%",
-                height: isMobile ? 200 : 520,
-                position: "relative",
-                border: `1px solid ${C.gold}44`, borderRadius: 2, overflow: "hidden",
-                boxShadow: `0 4px 15px rgba(0,0,0,0.3)`,
-              }}>
+              <div style={{ width: "100%", height: 520, position: "relative", border: `1px solid ${C.gold}44`, borderRadius: 2, overflow: "hidden" }}>
                 <div style={{ position: "absolute", inset: 0, backgroundImage: `url('${imgUrl}')`, backgroundSize: "cover", backgroundPosition: "center top" }} />
                 <div style={{ position: "absolute", inset: 0, background: `linear-gradient(to top, rgba(10,25,12,0.4), transparent 30%)`, pointerEvents: "none" }} />
               </div>
-            ) : (
-              <div style={{ display: "flex", gap: 10 }}>
-                <CoTuDiamond size={12} color={C.gold} />
-                <CoTuDiamond size={16} color={C.leaf} />
-                <CoTuDiamond size={12} color={C.gold} />
-              </div>
-            )}
+            ) : <div style={{ display: "flex", gap: 10 }}><CoTuDiamond size={12} color={C.gold} /><CoTuDiamond size={16} color={C.leaf} /><CoTuDiamond size={12} color={C.gold} /></div>}
             <CoTuBorder color={C.clay} />
             <div style={{ textAlign: "center" }}>
-              <div style={{ fontSize: isMobile ? 9 : 7.5, letterSpacing: "3px", textTransform: "uppercase", color: C.textMuted, fontFamily: "'Be Vietnam Pro',sans-serif" }}>
+              <div style={{ fontSize: 7.5, letterSpacing: "3px", textTransform: "uppercase", color: C.textMuted, fontFamily: "'Be Vietnam Pro',sans-serif" }}>
                 {lang === "vi" ? "Ẩm Thực Truyền Thống" : "Traditional Cuisine"}
               </div>
-              <div style={{ fontSize: isMobile ? 9 : 7.5, letterSpacing: "2px", textTransform: "uppercase", color: C.textMuted, marginTop: 3, fontFamily: "'Be Vietnam Pro',sans-serif" }}>
+              <div style={{ fontSize: 7.5, letterSpacing: "2px", textTransform: "uppercase", color: C.textMuted, marginTop: 3, fontFamily: "'Be Vietnam Pro',sans-serif" }}>
                 {lang === "vi" ? "Người Cơ Tu" : "Cơ Tu People"}
               </div>
             </div>
@@ -1164,68 +1205,68 @@ function makeAmThuc(title, titleEn, subtitle, getSec, imgUrl) {
   };
 }
 
-// ─── CÔNG CỤ TEMPLATE ─────────────────────────────────────────────────────────
+// ═══════════════════════════════════════════════════════════════════════════════
+// CÔNG CỤ TEMPLATE
+// ═══════════════════════════════════════════════════════════════════════════════
 function makeTool(title, titleEn, sub, isTransport, getSec, imgUrl) {
   return function({ lang }) {
     const sections = getSec(lang);
     const isMobile = useIsMobile();
-    return (
-      <PageShell bgVariant="b">
-        <div style={{
-          position: "absolute", top: 36, bottom: 36, left: 40, right: 40,
-          display: "flex",
-          flexDirection: isMobile ? "column" : "row",
-          alignItems: "stretch",
-          overflowY: isMobile ? "auto" : "visible",
-        }}>
-          <div style={{ flex: 1, paddingRight: isMobile ? 0 : 20, display: "flex", flexDirection: "column", justifyContent: "center" }}>
-            <div style={{ fontSize: isMobile ? 9 : 7.5, letterSpacing: "2.5px", textTransform: "uppercase", color: C.textMuted, marginBottom: 8, fontFamily: "'Be Vietnam Pro',sans-serif" }}>
-              {isTransport ? (lang === "vi" ? "Di Sản Vật Thể › Phương Tiện Đi Lại" : "Tangible Heritage › Transportation") : (lang === "vi" ? "Di Sản Vật Thể › Công Cụ Lao Động" : "Tangible Heritage › Labor Tools")}
-            </div>
-            <div style={{ fontSize: isMobile ? 20 : "clamp(18px,2.2vw,28px)", fontWeight: 700, color: C.cream, lineHeight: 1.15, fontFamily: "'Playfair Display',serif", textShadow: `0 0 25px ${C.leaf}66` }}>
+    const breadcrumb = isTransport
+      ? (lang === "vi" ? "Di Sản Vật Thể › Phương Tiện Đi Lại" : "Tangible Heritage › Transportation")
+      : (lang === "vi" ? "Di Sản Vật Thể › Công Cụ Lao Động" : "Tangible Heritage › Labor Tools");
+
+    if (isMobile) {
+      return (
+        <PageShell bgVariant="b">
+          <PageContent isMobile={true}>
+            <MobileBreadcrumb text={breadcrumb} />
+            <div style={{ fontSize: 24, fontWeight: 700, color: C.cream, lineHeight: 1.15, fontFamily: "'Playfair Display',serif" }}>
               {lang === "vi" ? title : titleEn}
             </div>
-            <div style={{ fontSize: isMobile ? 11 : "clamp(9px,1vw,11px)", fontStyle: "italic", color: C.goldLight, marginBottom: 10, marginTop: 4, fontFamily: "'Lora',serif" }}>
-              {sub}
+            <div style={{ fontSize: 11, fontStyle: "italic", color: C.goldLight, marginBottom: 8, marginTop: 4, fontFamily: "'Lora',serif" }}>{sub}</div>
+            <SectionDivider />
+
+            {imgUrl && <MobileImageBlock imgUrl={imgUrl} height={220} />}
+
+            <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+              {sections.map((sec, i) => <ContentCard key={i} {...sec} />)}
             </div>
+
+            <CoTuBorder color={C.clay} />
+            <PageFooter />
+          </PageContent>
+        </PageShell>
+      );
+    }
+
+    // Desktop
+    return (
+      <PageShell bgVariant="b">
+        <div style={{ position: "absolute", top: 36, bottom: 36, left: 40, right: 40, display: "flex", flexDirection: "row", alignItems: "stretch" }}>
+          <div style={{ flex: 1, paddingRight: 20, display: "flex", flexDirection: "column", justifyContent: "center" }}>
+            <div style={{ fontSize: 7.5, letterSpacing: "2.5px", textTransform: "uppercase", color: C.textMuted, marginBottom: 8, fontFamily: "'Be Vietnam Pro',sans-serif" }}>{breadcrumb}</div>
+            <div style={{ fontSize: "clamp(18px,2.2vw,28px)", fontWeight: 700, color: C.cream, lineHeight: 1.15, fontFamily: "'Playfair Display',serif" }}>
+              {lang === "vi" ? title : titleEn}
+            </div>
+            <div style={{ fontSize: "clamp(9px,1vw,11px)", fontStyle: "italic", color: C.goldLight, marginBottom: 10, marginTop: 4, fontFamily: "'Lora',serif" }}>{sub}</div>
             <SectionDivider />
             <div style={{ marginTop: 10, display: "flex", flexDirection: "column", gap: 10 }}>
               {sections.map((sec, i) => <ContentCard key={i} {...sec} />)}
             </div>
-            <PageFooter lang={lang} />
+            <PageFooter />
           </div>
-
-          {isMobile ? <HDivider /> : <VDivider />}
-
-          <div style={{
-            width: isMobile ? "100%" : "36%",
-            flexShrink: 0,
-            paddingLeft: isMobile ? 0 : 18,
-            display: "flex", flexDirection: "column",
-            alignItems: "center", justifyContent: "center", gap: 14,
-            paddingBottom: isMobile ? 8 : 0,
-          }}>
+          <VDivider />
+          <div style={{ width: "36%", flexShrink: 0, paddingLeft: 18, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: 14 }}>
             {imgUrl ? (
-              <div style={{
-                width: "100%",
-                height: isMobile ? 200 : 520,
-                position: "relative",
-                border: `1px solid ${C.gold}44`, borderRadius: 2, overflow: "hidden",
-                boxShadow: `0 4px 15px rgba(0,0,0,0.3)`,
-              }}>
+              <div style={{ width: "100%", height: 520, position: "relative", border: `1px solid ${C.gold}44`, borderRadius: 2, overflow: "hidden" }}>
                 <div style={{ position: "absolute", inset: 0, backgroundImage: `url('${imgUrl}')`, backgroundSize: "cover", backgroundPosition: "center top" }} />
                 <div style={{ position: "absolute", inset: 0, background: `linear-gradient(to top, rgba(10,25,12,0.4), transparent 30%)`, pointerEvents: "none" }} />
               </div>
-            ) : (
-              <div style={{ display: "flex", gap: 10 }}>
-                <CoTuDiamond size={12} color={C.gold} />
-                <CoTuDiamond size={16} color={C.leaf} />
-                <CoTuDiamond size={12} color={C.gold} />
-              </div>
-            )}
+            ) : <div style={{ display: "flex", gap: 10 }}><CoTuDiamond size={12} color={C.gold} /><CoTuDiamond size={16} color={C.leaf} /><CoTuDiamond size={12} color={C.gold} /></div>}
             <CoTuBorder color={C.clay} />
             <div style={{ textAlign: "center" }}>
-              <div style={{ fontSize: isMobile ? 9 : 7.5, letterSpacing: "3px", textTransform: "uppercase", color: C.textMuted, fontFamily: "'Be Vietnam Pro',sans-serif" }}>
+              <div style={{ fontSize: 7.5, letterSpacing: "3px", textTransform: "uppercase", color: C.textMuted, fontFamily: "'Be Vietnam Pro',sans-serif" }}>
                 {isTransport ? (lang === "vi" ? "Phương Tiện" : "Transportation") : (lang === "vi" ? "Công Cụ" : "Labor Tools")}
               </div>
             </div>
@@ -1237,7 +1278,9 @@ function makeTool(title, titleEn, sub, isTransport, getSec, imgUrl) {
   };
 }
 
-// ─── LỄ HỘI TEMPLATE ─────────────────────────────────────────────────────────
+// ═══════════════════════════════════════════════════════════════════════════════
+// LỄ HỘI TEMPLATE
+// ═══════════════════════════════════════════════════════════════════════════════
 function makeLeHoi(title, titleEn, sub, getMeta, getSec, images) {
   return function LeHoiPage({ lang }) {
     const sections = getSec(lang);
@@ -1252,106 +1295,129 @@ function makeLeHoi(title, titleEn, sub, getMeta, getSec, images) {
     const totalPages = pages.length;
     const [pageIdx, setPageIdx] = useState(0);
 
+    if (isMobile) {
+      return (
+        <PageShell bgVariant="b">
+          <PageContent isMobile={true}>
+            <MobileBreadcrumb text={lang === "vi" ? "Di Sản Phi Vật Thể › Lễ Hội & Nghi Lễ" : "Intangible Heritage › Festivals & Rituals"} />
+            <div style={{ fontSize: 22, fontWeight: 700, color: C.cream, lineHeight: 1.15, fontFamily: "'Playfair Display',serif" }}>
+              {lang === "vi" ? title : titleEn}
+            </div>
+            <div style={{ fontSize: 11, fontStyle: "italic", color: C.goldLight, marginBottom: 6, marginTop: 4, fontFamily: "'Lora',serif" }}>{sub}</div>
+
+            {/* Meta info */}
+            <div style={{ display: "flex", flexDirection: "column", gap: 4, marginBottom: 8 }}>
+              {meta.map((m, i) => (
+                <div key={i} style={{ display: "flex", alignItems: "center", gap: 8 }}>
+                  <CoTuDiamond size={5} color={C.goldLight} />
+                  <span style={{ fontSize: 11, color: C.textMuted, fontFamily: "'Be Vietnam Pro',sans-serif" }}>{m}</span>
+                </div>
+              ))}
+            </div>
+            <SectionDivider />
+
+            {/* Image slider */}
+            <div style={{ marginBottom: 10, marginTop: 4 }}>
+              <ImageSlider images={images} />
+            </div>
+
+            {/* Paginated content */}
+            <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+              {pages[pageIdx].map((sec, i) => <ContentCard key={i} {...sec} />)}
+            </div>
+
+            {totalPages > 1 && (
+              <div style={{
+                display: "flex", alignItems: "center", justifyContent: "space-between",
+                marginTop: 10, paddingTop: 8, borderTop: `1px solid ${C.gold}33`,
+              }}>
+                <div style={{ display: "flex", gap: 5 }}>
+                  {pages.map((_, i) => (
+                    <div key={i} onClick={() => setPageIdx(i)} style={{
+                      width: i === pageIdx ? 14 : 5, height: 5, borderRadius: 3,
+                      background: i === pageIdx ? C.goldLight : `${C.goldLight}44`,
+                      cursor: "pointer", transition: "all 0.2s",
+                    }} />
+                  ))}
+                </div>
+                <span style={{ fontSize: 11, color: C.textMuted, fontFamily: "'Be Vietnam Pro',sans-serif" }}>{pageIdx + 1} / {totalPages}</span>
+                <div style={{ display: "flex", gap: 6 }}>
+                  <button disabled={pageIdx === 0} onClick={() => setPageIdx(p => Math.max(0, p - 1))} style={contentNavBtn(pageIdx === 0, true)}>
+                    {lang === "vi" ? "← Trước" : "← Prev"}
+                  </button>
+                  <button disabled={pageIdx === totalPages - 1} onClick={() => setPageIdx(p => Math.min(totalPages - 1, p + 1))} style={contentNavBtn(pageIdx === totalPages - 1, true)}>
+                    {lang === "vi" ? "Tiếp →" : "Next →"}
+                  </button>
+                </div>
+              </div>
+            )}
+
+            <PageFooter />
+          </PageContent>
+        </PageShell>
+      );
+    }
+
+    // Desktop
     return (
-      <div
-        style={{
-          position: "absolute",
-          top: 36, bottom: 36, left: 40, right: 40,
-          display: "flex",
-          flexDirection: isMobile ? "column" : "row",
-          alignItems: "stretch",
-          overflowY: isMobile ? "auto" : "visible",
-        }}
-      >
-        {/* LEFT: content */}
-        <div style={{
-          flex: 1,
-          paddingRight: isMobile ? 0 : 20,
-          display: "flex", flexDirection: "column", justifyContent: "center",
-        }}>
-          <div style={{ fontSize: isMobile ? 9 : 7.5, letterSpacing: "2.5px", textTransform: "uppercase", color: C.textMuted, marginBottom: 8, fontFamily: "'Be Vietnam Pro', sans-serif" }}>
-            {lang === "vi" ? "Di Sản Phi Vật Thể › Lễ Hội & Nghi Lễ" : "Intangible Heritage › Festivals & Rituals"}
-          </div>
-          <div style={{ fontSize: isMobile ? 18 : "clamp(16px, 2vw, 22px)", fontWeight: 700, color: C.cream, lineHeight: 1.15, fontFamily: "'Playfair Display', serif" }}>
-            {lang === "vi" ? title : titleEn}
-          </div>
-          <div style={{ fontSize: isMobile ? 11 : "clamp(9px, 1vw, 11px)", fontStyle: "italic", color: C.goldLight, marginBottom: 6, marginTop: 4, fontFamily: "'Lora', serif" }}>
-            {sub}
-          </div>
-          <div style={{ display: "flex", flexDirection: "column", gap: 4, marginBottom: 8 }}>
-            {meta.map((m, i) => (
-              <div key={i} style={{ display: "flex", alignItems: "center", gap: 8 }}>
-                <CoTuDiamond size={5} color={C.goldLight} />
-                <span style={{ fontSize: isMobile ? 11 : "clamp(8px, 0.9vw, 9.5px)", color: C.textMuted, fontFamily: "'Be Vietnam Pro', sans-serif" }}>{m}</span>
-              </div>
-            ))}
-          </div>
-          <SectionDivider />
-
-          {/* Image slider on mobile — between meta and content */}
-          {isMobile && (
-            <div style={{ marginBottom: 12 }}>
-              <ImageSlider images={images} />
+      <PageShell bgVariant="b">
+        <div style={{ position: "absolute", top: 36, bottom: 36, left: 40, right: 40, display: "flex", flexDirection: "row", alignItems: "stretch" }}>
+          <div style={{ flex: 1, paddingRight: 20, display: "flex", flexDirection: "column", justifyContent: "center" }}>
+            <div style={{ fontSize: 7.5, letterSpacing: "2.5px", textTransform: "uppercase", color: C.textMuted, marginBottom: 8, fontFamily: "'Be Vietnam Pro', sans-serif" }}>
+              {lang === "vi" ? "Di Sản Phi Vật Thể › Lễ Hội & Nghi Lễ" : "Intangible Heritage › Festivals & Rituals"}
             </div>
-          )}
-
-          <div style={{ display: "flex", flexDirection: "column", gap: 8, marginTop: 8, flex: 1 }}>
-            {pages[pageIdx].map((sec, i) => <ContentCard key={i} {...sec} />)}
-          </div>
-
-          {totalPages > 1 && (
-            <div style={{
-              display: "flex", alignItems: "center", justifyContent: "space-between",
-              marginTop: 10, paddingTop: 8, borderTop: `1px solid ${C.gold}33`,
-            }}>
-              <div style={{ display: "flex", gap: 5 }}>
-                {pages.map((_, i) => (
-                  <div key={i} onClick={() => setPageIdx(i)} style={{
-                    width: i === pageIdx ? 14 : 5, height: 5, borderRadius: 3,
-                    background: i === pageIdx ? C.goldLight : `${C.goldLight}44`,
-                    cursor: "pointer", transition: "all 0.2s",
-                  }} />
-                ))}
-              </div>
-              <span style={{ fontSize: isMobile ? 11 : 9, color: C.textMuted, fontFamily: "'Be Vietnam Pro', sans-serif" }}>
-                {pageIdx + 1} / {totalPages}
-              </span>
-              <div style={{ display: "flex", gap: 6 }}>
-                <button disabled={pageIdx === 0} onClick={() => setPageIdx(p => Math.max(0, p - 1))} style={contentNavBtn(pageIdx === 0, isMobile)}>
-                  {lang === "vi" ? "← Trước" : "← Prev"}
-                </button>
-                <button disabled={pageIdx === totalPages - 1} onClick={() => setPageIdx(p => Math.min(totalPages - 1, p + 1))} style={contentNavBtn(pageIdx === totalPages - 1, isMobile)}>
-                  {lang === "vi" ? "Tiếp →" : "Next →"}
-                </button>
-              </div>
+            <div style={{ fontSize: "clamp(16px, 2vw, 22px)", fontWeight: 700, color: C.cream, lineHeight: 1.15, fontFamily: "'Playfair Display', serif" }}>
+              {lang === "vi" ? title : titleEn}
             </div>
-          )}
+            <div style={{ fontSize: "clamp(9px, 1vw, 11px)", fontStyle: "italic", color: C.goldLight, marginBottom: 6, marginTop: 4, fontFamily: "'Lora', serif" }}>{sub}</div>
+            <div style={{ display: "flex", flexDirection: "column", gap: 4, marginBottom: 8 }}>
+              {meta.map((m, i) => (
+                <div key={i} style={{ display: "flex", alignItems: "center", gap: 8 }}>
+                  <CoTuDiamond size={5} color={C.goldLight} />
+                  <span style={{ fontSize: "clamp(8px, 0.9vw, 9.5px)", color: C.textMuted, fontFamily: "'Be Vietnam Pro', sans-serif" }}>{m}</span>
+                </div>
+              ))}
+            </div>
+            <SectionDivider />
+            <div style={{ display: "flex", flexDirection: "column", gap: 8, marginTop: 8, flex: 1 }}>
+              {pages[pageIdx].map((sec, i) => <ContentCard key={i} {...sec} />)}
+            </div>
+            {totalPages > 1 && (
+              <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginTop: 10, paddingTop: 8, borderTop: `1px solid ${C.gold}33` }}>
+                <div style={{ display: "flex", gap: 5 }}>
+                  {pages.map((_, i) => (
+                    <div key={i} onClick={() => setPageIdx(i)} style={{ width: i === pageIdx ? 14 : 5, height: 5, borderRadius: 3, background: i === pageIdx ? C.goldLight : `${C.goldLight}44`, cursor: "pointer", transition: "all 0.2s" }} />
+                  ))}
+                </div>
+                <span style={{ fontSize: 9, color: C.textMuted, fontFamily: "'Be Vietnam Pro', sans-serif" }}>{pageIdx + 1} / {totalPages}</span>
+                <div style={{ display: "flex", gap: 6 }}>
+                  <button disabled={pageIdx === 0} onClick={() => setPageIdx(p => Math.max(0, p - 1))} style={contentNavBtn(pageIdx === 0, false)}>
+                    {lang === "vi" ? "← Trước" : "← Prev"}
+                  </button>
+                  <button disabled={pageIdx === totalPages - 1} onClick={() => setPageIdx(p => Math.min(totalPages - 1, p + 1))} style={contentNavBtn(pageIdx === totalPages - 1, false)}>
+                    {lang === "vi" ? "Tiếp →" : "Next →"}
+                  </button>
+                </div>
+              </div>
+            )}
+          </div>
+          <div style={{ width: 1, background: `linear-gradient(to bottom, transparent, ${C.gold}44, transparent)`, flexShrink: 0 }} />
+          <div style={{ width: "34%", flexShrink: 0, paddingLeft: 20, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: 12 }}>
+            <ImageSlider images={images} />
+            <div style={{ textAlign: "center" }}>
+              <div style={{ fontSize: 7.5, letterSpacing: "2.5px", textTransform: "uppercase", color: C.textMuted, fontFamily: "'Be Vietnam Pro', sans-serif" }}>Di Sản Phi Vật Thể</div>
+              <div style={{ fontSize: 7.5, letterSpacing: "2px", textTransform: "uppercase", color: C.textMuted, marginTop: 3, fontFamily: "'Be Vietnam Pro', sans-serif" }}>Lễ Hội Truyền Thống</div>
+            </div>
+          </div>
         </div>
-
-        {/* Divider + Image slider on desktop */}
-        {!isMobile && (
-          <>
-            <div style={{ width: 1, background: `linear-gradient(to bottom, transparent, ${C.gold}44, transparent)`, flexShrink: 0 }} />
-            <div style={{
-              width: "34%", flexShrink: 0, paddingLeft: 20,
-              display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: 12,
-            }}>
-              <ImageSlider images={images} />
-              <div style={{ textAlign: "center" }}>
-                <div style={{ fontSize: 7.5, letterSpacing: "2.5px", textTransform: "uppercase", color: C.textMuted, fontFamily: "'Be Vietnam Pro', sans-serif" }}>Di Sản Phi Vật Thể</div>
-                <div style={{ fontSize: 7.5, letterSpacing: "2px", textTransform: "uppercase", color: C.textMuted, marginTop: 3, fontFamily: "'Be Vietnam Pro', sans-serif" }}>Lễ Hội Truyền Thống</div>
-              </div>
-            </div>
-          </>
-        )}
-      </div>
+      </PageShell>
     );
   };
 }
 
 function contentNavBtn(disabled, isMobile) {
   return {
-    padding: isMobile ? "6px 12px" : "4px 10px",
+    padding: isMobile ? "6px 10px" : "4px 10px",
     fontSize: isMobile ? 11 : 9,
     fontFamily: "'Be Vietnam Pro', sans-serif",
     letterSpacing: "1px",
@@ -1362,11 +1428,13 @@ function contentNavBtn(disabled, isMobile) {
     cursor: disabled ? "default" : "pointer",
     opacity: disabled ? 0.4 : 1,
     transition: "all 0.2s",
-    minHeight: 36,
+    minHeight: isMobile ? 34 : "auto",
   };
 }
 
-// ─── VĂN HỌC DÂN GIAN TEMPLATE ───────────────────────────────────────────────
+// ═══════════════════════════════════════════════════════════════════════════════
+// VĂN HỌC DÂN GIAN TEMPLATE
+// ═══════════════════════════════════════════════════════════════════════════════
 function makeVanHoc(title, titleEn, sub, badge, getSec) {
   return function({ lang }) {
     const sections = getSec(lang);
@@ -1384,8 +1452,25 @@ function makeVanHoc(title, titleEn, sub, badge, getSec) {
   };
 }
 
+// ─── MAKE PAGE HELPER ─────────────────────────────────────────────────────────
+function makePage(breadcrumb, title, titleEn, subtitle, getSections, imgUrl) {
+  return function({ lang }) {
+    const sections = getSections(lang);
+    return (
+      <GenericPage
+        lang={lang}
+        breadcrumb={breadcrumb}
+        title={title} titleEn={titleEn}
+        subtitle={lang === "vi" ? subtitle.vi : subtitle.en}
+        sections={sections}
+        imgUrl={imgUrl}
+      />
+    );
+  };
+}
+
 // ═══════════════════════════════════════════════════════════════════════════════
-// ALL CONTENT DATA (unchanged from original)
+// ALL CONTENT DATA
 // ═══════════════════════════════════════════════════════════════════════════════
 
 const Page4Lang = makePage(
@@ -1406,9 +1491,9 @@ const Page5NhaGuol = makePage(
   "Nhà Gươl", "The Gươl Community House",
   { vi: "Ngôi nhà cộng đồng linh thiêng", en: "The sacred communal house" },
   (lang) => [
-    { label: lang === "vi" ? "Không Gian · Kiến Trúc" : "Space · Architecture", color: C.leaf, items: lang === "vi" ? ["Nhà Gươl là kiểu nhà sàn gỗ có quy mô lớn, mái cao và dốc, thường lợp bằng lá rừng dày, tạo hình khối bề thế nổi bật giữa khu cư trú.", "Vật liệu xây dựng chủ yếu gồm: gỗ, tre, nứa và các loại lá rừng.", "Kết cấu đặc trưng với cột bố ở trung tâm, xung quanh là các cột phụ liên kết bằng xà, kèo tạo thành bộ khung vững chắc.", "Khu vực trung tâm trang trọng, nơi cất giữ vật dụng quý và gắn với tín ngưỡng tổ tiên.", "Các khu vực xung quanh phục vụ sinh hoạt chung và gặp gỡ cộng đồng."] : ["The Gươl is a large wooden stilt house with a high, steep roof, typically thatched with thick forest leaves, forming a prominent structure within the village.", "Main materials include wood, bamboo, rattan, and forest leaves.", "Its structure features a central pillar surrounded by secondary pillars connected by beams and rafters, forming a solid framework.", "The central area is sacred, used to store valuable items and associated with ancestral beliefs.", "Surrounding spaces are used for communal activities and gatherings."] },
-    { label: lang === "vi" ? "Trang Trí · Điêu Khắc" : "Decoration · Carving", color: C.gold, items: lang === "vi" ? ["Cột, vách, đầu hồi được chạm khắc với các họa tiết như: muông thú, cây cỏ, mặt trời, mặt trăng, và các cảnh sinh hoạt (săn bắt, múa cồng chiêng, lao động).", "Đường nét giản lược nhưng phản ánh rõ thẩm mỹ gắn với thiên nhiên và đời sống cộng đồng."] : ["Pillars, walls, and gables are carved with motifs such as animals, plants, the sun, the moon, and daily life scenes (hunting, gong dancing, labor).", "The simplified lines reflect an aesthetic closely connected to nature and communal life."] },
-    { label: lang === "vi" ? "Ý Nghĩa Văn Hóa" : "Cultural Meaning", color: C.clay, items: lang === "vi" ? ["Cột bố tượng trưng cho chế độ phụ hệ, đồng thời thể hiện sức mạnh và sự bền vững của cộng đồng.", "Các họa tiết chạm khắc không chỉ tăng giá trị nghệ thuật mà còn lưu giữ ký ức tập thể và tri thức văn hóa dân gian qua nhiều thế hệ.", "Nhà Gươl là không gian linh thiêng, trung tâm sinh hoạt cộng đồng, góp phần gắn kết xã hội và duy trì tín ngưỡng truyền thống."] : ["The central pillar symbolizes the patrilineal system, representing strength and stability of the community.", "Carved motifs not only enhance artistic value but also preserve collective memory and traditional cultural knowledge across generations.", "The Gươl serves as a sacred space and the center of communal life, strengthening social bonds and maintaining traditional beliefs."] },
+    { label: lang === "vi" ? "Không Gian · Kiến Trúc" : "Space · Architecture", color: C.leaf, items: lang === "vi" ? ["Nhà Gươl là kiểu nhà sàn gỗ có quy mô lớn, mái cao và dốc, thường lợp bằng lá rừng dày.", "Vật liệu xây dựng chủ yếu gồm: gỗ, tre, nứa và các loại lá rừng.", "Kết cấu đặc trưng với cột bố ở trung tâm, xung quanh là các cột phụ liên kết bằng xà, kèo.", "Khu vực trung tâm trang trọng, nơi cất giữ vật dụng quý và gắn với tín ngưỡng tổ tiên.", "Các khu vực xung quanh phục vụ sinh hoạt chung và gặp gỡ cộng đồng."] : ["The Gươl is a large wooden stilt house with a high, steep roof, typically thatched with thick forest leaves.", "Main materials include wood, bamboo, rattan, and forest leaves.", "Its structure features a central pillar surrounded by secondary pillars connected by beams and rafters.", "The central area is sacred, used to store valuable items and associated with ancestral beliefs.", "Surrounding spaces are used for communal activities and gatherings."] },
+    { label: lang === "vi" ? "Trang Trí · Điêu Khắc" : "Decoration · Carving", color: C.gold, items: lang === "vi" ? ["Cột, vách, đầu hồi được chạm khắc với các họa tiết như: muông thú, cây cỏ, mặt trời, mặt trăng.", "Đường nét giản lược nhưng phản ánh rõ thẩm mỹ gắn với thiên nhiên và đời sống cộng đồng."] : ["Pillars, walls, and gables are carved with motifs such as animals, plants, the sun, the moon.", "The simplified lines reflect an aesthetic closely connected to nature and communal life."] },
+    { label: lang === "vi" ? "Ý Nghĩa Văn Hóa" : "Cultural Meaning", color: C.clay, items: lang === "vi" ? ["Cột bố tượng trưng cho chế độ phụ hệ, đồng thời thể hiện sức mạnh và sự bền vững của cộng đồng.", "Các họa tiết chạm khắc không chỉ tăng giá trị nghệ thuật mà còn lưu giữ ký ức tập thể.", "Nhà Gươl là không gian linh thiêng, trung tâm sinh hoạt cộng đồng, góp phần gắn kết xã hội."] : ["The central pillar symbolizes the patrilineal system, representing strength and stability of the community.", "Carved motifs not only enhance artistic value but also preserve collective memory.", "The Gươl serves as a sacred space and the center of communal life, strengthening social bonds."] },
   ],
   imgso2
 );
@@ -1418,8 +1503,8 @@ const Page6NhaSan = makePage(
   "Nhà Sàn", "The Stilt House",
   { vi: "Không gian sống của gia đình Cơ Tu", en: "Living space of the Cơ Tu family" },
   (lang) => [
-    { label: lang === "vi" ? "Không Gian · Kiến Trúc" : "Space · Architecture", color: C.leaf, items: lang === "vi" ? ["Nhà sàn được xây dựng trên đất bằng phẳng hoặc sườn đồi thoai thoải, sàn nhà cao hơn mặt đất trên 2m.", "Bộ khung gồm cột gỗ, xà ngang, kèo, đòn tay, liên kết bằng mộng gỗ và dây mây.", "Sàn nhà làm bằng tre hoặc nứa đập dập, gác trên hệ thống thanh ngang và dọc, đảm bảo thông thoáng và chịu lực tốt.", "Khoảng không gian dưới sàn được sử dụng để chứa nông cụ, củi và các vật dụng sinh hoạt.", "Cửa nhà gồm cửa chính phía trước và hai cửa phụ ở hai đầu hồi, làm bằng phên tre đan, linh hoạt và thông thoáng."] : ["The stilt house is built on flat land or gentle hillsides, with the floor raised over 2 meters above the ground.", "The frame consists of wooden pillars, crossbeams, rafters, and purlins, connected using wooden joints and rattan ties.", "The floor is made of flattened bamboo or reeds, supported by a system of horizontal and vertical beams, ensuring ventilation and durability.", "The space beneath the house is used to store farming tools, firewood, and daily utensils.", "The house has a main front door and two side doors at the gable ends, made of woven bamboo panels, providing flexibility and ventilation."] },
-    { label: lang === "vi" ? "Không Gian Sinh Hoạt" : "Living Space", color: C.gold, items: lang === "vi" ? ["Khu vực trung tâm trang trọng, kéo dài từ cột chính đến vách sau, là nơi cất giữ các vật dụng quý như gùi, lúa giống và của cải.", "Bếp lửa đặt ở trung tâm, phục vụ nấu nướng, sinh hoạt gia đình, đồng thời là nơi truyền dạy kinh nghiệm sống và văn hóa truyền thống.", "Các khu vực phụ xung quanh phục vụ sinh hoạt thường nhật, gặp gỡ, tiếp khách và gắn kết gia đình."] : ["The central area, extending from the main pillar to the rear wall, is a respected space used to store valuable items such as baskets, seed rice, and belongings.", "The hearth is placed at the center, serving cooking and family activities, as well as passing down life experiences and traditional culture.", "Surrounding spaces support daily activities, social interactions, and family bonding."] },
+    { label: lang === "vi" ? "Không Gian · Kiến Trúc" : "Space · Architecture", color: C.leaf, items: lang === "vi" ? ["Nhà sàn được xây dựng trên đất bằng phẳng hoặc sườn đồi thoai thoải, sàn nhà cao hơn mặt đất trên 2m.", "Bộ khung gồm cột gỗ, xà ngang, kèo, đòn tay, liên kết bằng mộng gỗ và dây mây.", "Sàn nhà làm bằng tre hoặc nứa đập dập, đảm bảo thông thoáng và chịu lực tốt.", "Khoảng không gian dưới sàn được sử dụng để chứa nông cụ, củi và các vật dụng sinh hoạt.", "Cửa nhà gồm cửa chính phía trước và hai cửa phụ ở hai đầu hồi, làm bằng phên tre đan."] : ["The stilt house is built on flat land or gentle hillsides, with the floor raised over 2 meters above the ground.", "The frame consists of wooden pillars, crossbeams, rafters, and purlins, connected using wooden joints and rattan ties.", "The floor is made of flattened bamboo or reeds, ensuring ventilation and durability.", "The space beneath the house is used to store farming tools, firewood, and daily utensils.", "The house has a main front door and two side doors at the gable ends, made of woven bamboo panels."] },
+    { label: lang === "vi" ? "Không Gian Sinh Hoạt" : "Living Space", color: C.gold, items: lang === "vi" ? ["Khu vực trung tâm trang trọng, kéo dài từ cột chính đến vách sau, là nơi cất giữ các vật dụng quý.", "Bếp lửa đặt ở trung tâm, phục vụ nấu nướng, sinh hoạt gia đình, đồng thời là nơi truyền dạy.", "Các khu vực phụ xung quanh phục vụ sinh hoạt thường nhật và gắn kết gia đình."] : ["The central area, extending from the main pillar to the rear wall, is used to store valuable items.", "The hearth is placed at the center, serving cooking, family activities, and cultural transmission.", "Surrounding spaces support daily activities, social interactions, and family bonding."] },
     { label: lang === "vi" ? "Ý Nghĩa Văn Hóa" : "Cultural Meaning", color: C.clay, items: lang === "vi" ? ["Phản ánh sự thích nghi với môi trường núi rừng, khí hậu nóng ẩm và nhiều mưa gió.", "Thể hiện mối quan hệ gắn bó chặt chẽ giữa đời sống gia đình và cộng đồng."] : ["Reflects adaptation to the mountainous forest environment and the hot, humid, and rainy climate.", "Demonstrates the close connection between family life and the wider community."] },
   ],
   imgso3
@@ -1443,10 +1528,10 @@ const Page8VayNgan = makeTrangPhuc(
   "Trang phục thường nhật của phụ nữ Cơ Tu",
   (lang) => lang === "vi" ? [
     { label: "Mô Tả", color: C.leaf, items: ["Váy được dệt từ vải thổ cẩm, có chiều dài khoảng 80cm và chiều rộng từ 70–80cm.", "Tấm vải được khâu lại tạo thành dạng hình ống.", "Khi mặc, váy được quấn quanh hông và cố định bằng dây buộc hoặc thắt lưng."] },
-    { label: "Đối Tượng Sử Dụng", color: C.gold, items: ["Đây là trang phục quen thuộc của phụ nữ Cơ Tu.", "Trong sinh hoạt hằng ngày, váy thường có độ dài đến đầu gối, thuận tiện cho lao động và sinh hoạt.", "Trong các dịp lễ hội, váy có thể dài hơn và được trang trí với nhiều hoa văn cầu kỳ."] },
+    { label: "Đối Tượng Sử Dụng", color: C.gold, items: ["Đây là trang phục quen thuộc của phụ nữ Cơ Tu.", "Trong sinh hoạt hằng ngày, váy thường có độ dài đến đầu gối.", "Trong các dịp lễ hội, váy có thể dài hơn và được trang trí với nhiều hoa văn cầu kỳ."] },
   ] : [
-    { label: "Description", color: C.leaf, items: ["The skirt is woven from brocade fabric, measuring approximately 80 cm in length and 70–80 cm in width.", "The fabric is sewn into a tubular shape.", "When worn, it is wrapped around the hips and secured with a cord or waistband."] },
-    { label: "Users", color: C.gold, items: ["This is a common garment worn by Cơ Tu women.", "In daily life, the skirt is usually knee-length, making it practical for work and daily activities.", "During festivals, the skirt may be longer and decorated with more intricate patterns."] },
+    { label: "Description", color: C.leaf, items: ["The skirt is woven from brocade fabric, approximately 80 cm in length and 70–80 cm in width.", "The fabric is sewn into a tubular shape.", "When worn, it is wrapped around the hips and secured with a cord or waistband."] },
+    { label: "Users", color: C.gold, items: ["This is a common garment worn by Cơ Tu women.", "In daily life, the skirt is usually knee-length for practicality.", "During festivals, the skirt may be longer and decorated with more intricate patterns."] },
   ],
   imgso5
 );
@@ -1455,10 +1540,10 @@ const Page9VayDai = makeTrangPhuc(
   "Váy Dài (Chrờ Dhu)", "Long Skirt (Chrờ Dhu)",
   "Trang phục lễ hội của phụ nữ Cơ Tu",
   (lang) => lang === "vi" ? [
-    { label: "Mô Tả", color: C.leaf, items: ["Váy được dệt từ vải thổ cẩm, có chiều dài khoảng 6m, được khâu lại thành hai lớp, mỗi lớp dài khoảng 3m.", "Hoa văn trang trí được cách điệu, tương tự hoa văn trên khố của nam giới nhưng tập trung thành mảng lớn ở phần dưới thân váy.", "Các họa tiết thường đứng riêng lẻ theo các vạch sọc, gồm các dạng như hoa văn abloom, lá trầu.", "Màu sắc tương đối đơn giản, hoa văn được thể hiện theo xu hướng hình học hóa."] },
-    { label: "Đối Tượng Sử Dụng", color: C.gold, items: ["Đây là trang phục dành cho các dịp lễ hội hoặc sự kiện đặc biệt của phụ nữ Cơ Tu.", "Thường được mặc trong các nghi lễ quan trọng, cưới hỏi hoặc các hoạt động sinh hoạt cộng đồng."] },
+    { label: "Mô Tả", color: C.leaf, items: ["Váy dệt từ vải thổ cẩm, có chiều dài khoảng 6m, được khâu lại thành hai lớp.", "Hoa văn trang trí được cách điệu, tập trung thành mảng lớn ở phần dưới thân váy.", "Các họa tiết thường đứng riêng lẻ theo các vạch sọc, gồm hoa văn abloom, lá trầu.", "Màu sắc tương đối đơn giản, hoa văn được thể hiện theo xu hướng hình học hóa."] },
+    { label: "Đối Tượng Sử Dụng", color: C.gold, items: ["Đây là trang phục dành cho các dịp lễ hội hoặc sự kiện đặc biệt của phụ nữ Cơ Tu.", "Thường được mặc trong các nghi lễ quan trọng, cưới hỏi hoặc các hoạt động cộng đồng."] },
   ] : [
-    { label: "Description", color: C.leaf, items: ["The skirt is woven from brocade fabric, approximately 6 meters in length, and sewn into two layers, each about 3 meters long.", "Decorative patterns are stylized, similar to those on men's loincloths, but arranged into large panels at the lower part of the skirt.", "Motifs are typically arranged individually in striped bands, including patterns such as abloom and betel leaf designs.", "Colors are relatively simple, with motifs expressed in a geometric style."] },
+    { label: "Description", color: C.leaf, items: ["The skirt is woven from brocade fabric, approximately 6 meters in length, sewn into two layers.", "Decorative patterns are stylized, arranged into large panels at the lower part.", "Motifs include abloom and betel leaf designs arranged in striped bands.", "Colors are relatively simple, with geometric-style motifs."] },
     { label: "Users", color: C.gold, items: ["This garment is worn by Cơ Tu women during festivals or special occasions.", "It is commonly used in important ceremonies, weddings, and community gatherings."] },
   ],
   imgso6
@@ -1482,7 +1567,7 @@ const Page11ComLam = makeAmThuc(
   (lang) => lang === "vi" ? [
     { label: "Nguyên Liệu", color: C.leaf, items: ["Gạo nếp rẫy của người Cơ Tu.", "Nước suối.", "Ống tre hoặc ống nứa non."] },
     { label: "Cách Chế Biến", color: C.gold, items: ["Gạo nếp được vo sạch, ngâm trong nước suối vài giờ để hạt gạo mềm và nở đều.", "Cho gạo vào ống tre non, thêm lượng nước vừa đủ, bịt kín miệng bằng lá rừng hoặc lá chuối.", "Đặt ống cơm nghiêng trên bếp than hoặc vùi trong than hồng, xoay đều để cơm chín từ từ.", "Khi chín, bóc lớp vỏ tre bên ngoài để lộ phần cơm dẻo, thơm mùi đặc trưng của tre nứa."] },
-    { label: "Trường Hợp Sử Dụng", color: C.clay, items: ["Sử dụng phổ biến trong bữa ăn hằng ngày.", "Thuận tiện khi đi rẫy, đi rừng.", "Xuất hiện trong lễ hội, tiếp khách và sinh hoạt cộng đồng như món ăn mang tính đại diện."] },
+    { label: "Trường Hợp Sử Dụng", color: C.clay, items: ["Sử dụng phổ biến trong bữa ăn hằng ngày.", "Thuận tiện khi đi rẫy, đi rừng.", "Xuất hiện trong lễ hội, tiếp khách và sinh hoạt cộng đồng."] },
   ] : [
     { label: "Ingredients", color: C.leaf, items: ["Upland glutinous rice.", "Stream water.", "Young bamboo tubes."] },
     { label: "Preparation", color: C.gold, items: ["Rinse and soak the rice in stream water for several hours until softened.", "Fill bamboo tubes with rice and water, seal with forest or banana leaves.", "Place over charcoal or bury in embers, rotating evenly for slow cooking.", "Peel the outer bamboo layer to reveal fragrant sticky rice infused with bamboo aroma."] },
@@ -1509,7 +1594,7 @@ const Page13ThitGacBep = makeAmThuc(
   "Thịt Gác Bếp (Pa'riêng)", "Smoked Fireside Meat (Pa'riêng)", "Món truyền thống đầu năm mới của người Cơ Tu",
   (lang) => lang === "vi" ? [
     { label: "Nguyên Liệu", color: C.leaf, items: ["Các loại thịt: trâu, bò, heo, gà hoặc thịt thú rừng.", "Muối, sả, ớt rừng, tiêu rừng và một số lá gia vị."] },
-    { label: "Cách Chế Biến", color: C.gold, items: ["Thịt được làm sạch, chặt miếng vừa ăn, ướp với muối hột giã nhỏ, ớt rừng và lá gia vị.", "Xiên vào que tre hoặc kẹp bằng thanh tre, nướng trực tiếp trên bếp than.", "Trong quá trình nướng, trở đều tay để thịt chín đều và không bị cháy.", "Khi chín, lớp ngoài vàng sẫm, bên trong vẫn giữ được độ ngọt tự nhiên và hương thơm đặc trưng."] },
+    { label: "Cách Chế Biến", color: C.gold, items: ["Thịt được làm sạch, chặt miếng vừa ăn, ướp với muối hột giã nhỏ, ớt rừng và lá gia vị.", "Xiên vào que tre hoặc kẹp bằng thanh tre, nướng trực tiếp trên bếp than.", "Trong quá trình nướng, trở đều tay để thịt chín đều và không bị cháy.", "Khi chín, lớp ngoài vàng sẫm, bên trong vẫn giữ được độ ngọt tự nhiên."] },
     { label: "Trường Hợp Sử Dụng", color: C.clay, items: ["Thường chế biến vào dịp cuối năm, đặc biệt đầu năm mới là mùa pa'riêng.", "Dùng trong lễ hội, Tết, mâm đãi khách và làm quà biếu trong các dịp quan trọng."] },
   ] : [
     { label: "Ingredients", color: C.leaf, items: ["Buffalo, beef, pork, chicken, or game meat.", "Salt, lemongrass, forest chilies, forest pepper, aromatic leaves."] },
@@ -1640,7 +1725,7 @@ const Page22CongCuSan = makeTool("Công Cụ Săn Bắt (A Păng)", "Hunting Too
   imgso19
 );
 
-// Images data
+// ─── IMAGES DATA ──────────────────────────────────────────────────────────────
 const IMAGES_LUA_MOI = [
   { url: "https://cly.1cdn.vn/2023/11/30/z4911100426880_620eabbd17c3331a7b259c2b124c0a3c.jpg", title: "Cúng thần lúa tại rẫy", caption: "Già làng thực hiện nghi lễ cúng thần lúa ngay tại nương rẫy, xin phép thu hoạch trước khi mang lúa về làng." },
   { url: "https://media.vov.vn/uploaded/gyj8ypvaewcwkozvalyua/2017_06_08/hinh_6_yijr.jpg", title: "Cây nêu – trục vũ trụ (x'nur)", caption: "Cây nêu được trang trí họa tiết mặt trời, núi, lúa, thú — đóng vai trò trục vũ trụ kết nối trời đất trong lễ hội." },
@@ -1721,15 +1806,15 @@ export const Page25LeKetNghia = makeLeHoi(
 const Page26TriThucCanhTac = makePage(
   "Di Sản Phi Vật Thể › Tri Thức Bản Địa",
   "Tri Thức Canh Tác Nương Rẫy", "Swidden Farming Knowledge",
-  { vi: "Hệ thống kinh nghiệm sản xuất nông nghiệp truyền thống của người Cơ Tu, gắn với môi trường núi rừng Trường Sơn", en: "A traditional agricultural knowledge system of the Cơ Tu people, closely tied to the Trường Sơn mountain ecosystem" },
+  { vi: "Hệ thống kinh nghiệm sản xuất nông nghiệp truyền thống của người Cơ Tu", en: "Traditional agricultural knowledge system of the Cơ Tu people" },
   (lang) => lang === "vi" ? [
     { label: "Giới Thiệu Chung", color: C.leaf, items: ["Tri thức canh tác nương rẫy của người Cơ Tu là hệ thống kinh nghiệm sản xuất nông nghiệp truyền thống được tích lũy qua nhiều thế hệ.", "Hình thành trong môi trường núi rừng Trường Sơn, tri thức này phản ánh sự thích nghi linh hoạt với điều kiện tự nhiên khắc nghiệt.", "Không chỉ là phương thức mưu sinh, đây còn thể hiện mối quan hệ hài hòa giữa con người và thiên nhiên."] },
-    { label: "Chu Kỳ Nông Lịch", color: C.gold, items: ["Tháng 3: phát rẫy, mở đầu mùa vụ sản xuất.", "Tháng 4–5: đốt rẫy, làm đất và tiến hành gieo trỉa.", "Tháng 5–7: chăm sóc cây trồng, kết hợp săn bắt và hái lượm.", "Tháng 8: chuẩn bị công cụ và điều kiện cho vụ thu hoạch.", "Tháng 10: thu hoạch lúa rẫy.", "Chu kỳ sản xuất gắn liền với các dấu hiệu tự nhiên như tiếng chim báo mùa, thể hiện khả năng quan sát tinh tế của người dân."] },
+    { label: "Chu Kỳ Nông Lịch", color: C.gold, items: ["Tháng 3: phát rẫy, mở đầu mùa vụ sản xuất.", "Tháng 4–5: đốt rẫy, làm đất và tiến hành gieo trỉa.", "Tháng 5–7: chăm sóc cây trồng, kết hợp săn bắt và hái lượm.", "Tháng 8: chuẩn bị công cụ và điều kiện cho vụ thu hoạch.", "Tháng 10: thu hoạch lúa rẫy."] },
     { label: "Phương Thức Canh Tác", color: C.clay, items: ["Áp dụng hình thức nương rẫy luân canh: sau vài vụ sẽ để đất nghỉ nhằm phục hồi độ phì nhiêu.", "Công cụ lao động đơn giản như gậy chọc lỗ, rìu, gùi — phù hợp với địa hình đồi núi.", "Cây trồng đa dạng: lúa rẫy là lương thực chính, kết hợp với ngô, sắn, rau màu và cây dược liệu.", "Kết hợp khai thác tự nhiên thông qua săn bắt, đánh cá, hái lượm — tạo nên đời sống tự cung tự cấp."] },
     { label: "Ý Nghĩa", color: C.leaf, items: ["Giúp cộng đồng thích nghi với điều kiện tự nhiên khắc nghiệt và đảm bảo nguồn lương thực ổn định.", "Thể hiện tri thức sinh thái bản địa và cách sử dụng tài nguyên thiên nhiên một cách bền vững.", "Là di sản văn hóa phi vật thể quan trọng, góp phần gìn giữ bản sắc và truyền thống của người Cơ Tu."] },
   ] : [
     { label: "Overview", color: C.leaf, items: ["Swidden farming knowledge of the Cơ Tu people is a traditional agricultural system accumulated over generations.", "Developed in the Trường Sơn mountainous environment, it reflects strong adaptability to natural conditions.", "It represents not only a livelihood but also a harmonious relationship between humans and nature."] },
-    { label: "Agricultural Calendar", color: C.gold, items: ["Month 3: clearing swidden fields.", "Months 4–5: burning, soil preparation, and sowing.", "Months 5–7: tending crops, combined with hunting and gathering.", "Month 8: preparing tools and harvest conditions.", "Month 10: harvesting upland rice.", "This cycle follows natural signs such as birds signaling seasonal changes."] },
+    { label: "Agricultural Calendar", color: C.gold, items: ["Month 3: clearing swidden fields.", "Months 4–5: burning, soil preparation, and sowing.", "Months 5–7: tending crops, combined with hunting and gathering.", "Month 8: preparing tools and harvest conditions.", "Month 10: harvesting upland rice."] },
     { label: "Farming Methods", color: C.clay, items: ["Rotational swidden farming: land is left fallow after several seasons to restore fertility.", "Simple tools such as dibble sticks, axes, and baskets are used.", "Diverse crops: upland rice as staple, combined with maize, cassava, vegetables, and medicinal plants.", "Combined with hunting, fishing, and gathering for a self-sufficient lifestyle."] },
     { label: "Significance", color: C.leaf, items: ["Helps communities adapt to harsh environments and ensure food security.", "Reflects indigenous ecological knowledge and sustainable resource use.", "An important intangible cultural heritage preserving Cơ Tu identity."] },
   ]
@@ -1738,7 +1823,7 @@ const Page26TriThucCanhTac = makePage(
 const Page27YHocDanGian = makePage(
   "Di Sản Phi Vật Thể › Tri Thức Bản Địa",
   "Tri Thức Bản Địa Về Y Học Dân Gian", "Indigenous Folk Medicine Knowledge",
-  { vi: "Hệ thống tri thức chữa bệnh từ cây rừng, gắn với đời sống và môi trường tự nhiên", en: "A traditional healing system based on forest plants and ecological knowledge" },
+  { vi: "Hệ thống tri thức chữa bệnh từ cây rừng", en: "A traditional healing system based on forest plants and ecological knowledge" },
   (lang) => lang === "vi" ? [
     { label: "Giới Thiệu Chung", color: C.leaf, items: ["Y học dân gian của người Cơ Tu là hệ thống tri thức bản địa được hình thành qua nhiều thế hệ.", "Dựa trên kinh nghiệm truyền miệng và việc sử dụng cây rừng để chữa bệnh.", "Gắn bó chặt chẽ với môi trường tự nhiên và đời sống văn hóa cộng đồng."] },
     { label: "Mô Tả", color: C.gold, items: ["Sử dụng lá, rễ, thân cây làm thuốc với cách chế biến đơn giản như giã nát, vò hoặc đun nước uống.", "Nguồn dược liệu chủ yếu lấy từ rừng hoặc được trồng gần nhà, gần nương rẫy.", "Các bài thuốc dùng để chữa bệnh thông thường, bồi bổ sức khỏe và phòng bệnh.", "Đây là hình thức chăm sóc sức khỏe tự nhiên, phù hợp với điều kiện sống vùng núi."] },
@@ -1753,15 +1838,15 @@ const Page27YHocDanGian = makePage(
 const Page28NgonNgu = makePage(
   "Di Sản Phi Vật Thể › Văn Học Dân Gian",
   "Ngôn Ngữ Cơ Tu", "The Cơ Tu Language",
-  { vi: "Ngôn ngữ thuộc ngữ hệ Nam Á – nhóm Katuic, dòng Môn–Khmer, gắn liền với đời sống và văn hóa cộng đồng", en: "An Austroasiatic language of the Katuic group, Mon-Khmer branch, deeply embedded in community life and culture" },
+  { vi: "Ngôn ngữ thuộc ngữ hệ Nam Á – nhóm Katuic, dòng Môn–Khmer", en: "An Austroasiatic language of the Katuic group, Mon-Khmer branch" },
   (lang) => lang === "vi" ? [
-    { label: "Giới Thiệu Chung", color: C.leaf, items: ["Tiếng Cơ Tu là ngôn ngữ thuộc nhóm Katuic, dòng Môn – Khmer trong ngữ hệ Nam Á, có lịch sử lâu đời tại khu vực miền Trung Việt Nam.", "Đây là phương tiện giao tiếp chính của cộng đồng, đồng thời là công cụ lưu giữ tri thức, kinh nghiệm sản xuất và giá trị văn hóa truyền thống.", "Trong đời sống hiện nay, tiếng Cơ Tu tồn tại song song với tiếng Việt: tiếng mẹ đẻ được dùng trong sinh hoạt, văn hóa và nghi lễ; tiếng Việt được sử dụng trong giáo dục, hành chính và giao tiếp rộng hơn.", "Xu hướng song ngữ ngày càng rõ rệt, đặc biệt ở thế hệ trẻ."] },
-    { label: "Đặc Điểm Ngôn Ngữ", color: C.gold, items: ["Tiếng Cơ Tu có cấu trúc cận âm tiết, hệ thống âm phong phú và nhiều âm vị đặc trưng, khác biệt rõ rệt so với tiếng Việt.", "Ngôn ngữ tồn tại dưới nhiều phương ngữ theo từng khu vực cư trú, nhưng vẫn đảm bảo khả năng giao tiếp và hiểu lẫn nhau trong cộng đồng.", "Ngữ âm và từ vựng phản ánh rõ môi trường sống gắn với núi rừng, thiên nhiên và đời sống lao động.", "Chữ viết Cơ Tu hiện tồn tại hai hệ thống chính: một dựa trên thực tiễn sử dụng trong cộng đồng, đơn giản và dễ tiếp cận; một theo hướng nghiên cứu khoa học, mang tính chuẩn hóa cao.", "Tuy nhiên, việc thống nhất và phổ cập chữ viết vẫn còn gặp nhiều khó khăn trong thực tế."] },
-    { label: "Ý Nghĩa & Thách Thức", color: C.clay, items: ["Ngôn ngữ Cơ Tu là kho tàng lưu giữ tri thức bản địa, phản ánh cách hiểu về tự nhiên, kinh nghiệm sản xuất và đời sống văn hóa.", "Đây là phương tiện truyền tải các giá trị văn hóa phi vật thể như truyện kể, dân ca, nghi lễ và phong tục tập quán.", "Xu hướng sử dụng tiếng Việt ngày càng phổ biến khiến tiếng mẹ đẻ có nguy cơ bị thu hẹp, đặc biệt ở thế hệ trẻ.", "Việc bảo tồn và phát triển ngôn ngữ không chỉ có ý nghĩa về mặt ngôn ngữ học mà còn góp phần quan trọng trong việc gìn giữ bản sắc văn hóa dân tộc.", "Cần có các giải pháp như giáo dục song ngữ, chuẩn hóa chữ viết và truyền dạy trong cộng đồng để duy trì và phát huy giá trị của ngôn ngữ."] },
+    { label: "Giới Thiệu Chung", color: C.leaf, items: ["Tiếng Cơ Tu là ngôn ngữ thuộc nhóm Katuic, dòng Môn – Khmer trong ngữ hệ Nam Á, có lịch sử lâu đời tại khu vực miền Trung Việt Nam.", "Đây là phương tiện giao tiếp chính của cộng đồng, đồng thời là công cụ lưu giữ tri thức, kinh nghiệm sản xuất và giá trị văn hóa truyền thống.", "Trong đời sống hiện nay, tiếng Cơ Tu tồn tại song song với tiếng Việt.", "Xu hướng song ngữ ngày càng rõ rệt, đặc biệt ở thế hệ trẻ."] },
+    { label: "Đặc Điểm Ngôn Ngữ", color: C.gold, items: ["Tiếng Cơ Tu có cấu trúc cận âm tiết, hệ thống âm phong phú và nhiều âm vị đặc trưng.", "Ngôn ngữ tồn tại dưới nhiều phương ngữ theo từng khu vực cư trú.", "Ngữ âm và từ vựng phản ánh rõ môi trường sống gắn với núi rừng, thiên nhiên và đời sống lao động.", "Chữ viết Cơ Tu hiện tồn tại hai hệ thống chính: một dựa trên thực tiễn sử dụng; một theo hướng nghiên cứu khoa học."] },
+    { label: "Ý Nghĩa & Thách Thức", color: C.clay, items: ["Ngôn ngữ Cơ Tu là kho tàng lưu giữ tri thức bản địa, phản ánh cách hiểu về tự nhiên, kinh nghiệm sản xuất và đời sống văn hóa.", "Xu hướng sử dụng tiếng Việt ngày càng phổ biến khiến tiếng mẹ đẻ có nguy cơ bị thu hẹp.", "Cần có các giải pháp như giáo dục song ngữ, chuẩn hóa chữ viết và truyền dạy trong cộng đồng."] },
   ] : [
-    { label: "Overview", color: C.leaf, items: ["The Cơ Tu language belongs to the Katuic group, Mon-Khmer branch of the Austroasiatic family, with a long history in Central Vietnam.", "It serves as the main means of communication and a repository of indigenous knowledge, cultural values, and traditional practices.", "Today, Cơ Tu coexists with Vietnamese: the native language is used in daily life, culture, and rituals, while Vietnamese is used in education and administration.", "A growing bilingual trend is especially evident among younger generations."] },
-    { label: "Linguistic Features", color: C.gold, items: ["Cơ Tu has a near-monosyllabic structure with a rich phonological system, clearly distinct from Vietnamese.", "It exists in multiple dialects across regions, yet maintains mutual intelligibility within the community.", "Its phonology and vocabulary strongly reflect a lifestyle connected to forests and nature.", "Two main writing systems exist: one community-based and practical, the other more scientific and standardized.", "However, unifying and widely adopting a standard writing system remains challenging."] },
-    { label: "Significance & Challenges", color: C.clay, items: ["The language is a vital repository of indigenous knowledge, reflecting understanding of nature, production, and cultural life.", "It carries intangible cultural heritage such as oral literature, songs, rituals, and customs.", "The increasing dominance of Vietnamese poses a risk of language decline among younger generations.", "Preserving the language is essential not only linguistically but also for maintaining cultural identity.", "Efforts such as bilingual education, script standardization, and community transmission are crucial for its sustainability."] },
+    { label: "Overview", color: C.leaf, items: ["The Cơ Tu language belongs to the Katuic group, Mon-Khmer branch of the Austroasiatic family.", "It serves as the main means of communication and a repository of indigenous knowledge.", "Today, Cơ Tu coexists with Vietnamese.", "A growing bilingual trend is especially evident among younger generations."] },
+    { label: "Linguistic Features", color: C.gold, items: ["Cơ Tu has a near-monosyllabic structure with a rich phonological system.", "It exists in multiple dialects across regions.", "Its phonology and vocabulary strongly reflect a lifestyle connected to forests and nature.", "Two main writing systems exist: one community-based and one more scientific."] },
+    { label: "Significance & Challenges", color: C.clay, items: ["The language is a vital repository of indigenous knowledge.", "The increasing dominance of Vietnamese poses a risk of language decline.", "Efforts such as bilingual education and script standardization are crucial."] },
   ],
   imgso20
 );
@@ -1771,13 +1856,13 @@ const Page29SuTichDongHo = makeVanHoc(
   { vi: "Alăng – Arất: truyền thuyết về đại hồng thủy và nguồn gốc cộng đồng", en: "Alăng – Arất: legend of the great flood and community origins" },
   "Văn Học Dân Gian – Truyền Thuyết",
   (lang) => lang === "vi" ? [
-    { label: "Giới Thiệu Chung", color: C.leaf, items: ["Truyền thuyết kể về nguồn gốc hình thành các dòng họ trong cộng đồng người Cơ Tu.", "Câu chuyện gắn liền với ký ức tập thể về một trận đại hồng thủy trong quá khứ.", "Thông qua đó, người Cơ Tu lý giải sự khởi đầu của con người và cộng đồng sau biến cố thiên nhiên."] },
+    { label: "Giới Thiệu Chung", color: C.leaf, items: ["Truyền thuyết kể về nguồn gốc hình thành các dòng họ trong cộng đồng người Cơ Tu.", "Câu chuyện gắn liền với ký ức tập thể về một trận đại hồng thủy trong quá khứ."] },
     { label: "Cốt Truyện", color: C.gold, items: ["Ba con vật Rùa, Diều hâu và Tắc kè bàn bạc cách cứu loài người khỏi nạn đại hồng thủy.", "Trong quá trình thực hiện, Diều hâu và Rùa không may gặp nạn và không thể tiếp tục.", "Tắc kè một mình kiên trì, cứu được một số ít người còn sống sót.", "Khi con người hồi phục, thay vì biết ơn, họ lại trách móc và giết chết Tắc kè — ân nhân của mình.", "Những người sống sót sau đó hình thành dòng họ Hơ Lăng (Alăng), về sau tách ra thành họ Arất."] },
-    { label: "Ý Nghĩa", color: C.clay, items: ["Giải thích nguồn gốc hình thành các dòng họ trong xã hội người Cơ Tu.", "Phản ánh nhận thức về thiên tai và quá trình tái thiết cuộc sống của con người.", "Thể hiện quan niệm đạo đức về lòng biết ơn và hậu quả của sự vô ơn.", "Là một phần quan trọng trong kho tàng văn học dân gian, góp phần gìn giữ bản sắc văn hóa dân tộc."] },
+    { label: "Ý Nghĩa", color: C.clay, items: ["Giải thích nguồn gốc hình thành các dòng họ trong xã hội người Cơ Tu.", "Phản ánh nhận thức về thiên tai và quá trình tái thiết cuộc sống của con người.", "Thể hiện quan niệm đạo đức về lòng biết ơn và hậu quả của sự vô ơn."] },
   ] : [
-    { label: "Overview", color: C.leaf, items: ["This legend explains the origin of clans within the Cơ Tu community.", "It is associated with a collective memory of a great flood in the past.", "The story reflects how people understand the beginning of human life after natural disasters."] },
+    { label: "Overview", color: C.leaf, items: ["This legend explains the origin of clans within the Cơ Tu community.", "It is associated with a collective memory of a great flood in the past."] },
     { label: "Story", color: C.gold, items: ["Three animals — Turtle, Kite, and Gecko — plan to save humanity from a great flood.", "During the effort, the Kite and Turtle perish and cannot continue.", "The Gecko perseveres alone and rescues a small number of survivors.", "After recovering, humans ungratefully blame and kill the Gecko — their savior.", "The survivors form the Hơ Lăng (Alăng) clan, later splitting into the Arất clan."] },
-    { label: "Meaning", color: C.clay, items: ["Explains the origins of clans in Cơ Tu society.", "Reflects perceptions of natural disasters and human recovery.", "Highlights moral lessons about gratitude and the consequences of ingratitude.", "An important part of folk literature preserving cultural identity."] },
+    { label: "Meaning", color: C.clay, items: ["Explains the origins of clans in Cơ Tu society.", "Reflects perceptions of natural disasters and human recovery.", "Highlights moral lessons about gratitude and the consequences of ingratitude."] },
   ]
 );
 
@@ -1786,13 +1871,13 @@ const Page30MoCoiGiuTrau = makeVanHoc(
   { vi: "Cổ tích — trí tuệ và lòng nhân ái trước sức mạnh thiên nhiên", en: "Folktale — intelligence and compassion against the forces of nature" },
   "Văn Học Dân Gian – Cổ Tích",
   (lang) => lang === "vi" ? [
-    { label: "Giới Thiệu Chung", color: C.leaf, items: ["Câu chuyện kể về một chàng trai mồ côi nghèo khó trong cộng đồng người Cơ Tu.", "Dù hoàn cảnh khó khăn, anh vẫn nổi bật bởi trí thông minh, lòng dũng cảm và sự bình tĩnh.", "Câu chuyện phản ánh cuộc sống lao động gắn với thiên nhiên và những thử thách từ môi trường hoang dã."] },
+    { label: "Giới Thiệu Chung", color: C.leaf, items: ["Câu chuyện kể về một chàng trai mồ côi nghèo khó trong cộng đồng người Cơ Tu.", "Dù hoàn cảnh khó khăn, anh vẫn nổi bật bởi trí thông minh, lòng dũng cảm và sự bình tĩnh."] },
     { label: "Cốt Truyện", color: C.gold, items: ["Chàng trai làm thuê giữ trâu cho làng để sinh sống.", "Một con cọp dữ thường xuyên vào làng bắt trâu, gây hoang mang cho dân.", "Chàng đã nghĩ ra cách bẫy cọp bằng dây buộc khéo léo, khiến con vật không thể thoát.", "Sau khi khống chế được cọp, anh không giết mà buộc nó phải thề không quay lại phá làng.", "Từ đó, cọp chỉ sống trong rừng sâu, không còn gây hại cho con người."] },
-    { label: "Ý Nghĩa", color: C.clay, items: ["Đề cao trí thông minh, sự bình tĩnh và lòng dũng cảm của con người.", "Thể hiện tư tưởng nhân văn: không tiêu diệt mà hướng tới sự chung sống hài hòa với thiên nhiên.", "Phản ánh kinh nghiệm ứng xử khôn khéo trong đời sống cộng đồng.", "Là bài học giáo dục về cách giải quyết xung đột một cách nhân văn và hiệu quả."] },
+    { label: "Ý Nghĩa", color: C.clay, items: ["Đề cao trí thông minh, sự bình tĩnh và lòng dũng cảm của con người.", "Thể hiện tư tưởng nhân văn: không tiêu diệt mà hướng tới sự chung sống hài hòa với thiên nhiên.", "Là bài học giáo dục về cách giải quyết xung đột một cách nhân văn và hiệu quả."] },
   ] : [
-    { label: "Overview", color: C.leaf, items: ["This folktale tells the story of a poor orphan boy in the Cơ Tu community.", "Despite hardship, he is intelligent, brave, and calm.", "It reflects a life closely tied to nature and its challenges."] },
+    { label: "Overview", color: C.leaf, items: ["This folktale tells the story of a poor orphan boy in the Cơ Tu community.", "Despite hardship, he is intelligent, brave, and calm."] },
     { label: "Story", color: C.gold, items: ["The boy works as a buffalo keeper for the village.", "A fierce tiger repeatedly attacks and takes buffaloes.", "He devises a clever rope trap to capture the tiger.", "Instead of killing it, he forces the tiger to swear never to return.", "From then on, the tiger lives in the forest and no longer harms the village."] },
-    { label: "Meaning", color: C.clay, items: ["Highlights intelligence, composure, and courage.", "Promotes humanistic values: coexistence instead of destruction.", "Reflects wise behavior in community life.", "Teaches humane and effective conflict resolution."] },
+    { label: "Meaning", color: C.clay, items: ["Highlights intelligence, composure, and courage.", "Promotes humanistic values: coexistence instead of destruction.", "Teaches humane and effective conflict resolution."] },
   ]
 );
 
@@ -1801,13 +1886,13 @@ const Page31MoCoiCuoiVo = makeVanHoc(
   { vi: "Cổ tích — trí tuệ, kiên trì và chiến thắng thử thách", en: "Folktale — intelligence, perseverance, and triumph over trials" },
   "Văn Học Dân Gian – Cổ Tích",
   (lang) => lang === "vi" ? [
-    { label: "Giới Thiệu Chung", color: C.leaf, items: ["Câu chuyện kể về một chàng trai mồ côi nghèo nhưng thông minh và kiên trì.", "Anh phải đối mặt với những thử thách khó khăn để đạt được hạnh phúc.", "Câu chuyện phản ánh ước mơ về công bằng và sự vươn lên của người lao động bình dân."] },
-    { label: "Cốt Truyện", color: C.gold, items: ["Một ông già giàu có đưa ra thử thách: phải đãi tiệc và thắng cuộc thi cõng cô gái lên dốc mới được cưới vợ.", "Trong bữa tiệc, chàng trai khôn khéo giữ sức, trong khi ông già ăn uống no say.", "Khi thi, ông nhanh chóng kiệt sức còn chàng trai vẫn đủ sức vượt qua thử thách.", "Ở một dị bản, cô gái giúp chàng bằng cách cho nước uống, tiếp thêm sức lực.", "Cuối cùng, chàng trai chiến thắng và cưới được cô gái, sống hạnh phúc."] },
-    { label: "Ý Nghĩa", color: C.clay, items: ["Đề cao trí thông minh, sự kiên trì và bản lĩnh vượt khó.", "Thể hiện giá trị của tình yêu chân thành và sự đồng lòng.", "Phản ánh niềm tin vào công bằng và kết quả xứng đáng cho người nỗ lực.", "Là bài học về cách ứng xử khôn khéo trong cuộc sống."] },
+    { label: "Giới Thiệu Chung", color: C.leaf, items: ["Câu chuyện kể về một chàng trai mồ côi nghèo nhưng thông minh và kiên trì.", "Anh phải đối mặt với những thử thách khó khăn để đạt được hạnh phúc."] },
+    { label: "Cốt Truyện", color: C.gold, items: ["Một ông già giàu có đưa ra thử thách: phải đãi tiệc và thắng cuộc thi cõng cô gái lên dốc mới được cưới vợ.", "Trong bữa tiệc, chàng trai khôn khéo giữ sức, trong khi ông già ăn uống no say.", "Khi thi, ông nhanh chóng kiệt sức còn chàng trai vẫn đủ sức vượt qua thử thách.", "Cuối cùng, chàng trai chiến thắng và cưới được cô gái, sống hạnh phúc."] },
+    { label: "Ý Nghĩa", color: C.clay, items: ["Đề cao trí thông minh, sự kiên trì và bản lĩnh vượt khó.", "Thể hiện giá trị của tình yêu chân thành và sự đồng lòng.", "Là bài học về cách ứng xử khôn khéo trong cuộc sống."] },
   ] : [
-    { label: "Overview", color: C.leaf, items: ["This story follows a poor but intelligent and persistent orphan.", "He overcomes challenges to achieve happiness.", "It reflects the aspiration for fairness and success among common people."] },
-    { label: "Story", color: C.gold, items: ["A wealthy old man challenges him to host a feast and win a carrying contest up a hill.", "The young man conserves energy while the old man overeats.", "During the contest, the old man exhausts quickly while the young man succeeds.", "In another version, the girl secretly helps him with a drink.", "He wins and marries the girl, living happily."] },
-    { label: "Meaning", color: C.clay, items: ["Highlights intelligence, perseverance, and resilience.", "Emphasizes sincere love and cooperation.", "Reflects belief in justice and deserved success.", "Teaches wise conduct in life."] },
+    { label: "Overview", color: C.leaf, items: ["This story follows a poor but intelligent and persistent orphan.", "He overcomes challenges to achieve happiness."] },
+    { label: "Story", color: C.gold, items: ["A wealthy old man challenges him to host a feast and win a carrying contest up a hill.", "The young man conserves energy while the old man overeats.", "During the contest, the old man exhausts quickly while the young man succeeds.", "He wins and marries the girl, living happily."] },
+    { label: "Meaning", color: C.clay, items: ["Highlights intelligence, perseverance, and resilience.", "Emphasizes sincere love and cooperation.", "Teaches wise conduct in life."] },
   ]
 );
 
@@ -1860,11 +1945,11 @@ const Page35DieuKhacIntro = makePage(
   "Điêu Khắc Dân Gian", "Folk Carving",
   { vi: "Nghệ thuật tạo hình phản ánh đời sống và thế giới quan người Cơ Tu", en: "Plastic art reflecting the worldview and daily life of the Cơ Tu" },
   (lang) => lang === "vi" ? [
-    { label: "Giới Thiệu Chung", color: C.leaf, items: ["Điêu khắc dân gian Cơ Tu là loại hình nghệ thuật tạo hình mang đậm dấu ấn văn hóa và tín ngưỡng.", "Nghệ nhân sử dụng công cụ đơn giản như rìu, rựa, đục để tạo tượng gỗ và phù điêu.", "Tác phẩm gắn với các không gian quen thuộc: nhà Gươl, cột lễ, nhà ở và khu nhà mồ.", "Phản ánh đời sống thực tế, sinh hoạt cộng đồng và mối quan hệ với tự nhiên."] },
+    { label: "Giới Thiệu Chung", color: C.leaf, items: ["Điêu khắc dân gian Cơ Tu là loại hình nghệ thuật tạo hình mang đậm dấu ấn văn hóa và tín ngưỡng.", "Nghệ nhân sử dụng công cụ đơn giản như rìu, rựa, đục để tạo tượng gỗ và phù điêu.", "Tác phẩm gắn với các không gian quen thuộc: nhà Gươl, cột lễ, nhà ở và khu nhà mồ."] },
     { label: "Đặc Điểm Nghệ Thuật", color: C.gold, items: ["Mang tính biểu trưng, không thiên về tả thực chi tiết.", "Hình tượng đa dạng: con người, động vật, cảnh sinh hoạt.", "Không bị bó buộc khuôn mẫu, thể hiện sự sáng tạo linh hoạt."] },
     { label: "Ý Nghĩa", color: C.clay, items: ["Thể hiện quan niệm về con người, vũ trụ và đời sống tâm linh.", "Lưu giữ ký ức cộng đồng và truyền tải giá trị văn hóa.", "Góp phần củng cố bản sắc văn hóa Cơ Tu."] },
   ] : [
-    { label: "Overview", color: C.leaf, items: ["Cơ Tu folk carving is a visual art form expressing culture and beliefs.", "Artisans use simple tools to create wooden sculptures and reliefs.", "Works are found in communal and spiritual spaces.", "Reflects daily life and human–nature relationships."] },
+    { label: "Overview", color: C.leaf, items: ["Cơ Tu folk carving is a visual art form expressing culture and beliefs.", "Artisans use simple tools to create wooden sculptures and reliefs.", "Works are found in communal and spiritual spaces."] },
     { label: "Artistic Features", color: C.gold, items: ["Symbolic rather than realistic.", "Diverse subjects: humans, animals, daily scenes.", "Flexible and creative without rigid rules."] },
     { label: "Significance", color: C.clay, items: ["Expresses worldview and spirituality.", "Preserves community memory.", "Reinforces cultural identity."] },
   ],
@@ -1993,12 +2078,12 @@ const Page43DanAbel = makePage(
   { vi: "Nhạc cụ giao tiếp độc đáo trong giao duyên", en: "Unique communication instrument in courtship" },
   (lang) => lang === "vi" ? [
     { label: "Khái Quát", color: C.leaf, items: ["Nhạc cụ truyền thống độc đáo của người Cơ Tu (Quảng Nam).", "Gắn liền với đời sống tinh thần và sinh hoạt cộng đồng.", "Được sử dụng như phương tiện giao tiếp trong giao duyên nam nữ."] },
-    { label: "Cấu Tạo & Diễn Tấu", color: C.gold, items: ["Ống tre dài 30–40cm, dây bằng sợi thực vật.", "Sử dụng sáp ong để điều chỉnh cao độ.", "Bộ phận 'khêl' nối với miếng vẩy — người chơi ngậm vào miệng.", "Kết hợp kéo dây, hơi thở và khoang miệng để tạo âm thanh.", "Âm thanh có thể mô phỏng tiếng nói và âm thanh thiên nhiên.", "Có thể chơi cá nhân hoặc phối hợp hai người."] },
-    { label: "Ý Nghĩa & Bảo Tồn", color: C.clay, items: ["Được xem là 'phương tiện giao tiếp bằng âm thanh'.", "Giúp bày tỏ tình cảm và tâm tư một cách tinh tế.", "Phản ánh quan niệm âm nhạc là một phần của giao tiếp xã hội.", "Hiện có nguy cơ mai một, cần được bảo tồn."] },
+    { label: "Cấu Tạo & Diễn Tấu", color: C.gold, items: ["Ống tre dài 30–40cm, dây bằng sợi thực vật.", "Sử dụng sáp ong để điều chỉnh cao độ.", "Bộ phận 'khêl' nối với miếng vẩy — người chơi ngậm vào miệng.", "Kết hợp kéo dây, hơi thở và khoang miệng để tạo âm thanh.", "Âm thanh có thể mô phỏng tiếng nói và âm thanh thiên nhiên."] },
+    { label: "Ý Nghĩa & Bảo Tồn", color: C.clay, items: ["Được xem là 'phương tiện giao tiếp bằng âm thanh'.", "Giúp bày tỏ tình cảm và tâm tư một cách tinh tế.", "Hiện có nguy cơ mai một, cần được bảo tồn."] },
   ] : [
     { label: "Overview", color: C.leaf, items: ["Unique traditional instrument of the Cơ Tu people.", "Closely tied to spiritual and community life.", "Used as a communication tool in courtship."] },
-    { label: "Structure & Playing", color: C.gold, items: ["Bamboo tube (30–40cm), plant-fiber string.", "Beeswax used for pitch adjustment.", "Special 'khel' part placed in the mouth.", "Combines string pulling, breath, and mouth cavity control.", "Can mimic speech and natural sounds.", "Playable solo or in pairs."] },
-    { label: "Significance & Preservation", color: C.clay, items: ["Considered a 'sound-based communication tool'.", "Expresses emotions and feelings subtly.", "Reflects music as social communication.", "Currently at risk — needs preservation."] },
+    { label: "Structure & Playing", color: C.gold, items: ["Bamboo tube (30–40cm), plant-fiber string.", "Beeswax used for pitch adjustment.", "Special 'khel' part placed in the mouth.", "Combines string pulling, breath, and mouth cavity control.", "Can mimic speech and natural sounds."] },
+    { label: "Significance & Preservation", color: C.clay, items: ["Considered a 'sound-based communication tool'.", "Expresses emotions and feelings subtly.", "Currently at risk — needs preservation."] },
   ],
   "https://nhaccuphongvan.vn/wp-content/uploads/2015/06/Abel1.jpg"
 );
@@ -2025,17 +2110,19 @@ const Page45DanToBrehAlui = makePage(
   { vi: "Đàn 'Bầu' Cơ Tu — Gắn với hát lý và giao duyên", en: "Cơ Tu 'Bầu Lute' — Tied to lý singing and courtship" },
   (lang) => lang === "vi" ? [
     { label: "Khái Quát", color: C.leaf, items: ["Nhạc cụ dây truyền thống của người Cơ Tu (Quảng Nam), có hình thức gần giống đàn bầu Việt.", "Khá phổ biến trong đời sống — xuất hiện trong lễ hội và sinh hoạt hằng ngày.", "Đặc biệt gắn liền với hát lý và các hình thức giao duyên."] },
-    { label: "Cấu Tạo & Diễn Tấu", color: C.gold, items: ["Cần tre dài khoảng 1–1,2m; thùng đàn làm từ quả bầu khô để cộng hưởng âm.", "Đàn có hai dây: một dây chính và một dây đệm trầm.", "Người chơi áp đàn vào bụng, một tay gảy, một tay bấm để thay đổi cao độ.", "Có thể kết hợp hai dây để tạo hòa âm hoặc lật đàn để tạo âm thanh ngắt quãng.", "Kỹ thuật diễn tấu khá phức tạp, đòi hỏi sự khéo léo."] },
+    { label: "Cấu Tạo & Diễn Tấu", color: C.gold, items: ["Cần tre dài khoảng 1–1,2m; thùng đàn làm từ quả bầu khô để cộng hưởng âm.", "Đàn có hai dây: một dây chính và một dây đệm trầm.", "Người chơi áp đàn vào bụng, một tay gảy, một tay bấm để thay đổi cao độ.", "Kỹ thuật diễn tấu khá phức tạp, đòi hỏi sự khéo léo."] },
     { label: "Ý Nghĩa & Bảo Tồn", color: C.clay, items: ["Giữ vai trò quan trọng trong dàn nhạc truyền thống, tạo không gian âm thanh và biểu đạt cảm xúc.", "Góp phần hỗ trợ hát lý và giao duyên trong cộng đồng.", "Hiện có nguy cơ mai một do ít người trẻ kế thừa.", "Cần được bảo tồn và truyền dạy để giữ gìn bản sắc văn hóa Cơ Tu."] },
   ] : [
     { label: "Overview", color: C.leaf, items: ["Traditional string instrument of the Cơ Tu people (Quảng Nam), resembling the Vietnamese monochord.", "Common in daily life — appears in festivals and community activities.", "Closely associated with lý singing and courtship traditions."] },
-    { label: "Structure & Playing", color: C.gold, items: ["Bamboo neck 1–1.2m; resonator made from dried gourd.", "Two strings: one main string and one bass string.", "Player presses instrument against the body, plucks with one hand and adjusts pitch with the other.", "Can combine strings for harmony or flip the instrument for staccato effects.", "Requires relatively complex playing techniques."] },
+    { label: "Structure & Playing", color: C.gold, items: ["Bamboo neck 1–1.2m; resonator made from dried gourd.", "Two strings: one main string and one bass string.", "Player presses instrument against the body, plucks with one hand and adjusts pitch with the other.", "Requires relatively complex playing techniques."] },
     { label: "Significance & Preservation", color: C.clay, items: ["Plays an important role in traditional ensembles, shaping sound space and emotional expression.", "Supports lý singing and courtship communication.", "Currently at risk of disappearance due to lack of young practitioners.", "Needs preservation and transmission to maintain cultural identity."] },
   ],
   "https://cdnphoto.dantri.com.vn/n6KwPLePnlC9bjg1Sx93AT1TSDs=/thumb_w/1020/2022/11/07/2-1667822898058.jpg?watermark=true"
 );
 
-// ─── CLOSING PAGE ─────────────────────────────────────────────────────────────
+// ═══════════════════════════════════════════════════════════════════════════════
+// PAGE 46: CLOSING
+// ═══════════════════════════════════════════════════════════════════════════════
 function Page46LoiKet({ lang }) {
   const isMobile = useIsMobile();
   const paragraphs = lang === "vi" ? [
@@ -2048,43 +2135,34 @@ function Page46LoiKet({ lang }) {
     { color: C.clay, text: "It is our hope that this small handbook will serve as a bridge bringing readers closer to the depth of Cơ Tu culture — awakening awareness, cherishing heritage, and demonstrating the harmonious union of tradition and technology." },
   ];
 
-  return (
-    <PageShell bgVariant="a">
-      <div style={{
-        position: "absolute",
-        top: 36, bottom: 36, left: 40, right: 40,
-        display: "flex",
-        flexDirection: isMobile ? "column" : "row",
-        alignItems: isMobile ? "flex-start" : "stretch",
-        overflowY: isMobile ? "auto" : "visible",
-        gap: isMobile ? 16 : 0,
-      }}>
-        {/* Left */}
-        <div style={{
-          width: isMobile ? "100%" : "44%",
-          flexShrink: 0,
-          display: "flex", flexDirection: "column",
-          alignItems: "center", justifyContent: "center",
-          textAlign: "center",
-          paddingRight: isMobile ? 0 : 28,
-        }}>
-          <svg width={isMobile ? 56 : 70} height={isMobile ? 56 : 70} viewBox="0 0 70 70" fill="none" style={{ marginBottom: 12 }}>
-            <polygon points="35,5 65,35 35,65 5,35" stroke={C.gold} strokeWidth="1.5" fill={`${C.gold}12`} />
-            <polygon points="35,15 55,35 35,55 15,35" stroke={C.leaf} strokeWidth="1" fill={`${C.leaf}10`} />
-            <circle cx="35" cy="35" r="10" fill={C.gold} opacity="0.8" />
-            <circle cx="35" cy="35" r="5" fill={C.ink} opacity="0.9" />
-          </svg>
-          <div style={{ fontSize: isMobile ? 9 : 8.5, letterSpacing: "4px", textTransform: "uppercase", color: C.textMuted, marginBottom: 10, fontFamily: "'Be Vietnam Pro',sans-serif" }}>
+  if (isMobile) {
+    return (
+      <PageShell bgVariant="a">
+        <PageContent isMobile={true}>
+          {/* Ornament */}
+          <div style={{ display: "flex", justifyContent: "center", marginBottom: 8 }}>
+            <svg width="56" height="56" viewBox="0 0 70 70" fill="none">
+              <polygon points="35,5 65,35 35,65 5,35" stroke={C.gold} strokeWidth="1.5" fill={`${C.gold}12`} />
+              <polygon points="35,15 55,35 35,55 15,35" stroke={C.leaf} strokeWidth="1" fill={`${C.leaf}10`} />
+              <circle cx="35" cy="35" r="10" fill={C.gold} opacity="0.8" />
+              <circle cx="35" cy="35" r="5" fill={C.ink} opacity="0.9" />
+            </svg>
+          </div>
+
+          <div style={{ fontSize: 9, letterSpacing: "4px", textTransform: "uppercase", color: C.textMuted, textAlign: "center", fontFamily: "'Be Vietnam Pro',sans-serif", marginBottom: 4 }}>
             ✦ {lang === "vi" ? "Lời Kết" : "Closing Words"} ✦
           </div>
-          <div style={{ fontSize: isMobile ? 24 : "clamp(26px,3.2vw,38px)", fontWeight: 700, color: C.ink, lineHeight: 1.05, fontFamily: "'Playfair Display',serif" }}>
+          <div style={{ fontSize: 30, fontWeight: 700, color: C.ink, lineHeight: 1.05, fontFamily: "'Playfair Display',serif", textAlign: "center" }}>
             {lang === "vi" ? "Xin Cảm Ơn" : "Thank You"}
           </div>
-          <div style={{ fontSize: isMobile ? 16 : "clamp(14px,1.7vw,20px)", fontWeight: 600, color: C.forestMid, lineHeight: 1.1, marginBottom: 14, fontFamily: "'Playfair Display',serif" }}>
+          <div style={{ fontSize: 18, fontWeight: 600, color: C.forestMid, lineHeight: 1.1, marginBottom: 10, fontFamily: "'Playfair Display',serif", textAlign: "center" }}>
             {lang === "vi" ? "& Hẹn Gặp Lại" : "& Until Next Time"}
           </div>
+
           <SectionDivider />
-          <div style={{ marginTop: 16, display: "flex", flexDirection: "column", gap: 9, width: "100%" }}>
+
+          {/* Institution */}
+          <div style={{ display: "flex", flexDirection: "column", gap: 6, marginTop: 8 }}>
             {[
               { text: "Đại Học Sư Phạm – Đại Học Đà Nẵng", color: C.leaf },
               { text: "Khoa Sử – Địa – Chính Trị", color: C.gold },
@@ -2094,46 +2172,99 @@ function Page46LoiKet({ lang }) {
                 display: "flex", alignItems: "center", gap: 10,
                 background: `linear-gradient(135deg, rgba(60,30,10,0.06), ${p.color}0a)`,
                 borderLeft: `3px solid ${p.color}cc`,
-                padding: isMobile ? "9px 12px" : "7px 12px",
+                padding: "8px 12px",
               }}>
                 <CoTuDiamond size={8} color={p.color} />
-                <span style={{ fontSize: isMobile ? 12 : "clamp(8px,0.93vw,9.5px)", color: C.textMain, fontFamily: "'Be Vietnam Pro',sans-serif" }}>{p.text}</span>
+                <span style={{ fontSize: 12, color: C.textMain, fontFamily: "'Be Vietnam Pro',sans-serif" }}>{p.text}</span>
+              </div>
+            ))}
+          </div>
+
+          <HDivider margin="12px 0" />
+
+          {/* Closing paragraphs */}
+          <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 10 }}>
+            <DiamondRow gap={5} />
+            <div style={{ fontSize: 10, letterSpacing: "2.5px", textTransform: "uppercase", color: C.forestMid, fontFamily: "'Be Vietnam Pro',sans-serif" }}>
+              {lang === "vi" ? "Lời Nhắn Gửi" : "Closing Message"}
+            </div>
+          </div>
+
+          {paragraphs.map((p, i) => (
+            <div key={i} style={{
+              background: `linear-gradient(135deg, rgba(60,30,10,0.06), ${p.color}0a)`,
+              borderLeft: `3px solid ${p.color}88`,
+              padding: "10px 12px",
+              display: "flex", gap: 10, alignItems: "flex-start",
+              marginBottom: 8,
+            }}>
+              <CoTuDiamond size={8} color={p.color} />
+              <p style={{
+                fontSize: 13, color: C.textMain, lineHeight: 1.85, margin: 0,
+                fontStyle: "italic", fontFamily: "'Lora',serif",
+              }}>{p.text}</p>
+            </div>
+          ))}
+
+          {/* Team photo */}
+          <div style={{ width: "100%", borderRadius: 4, overflow: "hidden", marginTop: 8 }}>
+            <img src={iumgTeam} alt="Team" style={{ width: "100%", height: "auto", display: "block", filter: "brightness(0.9) contrast(1.1)" }} />
+          </div>
+
+          <CoTuBorder />
+          <PageFooter />
+        </PageContent>
+      </PageShell>
+    );
+  }
+
+  // Desktop
+  return (
+    <PageShell bgVariant="a">
+      <div style={{ position: "absolute", top: 36, bottom: 36, left: 40, right: 40, display: "flex", flexDirection: "row", alignItems: "stretch" }}>
+        <div style={{ width: "44%", flexShrink: 0, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", textAlign: "center", paddingRight: 28 }}>
+          <svg width="70" height="70" viewBox="0 0 70 70" fill="none" style={{ marginBottom: 12 }}>
+            <polygon points="35,5 65,35 35,65 5,35" stroke={C.gold} strokeWidth="1.5" fill={`${C.gold}12`} />
+            <polygon points="35,15 55,35 35,55 15,35" stroke={C.leaf} strokeWidth="1" fill={`${C.leaf}10`} />
+            <circle cx="35" cy="35" r="10" fill={C.gold} opacity="0.8" />
+            <circle cx="35" cy="35" r="5" fill={C.ink} opacity="0.9" />
+          </svg>
+          <div style={{ fontSize: 8.5, letterSpacing: "4px", textTransform: "uppercase", color: C.textMuted, marginBottom: 10, fontFamily: "'Be Vietnam Pro',sans-serif" }}>
+            ✦ {lang === "vi" ? "Lời Kết" : "Closing Words"} ✦
+          </div>
+          <div style={{ fontSize: "clamp(26px,3.2vw,38px)", fontWeight: 700, color: C.ink, lineHeight: 1.05, fontFamily: "'Playfair Display',serif" }}>
+            {lang === "vi" ? "Xin Cảm Ơn" : "Thank You"}
+          </div>
+          <div style={{ fontSize: "clamp(14px,1.7vw,20px)", fontWeight: 600, color: C.forestMid, lineHeight: 1.1, marginBottom: 14, fontFamily: "'Playfair Display',serif" }}>
+            {lang === "vi" ? "& Hẹn Gặp Lại" : "& Until Next Time"}
+          </div>
+          <SectionDivider />
+          <div style={{ marginTop: 16, display: "flex", flexDirection: "column", gap: 9, width: "100%" }}>
+            {[
+              { text: "Đại Học Sư Phạm – Đại Học Đà Nẵng", color: C.leaf },
+              { text: "Khoa Sử – Địa – Chính Trị", color: C.gold },
+              { text: "Văn Hoá Cơ Tu · Đà Nẵng · 2026", color: C.clay },
+            ].map((p, i) => (
+              <div key={i} style={{ display: "flex", alignItems: "center", gap: 10, background: `linear-gradient(135deg, rgba(60,30,10,0.06), ${p.color}0a)`, borderLeft: `3px solid ${p.color}cc`, padding: "7px 12px" }}>
+                <CoTuDiamond size={8} color={p.color} />
+                <span style={{ fontSize: "clamp(8px,0.93vw,9.5px)", color: C.textMain, fontFamily: "'Be Vietnam Pro',sans-serif" }}>{p.text}</span>
               </div>
             ))}
           </div>
           <div style={{ marginTop: 16, width: "100%" }}><CoTuBorder /></div>
         </div>
-
-        {isMobile ? <HDivider /> : <VDivider />}
-
-        {/* Right */}
-        <div style={{
-          flex: 1,
-          display: "flex", flexDirection: "column", justifyContent: "center",
-          paddingLeft: isMobile ? 0 : 26, paddingRight: 6, gap: 12,
-        }}>
+        <VDivider />
+        <div style={{ flex: 1, display: "flex", flexDirection: "column", justifyContent: "center", paddingLeft: 26, paddingRight: 6, gap: 12 }}>
           <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 4 }}>
             <DiamondRow gap={5} />
-            <div style={{ fontSize: isMobile ? 10 : 9.5, letterSpacing: "3px", textTransform: "uppercase", color: C.forestMid, opacity: 0.85, fontFamily: "'Be Vietnam Pro',sans-serif" }}>
+            <div style={{ fontSize: 9.5, letterSpacing: "3px", textTransform: "uppercase", color: C.forestMid, opacity: 0.85, fontFamily: "'Be Vietnam Pro',sans-serif" }}>
               {lang === "vi" ? "Lời Nhắn Gửi" : "Closing Message"}
             </div>
           </div>
           {paragraphs.map((p, i) => (
-            <div key={i} style={{
-              background: `linear-gradient(135deg, rgba(60,30,10,0.06), ${p.color}0a)`,
-              borderLeft: `3px solid ${p.color}88`,
-              padding: isMobile ? "10px 12px" : "10px 14px",
-              display: "flex", gap: 10, alignItems: "flex-start",
-            }}>
+            <div key={i} style={{ background: `linear-gradient(135deg, rgba(60,30,10,0.06), ${p.color}0a)`, borderLeft: `3px solid ${p.color}88`, padding: "10px 14px", display: "flex", gap: 10, alignItems: "flex-start" }}>
               <CoTuDiamond size={8} color={p.color} />
-              <p style={{
-                fontSize: isMobile ? 13 : "clamp(9px,1vw,11px)",
-                color: C.textMain,
-                lineHeight: 1.85,
-                margin: 0,
-                fontStyle: "italic",
-                fontFamily: "'Lora',serif",
-              }}>{p.text}</p>
+              <p style={{ fontSize: "clamp(9px,1vw,11px)", color: C.textMain, lineHeight: 1.85, margin: 0, fontStyle: "italic", fontFamily: "'Lora',serif" }}>{p.text}</p>
             </div>
           ))}
           <div style={{ width: "100%", borderRadius: 4, overflow: "hidden", marginTop: 8 }}>
@@ -2196,7 +2327,7 @@ const PAGES = [
   { id: 45, label: { vi: "Đàn Tơ Bhréh Alui", en: "Tơ Bhréh Alui" },  component: Page45DanToBrehAlui },
   { id: 46, label: { vi: "Lời Kết", en: "Closing" },                   component: Page46LoiKet },
 ];
-
+ 
 // ═══════════════════════════════════════════════════════════════════════════════
 // MAIN APP
 // ═══════════════════════════════════════════════════════════════════════════════
@@ -2207,24 +2338,32 @@ export default function SotayCoTu() {
   const [lang, setLang] = useState("vi");
   const [dragStart, setDragStart] = useState(null);
   const isMobile = useIsMobile();
-
+ 
+  // ── A4 ratios ──────────────────────────────────────────────────────────────
+  // Desktop: landscape 297×210 → aspectRatio = 297/210 ≈ 1.414
+  // Mobile:  portrait  210×297 → the shell itself is height:100% of a
+  //          scrollable container, so no fixed ratio needed
+  const PAGE_RATIO_LANDSCAPE = 297 / 210;
+ 
   const goTo = useCallback((index) => {
     if (flipping || index === current || index < 0 || index >= PAGES.length) return;
     setFlipDir(index > current ? "next" : "prev");
     setFlipping(true);
     setTimeout(() => { setCurrent(index); setFlipping(false); }, 480);
   }, [flipping, current]);
-
+ 
   useEffect(() => {
     const fn = (e) => {
       if (e.key === "ArrowRight") goTo(current + 1);
-      if (e.key === "ArrowLeft") goTo(current - 1);
+      if (e.key === "ArrowLeft")  goTo(current - 1);
     };
     window.addEventListener("keydown", fn);
     return () => window.removeEventListener("keydown", fn);
   }, [current, goTo]);
-
-  const handlePointerDown = (e) => setDragStart(e.clientX ?? e.touches?.[0]?.clientX);
+ 
+  const handlePointerDown = (e) =>
+    setDragStart(e.clientX ?? e.touches?.[0]?.clientX);
+ 
   const handlePointerUp = (e) => {
     if (dragStart === null) return;
     const end = e.clientX ?? e.changedTouches?.[0]?.clientX;
@@ -2232,71 +2371,81 @@ export default function SotayCoTu() {
     if (Math.abs(diff) > 40) diff > 0 ? goTo(current + 1) : goTo(current - 1);
     setDragStart(null);
   };
-
+ 
   const PageComp = PAGES[current].component;
-  const label = PAGES[current].label[lang];
-
-  // Mobile: show fewer dots
-  const DOTS_PER_ROW = isMobile ? 23 : PAGES.length;
-
+  const label    = PAGES[current].label[lang];
+ 
   return (
     <div style={{
-      width: "100vw", height: "100vh",
+      width: "100vw",
+      // Desktop: one screen, no scroll. Mobile: auto height, scrollable outer shell.
+      height:    isMobile ? "auto"    : "100vh",
+      minHeight: isMobile ? "100dvh"  : "auto",
       background: `linear-gradient(160deg, #050e06 0%, #081508 35%, #0b1c0b 65%, #061008 100%)`,
-      display: "flex", flexDirection: "column",
-      alignItems: "center", justifyContent: "center",
-      overflow: "hidden",
+      display: "flex",
+      flexDirection: "column",
+      alignItems: "center",
+      justifyContent: isMobile ? "flex-start" : "center",
+      overflowY:  isMobile ? "auto"   : "hidden",
+      overflowX: "hidden",
       fontFamily: "'Be Vietnam Pro', sans-serif",
       position: "relative",
+      padding: isMobile ? "12px 0 28px" : "10px 0",
     }}>
       <style>{`
         ${fontImport}
         *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-        
+ 
         @keyframes flipNext {
-          0%   { opacity:1; transform: perspective(1600px) rotateY(0deg) scale(1); filter:brightness(1) }
-          30%  { opacity:.65; transform: perspective(1600px) rotateY(-20deg) scale(0.95) translateZ(-30px); filter:brightness(0.6) }
-          60%  { opacity:.5; transform: perspective(1600px) rotateY(-6deg) scale(0.97) translateZ(-12px); filter:brightness(0.55) }
-          80%  { opacity:.75; transform: perspective(1600px) rotateY(3deg) scale(0.985); filter:brightness(0.8) }
-          100% { opacity:1; transform: perspective(1600px) rotateY(0deg) scale(1); filter:brightness(1) }
+          0%   { opacity:1; transform:perspective(1600px) rotateY(0deg) scale(1);filter:brightness(1) }
+          30%  { opacity:.65;transform:perspective(1600px) rotateY(-20deg) scale(0.95) translateZ(-30px);filter:brightness(0.6) }
+          60%  { opacity:.5; transform:perspective(1600px) rotateY(-6deg) scale(0.97) translateZ(-12px);filter:brightness(0.55) }
+          80%  { opacity:.75;transform:perspective(1600px) rotateY(3deg) scale(0.985);filter:brightness(0.8) }
+          100% { opacity:1; transform:perspective(1600px) rotateY(0deg) scale(1);filter:brightness(1) }
         }
         @keyframes flipPrev {
-          0%   { opacity:1; transform: perspective(1600px) rotateY(0deg) scale(1); filter:brightness(1) }
-          30%  { opacity:.65; transform: perspective(1600px) rotateY(20deg) scale(0.95) translateZ(-30px); filter:brightness(0.6) }
-          60%  { opacity:.5; transform: perspective(1600px) rotateY(6deg) scale(0.97) translateZ(-12px); filter:brightness(0.55) }
-          80%  { opacity:.75; transform: perspective(1600px) rotateY(-3deg) scale(0.985); filter:brightness(0.8) }
-          100% { opacity:1; transform: perspective(1600px) rotateY(0deg) scale(1); filter:brightness(1) }
+          0%   { opacity:1; transform:perspective(1600px) rotateY(0deg) scale(1);filter:brightness(1) }
+          30%  { opacity:.65;transform:perspective(1600px) rotateY(20deg) scale(0.95) translateZ(-30px);filter:brightness(0.6) }
+          60%  { opacity:.5; transform:perspective(1600px) rotateY(6deg) scale(0.97) translateZ(-12px);filter:brightness(0.55) }
+          80%  { opacity:.75;transform:perspective(1600px) rotateY(-3deg) scale(0.985);filter:brightness(0.8) }
+          100% { opacity:1; transform:perspective(1600px) rotateY(0deg) scale(1);filter:brightness(1) }
         }
-        @keyframes shimmer {
-          0%,100% { opacity: 0.3 }
-          50% { opacity: 0.7 }
-        }
+        @keyframes shimmer { 0%,100%{opacity:0.3} 50%{opacity:0.7} }
+ 
         .flip-next { animation: flipNext 0.5s cubic-bezier(0.4,0,0.2,1) }
         .flip-prev { animation: flipPrev 0.5s cubic-bezier(0.4,0,0.2,1) }
-        .nav-btn { transition: all 0.2s; border:none; cursor:pointer; display:flex; align-items:center; justify-content:center; outline:none; }
-        .nav-btn:hover:not(:disabled) { transform: scale(1.12) !important; }
-        .nav-btn:active:not(:disabled) { transform: scale(0.9) !important; }
+ 
+        .nav-btn {
+          transition:all 0.2s; border:none; cursor:pointer;
+          display:flex; align-items:center; justify-content:center; outline:none;
+        }
+        .nav-btn:hover:not(:disabled) { transform:scale(1.12) !important; }
+        .nav-btn:active:not(:disabled){ transform:scale(0.9)  !important; }
         .nav-btn:disabled { cursor:default; opacity:0.2; }
-        .dot { transition: all 0.25s; cursor:pointer; border:none; padding:0; }
-        .dot:hover { transform: scale(1.5); }
-        .lang-btn { transition: all 0.2s; cursor:pointer; border:none; outline:none; }
+ 
+        .dot { transition:all 0.25s; cursor:pointer; border:none; padding:0; background:none; }
+        .dot:hover { transform:scale(1.5); }
+ 
+        .lang-btn { transition:all 0.2s; cursor:pointer; border:none; outline:none; }
         .lang-btn:hover { opacity:1 !important; }
-
-        /* Mobile page scrolling */
-        .page-scroll { -webkit-overflow-scrolling: touch; scrollbar-width: none; }
-        .page-scroll::-webkit-scrollbar { display: none; }
+ 
+        /* hide scrollbar inside mobile page shell */
+        .mobile-scroll { scrollbar-width:none; -webkit-overflow-scrolling:touch; }
+        .mobile-scroll::-webkit-scrollbar { display:none; }
       `}</style>
-
-      {/* Ambient particles */}
+ 
+      {/* ── Ambient particles (desktop only) ────────────────────────────────── */}
       {!isMobile && (
-        <div style={{ position: "absolute", inset: 0, pointerEvents: "none", overflow: "hidden" }}>
+        <div style={{ position:"absolute", inset:0, pointerEvents:"none", overflow:"hidden" }}>
           {Array.from({ length: 18 }).map((_, i) => (
             <div key={i} style={{
               position: "absolute",
-              width: i % 3 === 0 ? 3 : 2, height: i % 3 === 0 ? 3 : 2,
+              width:  i % 3 === 0 ? 3 : 2,
+              height: i % 3 === 0 ? 3 : 2,
               background: i % 2 === 0 ? C.leaf : C.gold,
               borderRadius: "50%",
-              left: `${4 + i * 5.2}%`, top: `${8 + (i % 7) * 13}%`,
+              left: `${4 + i * 5.2}%`,
+              top:  `${8 + (i % 7) * 13}%`,
               opacity: 0.12,
               animation: `shimmer ${2 + (i % 4)}s ease-in-out infinite`,
               animationDelay: `${(i * 0.4) % 3}s`,
@@ -2304,14 +2453,16 @@ export default function SotayCoTu() {
           ))}
         </div>
       )}
-
-       {/* Top bar */}
+ 
+      {/* ── Top bar ──────────────────────────────────────────────────────────── */}
       <div style={{
-        display: "flex", alignItems: "center", justifyContent: "space-between",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "space-between",
         width: "100%",
         maxWidth: isMobile ? "100%" : "calc(100vw - 40px)",
-        paddingBottom: isMobile ? 6 : 10,
-        paddingLeft: isMobile ? 12 : 0,
+        paddingBottom: isMobile ? 6 : 8,
+        paddingLeft:  isMobile ? 12 : 0,
         paddingRight: isMobile ? 12 : 0,
         flexShrink: 0,
       }}>
@@ -2328,8 +2479,9 @@ export default function SotayCoTu() {
         }}>
           {label} &nbsp;·&nbsp; {current + 1} / {PAGES.length}
         </div>
-        <div style={{ display: "flex", gap: 6 }}>
-          {["vi", "en"].map(l => (
+ 
+        <div style={{ display:"flex", gap:6 }}>
+          {["vi","en"].map(l => (
             <button key={l} className="lang-btn" onClick={() => setLang(l)} style={{
               padding: isMobile ? "5px 12px" : "4px 14px",
               fontSize: isMobile ? 10 : 9,
@@ -2338,9 +2490,10 @@ export default function SotayCoTu() {
               fontFamily: "'Be Vietnam Pro',sans-serif",
               background: lang === l ? `${C.forestLight}55` : "transparent",
               border: `1px solid ${lang === l ? C.leaf : C.leaf + "44"}`,
-              color: lang === l ? C.leafLight : C.textMuted,
+              color:  lang === l ? C.leafLight : C.textMuted,
               opacity: lang === l ? 1 : 0.55,
               minHeight: isMobile ? 34 : "auto",
+              borderRadius: 2,
             }}>
               {l === "vi" ? "Việt" : "ENG"}
             </button>
@@ -2348,73 +2501,99 @@ export default function SotayCoTu() {
         </div>
       </div>
  
-      {/* Book + Nav row */}
+      {/* ── Book + Nav row ───────────────────────────────────────────────────── */}
       <div style={{
-        display: "flex", alignItems: "center",
+        display: "flex",
+        alignItems: isMobile ? "flex-start" : "center",
         gap: isMobile ? "clamp(4px,2vw,10px)" : "clamp(8px,1.2vw,18px)",
         width: "100%",
         maxWidth: isMobile ? "100%" : "calc(100vw - 40px)",
-        paddingLeft: isMobile ? 4 : 0,
+        paddingLeft:  isMobile ? 4 : 0,
         paddingRight: isMobile ? 4 : 0,
-        flex: 1, minHeight: 0,
+        // Desktop: stretch to fill remaining height
+        flex: isMobile ? "none" : 1,
+        minHeight: 0,
       }}>
-        {/* Prev button */}
+ 
+        {/* Prev */}
         <button
           className="nav-btn"
           disabled={current === 0}
           onClick={() => goTo(current - 1)}
           style={{
             flexShrink: 0,
-            width: isMobile ? 36 : 40,
+            width:  isMobile ? 36 : 40,
             height: isMobile ? 36 : 40,
             borderRadius: "50%",
             background: current === 0 ? "transparent" : `${C.forestLight}30`,
             border: `1px solid ${current === 0 ? C.leaf + "22" : C.leaf + "77"}`,
-            color: current === 0 ? `${C.leafLight}22` : C.leafLight,
+            color:  current === 0 ? `${C.leafLight}22` : C.leafLight,
+            // On mobile: sticky so always visible while page content scrolls
+            alignSelf: isMobile ? "flex-start" : "auto",
+            position:  isMobile ? "sticky"      : "static",
+            top:       isMobile ? "calc(50dvh - 20px)" : "auto",
           }}>
           <svg width="18" height="18" viewBox="0 0 18 18" fill="currentColor">
             <polygon points="12,3 6,9 12,15" />
           </svg>
         </button>
  
-        {/* Book */}
+        {/* ── Page container ─────────────────────────────────────────────────── */}
         <div style={{
-          flex: 1, minWidth: 0,
+          flex: 1,
+          minWidth: 0,
           position: "relative",
-          height: "100%",
-          display: "flex", alignItems: "center",
+          height: isMobile ? "auto" : "100%",
+          display: "flex",
+          alignItems: isMobile ? "flex-start" : "center",
+          justifyContent: "center",
         }}>
-          {/* Glow */}
+          {/* Glow halo (desktop) */}
           {!isMobile && (
             <div style={{
-              position: "absolute", inset: -6,
+              position: "absolute", inset: -8,
               background: `linear-gradient(135deg, ${C.leaf}15, ${C.gold}0a, ${C.leaf}10)`,
-              filter: "blur(12px)", zIndex: 0, borderRadius: 4,
+              filter: "blur(14px)",
+              zIndex: 0, borderRadius: 4,
             }} />
           )}
-          {/* Book shadow */}
+          {/* Drop shadow */}
           <div style={{
             position: "absolute",
-            bottom: -12, left: "5%", right: "5%", height: 20,
-            background: "rgba(0,0,0,0.5)",
-            filter: "blur(16px)",
+            bottom: isMobile ? -6 : -14,
+            left: "5%", right: "5%",
+            height: isMobile ? 10 : 22,
+            background: "rgba(0,0,0,0.55)",
+            filter: "blur(18px)",
             zIndex: 0,
           }} />
-          {/* Pages */}
+ 
+          {/* ── The page itself ───────────────────────────────────────────────── */}
           <div
             className={flipping ? (flipDir === "next" ? "flip-next" : "flip-prev") : ""}
             style={{
-              width: "100%",
-              aspectRatio: isMobile ? "4/3" : "297/210",
-              maxHeight: "100%",
-              position: "relative", zIndex: 1,
+              // Desktop: fill height, maintain A4-landscape ratio via aspectRatio
+              // Mobile:  full width, natural height (content scrolls inside shell)
+              ...(isMobile
+                ? { width: "100%", height: "auto" }
+                : {
+                    height: "100%",
+                    width: "auto",
+                    aspectRatio: `${PAGE_RATIO_LANDSCAPE}`,
+                    maxWidth: "100%",
+                  }
+              ),
+              position: "relative",
+              zIndex: 1,
               boxShadow: isMobile
-                ? `2px 4px 12px rgba(0,0,0,0.6), 8px 10px 24px rgba(0,0,0,0.5)`
-                : `2px 4px 8px rgba(0,0,0,0.7), 8px 12px 30px rgba(0,0,0,0.6), 20px 25px 60px rgba(0,0,0,0.5), inset 0 0 0 1px ${C.gold}22`,
-              cursor: "grab",
+                ? `2px 4px 12px rgba(0,0,0,0.6), 8px 10px 24px rgba(0,0,0,0.45)`
+                : `2px 4px 8px rgba(0,0,0,0.7), 8px 12px 30px rgba(0,0,0,0.6),
+                   20px 25px 60px rgba(0,0,0,0.5), inset 0 0 0 1px ${C.gold}22`,
+              cursor: isMobile ? "default" : "grab",
               userSelect: "none",
-              overflow: "hidden",
-              borderRadius: isMobile ? 2 : 0,
+              // Desktop clips overflow (fixed-size box), mobile allows natural height
+              overflow: isMobile ? "visible" : "hidden",
+              borderRadius: isMobile ? 4 : 2,
             }}
             onMouseDown={handlePointerDown}
             onMouseUp={handlePointerUp}
@@ -2422,57 +2601,77 @@ export default function SotayCoTu() {
             onTouchStart={handlePointerDown}
             onTouchEnd={handlePointerUp}
           >
-            <PageComp lang={lang} />
-            {/* Page number overlay */}
+            {/*
+              PageShell uses position:absolute for its inner layout on desktop.
+              On mobile the inner PageContent wrapper already handles its own
+              absolute + overflow:auto scroll container.
+            */}
+            <div style={{
+              width: "100%",
+              // Desktop: fill the fixed-height aspect-ratio box
+              // Mobile: auto — PageShell height will grow with content
+              height: isMobile ? "auto" : "100%",
+              position: "relative",
+            }}>
+              <PageComp lang={lang} />
+            </div>
+ 
+            {/* Page number badge */}
             <div style={{
               position: "absolute",
-              bottom: isMobile ? 10 : 16,
-              right: isMobile ? 10 : 18,
+              bottom: isMobile ? 10 : 14,
+              right:  isMobile ? 10 : 16,
               zIndex: 20,
-              background: "rgba(8,20,8,0.7)",
+              background: "rgba(8,20,8,0.78)",
+              backdropFilter: "blur(4px)",
               color: C.textMuted,
               fontSize: isMobile ? 9 : 8,
               letterSpacing: "2px",
               padding: "2px 8px",
               border: `1px solid ${C.leaf}22`,
               fontFamily: "'Be Vietnam Pro',sans-serif",
+              borderRadius: 2,
             }}>
               {current + 1}
             </div>
-            {/* Spine shadow */}
+ 
+            {/* Spine highlight */}
             <div style={{
-              position: "absolute", left: 0, top: 0, bottom: 0, width: 8,
+              position: "absolute", left:0, top:0, bottom:0, width:8,
               background: `linear-gradient(to right, ${C.leaf}28, transparent)`,
-              pointerEvents: "none", zIndex: 10,
+              pointerEvents: "none", zIndex:10,
             }} />
             {/* Right edge shadow */}
             <div style={{
-              position: "absolute", right: 0, top: 0, bottom: 0, width: 12,
-              background: `linear-gradient(to left, rgba(0,0,0,0.3), transparent)`,
-              pointerEvents: "none", zIndex: 10,
+              position: "absolute", right:0, top:0, bottom:0, width:12,
+              background: `linear-gradient(to left, rgba(0,0,0,0.28), transparent)`,
+              pointerEvents: "none", zIndex:10,
             }} />
             {/* Top sheen */}
             <div style={{
-              position: "absolute", top: 0, left: 0, right: 0, height: 3,
+              position: "absolute", top:0, left:0, right:0, height:3,
               background: `linear-gradient(to bottom, rgba(255,255,255,0.06), transparent)`,
-              pointerEvents: "none", zIndex: 10,
+              pointerEvents: "none", zIndex:10,
             }} />
           </div>
         </div>
  
-        {/* Next button */}
+        {/* Next */}
         <button
           className="nav-btn"
           disabled={current === PAGES.length - 1}
           onClick={() => goTo(current + 1)}
           style={{
             flexShrink: 0,
-            width: isMobile ? 36 : 40,
+            width:  isMobile ? 36 : 40,
             height: isMobile ? 36 : 40,
             borderRadius: "50%",
             background: current === PAGES.length - 1 ? "transparent" : `${C.forestLight}30`,
             border: `1px solid ${current === PAGES.length - 1 ? C.leaf + "22" : C.leaf + "77"}`,
-            color: current === PAGES.length - 1 ? `${C.leafLight}22` : C.leafLight,
+            color:  current === PAGES.length - 1 ? `${C.leafLight}22` : C.leafLight,
+            alignSelf: isMobile ? "flex-start" : "auto",
+            position:  isMobile ? "sticky"      : "static",
+            top:       isMobile ? "calc(50dvh - 20px)" : "auto",
           }}>
           <svg width="18" height="18" viewBox="0 0 18 18" fill="currentColor">
             <polygon points="6,3 12,9 6,15" />
@@ -2480,34 +2679,43 @@ export default function SotayCoTu() {
         </button>
       </div>
  
-      {/* Dot nav */}
+      {/* ── Dot navigation ───────────────────────────────────────────────────── */}
       <div style={{
-        display: "flex", gap: isMobile ? 3 : 4,
-        paddingTop: isMobile ? 6 : 10,
-        paddingLeft: isMobile ? 8 : 0,
-        paddingRight: isMobile ? 8 : 0,
-        alignItems: "center", flexWrap: "wrap", justifyContent: "center",
+        display: "flex",
+        gap: isMobile ? 3 : 4,
+        paddingTop:   isMobile ? 8  : 10,
+        paddingLeft:  isMobile ? 8  : 0,
+        paddingRight: isMobile ? 8  : 0,
+        alignItems: "center",
+        flexWrap: "wrap",
+        justifyContent: "center",
         maxWidth: isMobile ? "100%" : "calc(100vw - 40px)",
         flexShrink: 0,
+        // On mobile clip so dots don't push layout taller
         maxHeight: isMobile ? 28 : "none",
-        overflow: isMobile ? "hidden" : "visible",
+        overflow:  isMobile ? "hidden" : "visible",
       }}>
         {PAGES.map((_, i) => (
-          <button key={i} className="dot" onClick={() => goTo(i)} style={{
-            width: i === current ? (isMobile ? 16 : 20) : (isMobile ? 4 : 5),
-            height: isMobile ? 4 : 5,
-            borderRadius: 3,
-            background: i === current ? C.leaf : `${C.leafLight}25`,
-            boxShadow: i === current ? `0 0 10px ${C.leaf}88` : "none",
-            transition: "all 0.3s ease",
-          }} />
+          <button
+            key={i}
+            className="dot"
+            onClick={() => goTo(i)}
+            style={{
+              width:  i === current ? (isMobile ? 16 : 20) : (isMobile ? 4 : 5),
+              height: isMobile ? 4 : 5,
+              borderRadius: 3,
+              background: i === current ? C.leaf : `${C.leafLight}25`,
+              boxShadow: i === current ? `0 0 10px ${C.leaf}88` : "none",
+              transition: "all 0.3s ease",
+            }}
+          />
         ))}
       </div>
  
-      {/* Key hint / swipe hint */}
+      {/* ── Hint text ─────────────────────────────────────────────────────────── */}
       <div style={{
-        paddingTop: isMobile ? 4 : 7,
-        paddingBottom: isMobile ? 4 : 0,
+        paddingTop:    isMobile ? 5 : 7,
+        paddingBottom: isMobile ? 6 : 0,
         fontSize: isMobile ? 9 : 8,
         color: C.textMuted,
         letterSpacing: "2px",
@@ -2515,8 +2723,11 @@ export default function SotayCoTu() {
         fontFamily: "'Be Vietnam Pro',sans-serif",
         flexShrink: 0,
       }}>
-        {isMobile ? "← vuốt để chuyển trang →" : "← → lật trang · kéo để chuyển"}
+        {isMobile
+          ? "← vuốt để chuyển trang →"
+          : "← → lật trang · kéo để chuyển"}
       </div>
     </div>
   );
 }
+ 
