@@ -20,7 +20,11 @@ import imgso18 from "../../../../public/assets/so18.png"
 import imgso19 from "../../../../public/assets/so19.png"
 import imgso20 from "../../../../public/assets/so20.png"
 import iumgTeam from "../../../../public/assets/imgteam.png"
-
+import backpage1 from "../../../../public/assets/backpage1.png"
+import pagechuyentrang from "../../../../public/assets/pagechuyentrang.png"
+import pagechuyentrangmb from "../../../../public/assets/pagechuyentrangmb.png"
+import pagechuyentrangmb2 from "../../../../public/assets/pagechuyentrangmb2.png"
+import pagechuyentrang2 from "../../../../public/assets/pagechuyentrang2.png"
 // ─── DESIGN TOKENS — EARTH TONE TƯƠI SÁNG ────────────────────────────────────
 const C = {
   // Nền chính — kem nền sách cổ ấm áp
@@ -73,7 +77,52 @@ const C = {
   // Shadow
   shadow:      "rgba(44,26,10,0.85)",
 };
-
+function PageTransition1() {
+  const isMobile = useIsMobile();
+  return (
+    <div style={{
+      width: "100%",
+      height: "100%",
+      position: "relative",
+      overflow: "hidden",
+    }}>
+      <img
+        src={isMobile ? pagechuyentrangmb : pagechuyentrang}
+        alt="Chuyển trang"
+        style={{
+          width: "100%",
+          height: "100%",
+          objectFit: "cover",
+          objectPosition: "center",
+          display: "block",
+        }}
+      />
+    </div>
+  );
+}
+function PageTransition2() {
+  const isMobile = useIsMobile();
+  return (
+    <div style={{
+      width: "100%",
+      height: "100%",
+      position: "relative",
+      overflow: "hidden",
+    }}>
+      <img
+        src={isMobile ? pagechuyentrangmb2 : pagechuyentrang2}
+        alt="Chuyển trang"
+        style={{
+          width: "100%",
+          height: "100%",
+          objectFit: "cover",
+          objectPosition: "center",
+          display: "block",
+        }}
+      />
+    </div>
+  );
+}
 // ─── RESPONSIVE HOOKS ─────────────────────────────────────────────────────────
 function useIsMobile() {
   const [isMobile, setIsMobile] = useState(
@@ -450,8 +499,19 @@ function Page1Cover({ lang }) {
   if (isMobile) {
     return (
       <PageShell bgVariant="a">
+        <div style={{
+          position: "absolute",
+          inset: 0,
+          backgroundImage: `url(${backpage1})`,
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+          backgroundRepeat: "no-repeat",
+          opacity: 0.52,
+          zIndex: 0,
+          pointerEvents: "none",
+        }} />
         <PageContent isMobile={true}>
-          <div style={{ fontSize: 9, letterSpacing: "2px", textTransform: "uppercase", color: C.inkSoft, fontFamily: "'Be Vietnam Pro',sans-serif", lineHeight: 2, textAlign: "center", marginBottom: 4 }}>
+          <div style={{ fontSize: 9, letterSpacing: "2px", textTransform: "uppercase", color: "#000", fontFamily: "'Be Vietnam Pro',sans-serif", lineHeight: 2, textAlign: "center", marginBottom: 4 }}>
             Trường Đại Học Sư Phạm – Đại Học Đà Nẵng<br />Khoa Sử – Địa – Chính Trị
           </div>
           <SectionDivider />
@@ -483,13 +543,13 @@ function Page1Cover({ lang }) {
           </div>
           <SectionDivider />
           <div style={{ background: `linear-gradient(135deg, rgba(200,132,60,0.12), rgba(124,139,58,0.10))`, borderLeft: `3px solid ${C.gold}cc`, borderRight: `3px solid ${C.gold}cc`, padding: "14px 14px", marginTop: 12, marginBottom: 12, position: "relative" }}>
-            <div style={{ position: "absolute", top: 4, left: 10, fontSize: 44, fontFamily: "'Playfair Display',serif", color: `${C.gold}33`, lineHeight: 0.7 }}>"</div>
-            <p style={{ fontStyle: "italic", fontSize: 12, color: C.inkMid, lineHeight: 1.9, textAlign: "center", margin: 0, position: "relative", zIndex: 1, fontFamily: "'Lora',serif" }}>
+            <div style={{ position: "absolute", top: 4, left: 10, fontSize: 44, fontFamily: "'Playfair Display',serif", color: "#000", lineHeight: 0.7 }}>"</div>
+            <p style={{ fontStyle: "italic", fontSize: 12, color: "#000", lineHeight: 1.9, textAlign: "center", margin: 0, position: "relative", zIndex: 1, fontFamily: "'Lora',serif" }}>
               {lang === "vi" ? "Giữa đại ngàn Trường Sơn, văn hóa Cơ Tu không chỉ là ký ức của núi rừng — mà là nhịp thở sống động của một dân tộc giữ hồn qua từng thế hệ." : "Amid the Trường Sơn highlands, Cơ Tu culture is not merely a memory of forests — it is the living breath of a people preserving their soul across generations."}
             </p>
           </div>
           <CoTuBorder color={C.gold} />
-          <div style={{ fontSize: 9, letterSpacing: "3px", color: C.inkSoft, fontFamily: "'Be Vietnam Pro',sans-serif", textAlign: "center", marginTop: 10 }}>✦ &nbsp;Đà Nẵng, 2026&nbsp; ✦</div>
+          <div style={{ fontSize: 9, letterSpacing: "3px", color: "#000", fontFamily: "'Be Vietnam Pro',sans-serif", textAlign: "center", marginTop: 10 }}>✦ &nbsp;Đà Nẵng, 2026&nbsp; ✦</div>
         </PageContent>
       </PageShell>
     );
@@ -497,6 +557,17 @@ function Page1Cover({ lang }) {
 
   return (
     <PageShell bgVariant="a">
+      <div style={{
+          position: "absolute",
+          inset: 0,
+          backgroundImage: `url(${backpage1})`,
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+          backgroundRepeat: "no-repeat",
+          opacity: 0.92,
+          zIndex: 0,
+          pointerEvents: "none",
+        }} />
       <div style={{ position: "absolute", top: 36, bottom: 36, left: 40, right: 40, display: "flex", flexDirection: "row", alignItems: "stretch" }}>
         <div style={{ width: "52%", flexShrink: 0, display: "flex", flexDirection: "column", justifyContent: "center", paddingRight: 32 }}>
           <div style={{ fontSize: "clamp(7px,0.8vw,8.5px)", letterSpacing: "4px", textTransform: "uppercase", color: C.inkSoft, marginBottom: 8, fontFamily: "'Be Vietnam Pro',sans-serif", lineHeight: 2 }}>
@@ -551,11 +622,6 @@ function Page2Intro({ lang }) {
     ? "Văn hóa của người Cơ Tu tại Đà Nẵng là một bộ phận đặc sắc trong bức tranh văn hóa miền Trung, được hình thành và phát triển trên nền tảng gắn bó lâu đời với không gian núi rừng Trường Sơn, thể hiện qua nhiều yếu tố độc đáo như kiến trúc nhà cộng đồng, trang phục truyền thống, lễ hội và các phong tục tập quán; được thực hiện trong khuôn khổ đề tài \"Xây dựng nguồn tài nguyên số cho văn hóa người Cơ Tu tại thành phố Đà Nẵng,\" cuốn sổ tay này không hướng đến việc trình bày toàn diện mà tập trung lựa chọn giới thiệu một số di tích và giá trị văn hóa tiêu biểu, mang tính đại diện mà nhóm nghiên cứu đã khảo sát và tổng hợp, với cách trình bày ngắn gọn, rõ ràng và gần gũi, phù hợp với nhiều đối tượng bạn đọc, qua đó góp phần lan tỏa nhận thức, nuôi dưỡng niềm tự hào và thúc đẩy việc bảo tồn, phát huy các giá trị văn hóa truyền thống trong bối cảnh hiện đại."
     : "The culture of the Cơ Tu people in Da Nang is a distinctive part of Central Vietnam's cultural landscape, formed and developed through a long-standing connection with the Trường Sơn mountainous region. It is expressed through unique elements such as communal architecture, traditional costumes, festivals, and customs. Conducted within the framework of the project \"Building Digital Resources for Cơ Tu Culture in Da Nang City,\" this handbook does not aim to be comprehensive but instead focuses on presenting selected representative cultural sites and values surveyed and compiled by the research team.";
 
-  const highlights = [
-    { label: lang === "vi" ? "Kiến trúc cộng đồng" : "Community Architecture", desc: lang === "vi" ? "Nhà Gươl – linh hồn của làng Cơ Tu" : "The Gươl house — soul of the Cơ Tu village", color: C.leaf },
-    { label: lang === "vi" ? "Trang phục & Dệt thổ cẩm" : "Costume & Weaving", desc: lang === "vi" ? "Hoa văn đặc trưng, kỹ thuật truyền đời" : "Distinctive patterns, time-honored craft", color: C.gold },
-    { label: lang === "vi" ? "Lễ hội & Phong tục" : "Festivals & Customs", desc: lang === "vi" ? "Bảo tồn bản sắc qua từng nghi lễ" : "Preserving identity through ritual", color: C.clay },
-  ];
 
   if (isMobile) {
     return (
@@ -565,20 +631,7 @@ function Page2Intro({ lang }) {
           <div style={{ fontSize: 30, fontWeight: 700, color: C.ink, lineHeight: 1.05, fontFamily: "'Playfair Display',serif" }}>{lang === "vi" ? "Giới Thiệu" : "Introduction"}</div>
           <div style={{ fontSize: 12, fontStyle: "italic", color: C.clay, letterSpacing: "2px", marginBottom: 8, marginTop: 4, fontFamily: "'Lora',serif" }}>{lang === "vi" ? "Introduction" : "Giới Thiệu"}</div>
           <SectionDivider />
-          <div style={{ display: "flex", flexDirection: "column", gap: 8, marginTop: 10 }}>
-            {highlights.map((h, i) => (
-              <div key={i} style={{ display: "flex", alignItems: "center", gap: 10, background: `linear-gradient(135deg, rgba(255,248,235,0.9), ${h.color}20)`, borderLeft: `3px solid ${h.color}cc`, padding: "10px 12px" }}>
-                <CoTuDiamond size={10} color={h.color} />
-                <div>
-                  <div style={{ fontSize: 13, fontWeight: 600, color: C.ink, fontFamily: "'Be Vietnam Pro',sans-serif" }}>{h.label}</div>
-                  <div style={{ fontSize: 11, color: C.inkSoft, marginTop: 2, fontStyle: "italic", fontFamily: "'Lora',serif" }}>{h.desc}</div>
-                </div>
-              </div>
-            ))}
-          </div>
-          <HDivider margin="12px 0" />
           <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 10 }}>
-            <DiamondRow gap={6} />
             <div style={{ fontSize: 10, letterSpacing: "2.5px", textTransform: "uppercase", color: C.forestMid, fontFamily: "'Be Vietnam Pro',sans-serif" }}>{lang === "vi" ? "Về Cuốn Sổ Tay" : "About This Book"}</div>
           </div>
           <div style={{ background: `linear-gradient(135deg, rgba(255,248,235,0.95), rgba(200,132,60,0.08))`, borderTop: `2px solid ${C.gold}aa`, borderBottom: `1px solid ${C.gold}55`, padding: "14px 14px", position: "relative" }}>
@@ -602,17 +655,6 @@ function Page2Intro({ lang }) {
           <div style={{ fontSize: "clamp(28px,3.5vw,42px)", fontWeight: 700, color: C.ink, lineHeight: 1.05, fontFamily: "'Playfair Display',serif" }}>{lang === "vi" ? "Giới Thiệu" : "Introduction"}</div>
           <div style={{ fontSize: 11, fontStyle: "italic", color: C.clay, letterSpacing: "2px", marginBottom: 14, marginTop: 4, fontFamily: "'Lora',serif" }}>{lang === "vi" ? "Introduction" : "Giới Thiệu"}</div>
           <SectionDivider />
-          <div style={{ marginTop: 16, display: "flex", flexDirection: "column", gap: 10 }}>
-            {highlights.map((h, i) => (
-              <div key={i} style={{ display: "flex", alignItems: "center", gap: 12, background: `linear-gradient(135deg, rgba(255,248,235,0.9), ${h.color}20)`, borderLeft: `3px solid ${h.color}cc`, padding: "8px 14px" }}>
-                <CoTuDiamond size={10} color={h.color} />
-                <div>
-                  <div style={{ fontSize: 9.5, fontWeight: 600, color: C.ink, fontFamily: "'Be Vietnam Pro',sans-serif" }}>{h.label}</div>
-                  <div style={{ fontSize: 9, color: C.inkSoft, marginTop: 2, fontStyle: "italic", fontFamily: "'Lora',serif" }}>{h.desc}</div>
-                </div>
-              </div>
-            ))}
-          </div>
           <div style={{ marginTop: 16 }}><CoTuBorder /></div>
         </div>
         <VDivider />
@@ -1821,6 +1863,7 @@ const PAGES = [
   { id: 1,  label: { vi: "Trang Bìa", en: "Cover" }, component: Page1Cover },
   { id: 2,  label: { vi: "Giới Thiệu", en: "Introduction" }, component: Page2Intro },
   { id: 3,  label: { vi: "Mục Lục", en: "Contents" }, component: Page3Toc },
+  { id: "3b", label: { vi: "Di Sản Vật Thể", en: "Tangible Heritage" }, component: PageTransition1 },
   { id: 4,  label: { vi: "Làng Truyền Thống", en: "Traditional Village" }, component: Page4Lang },
   { id: 5,  label: { vi: "Nhà Gươl", en: "Gươl House" }, component: Page5NhaGuol },
   { id: 6,  label: { vi: "Nhà Sàn", en: "Stilt House" }, component: Page6NhaSan },
@@ -1840,6 +1883,7 @@ const PAGES = [
   { id: 20, label: { vi: "Gậy Chọc Lỗ", en: "Dibble Stick" }, component: Page20GayChocLo },
   { id: 21, label: { vi: "Chày Giã Gạo", en: "Rice Pestle" }, component: Page21ChayGiaGao },
   { id: 22, label: { vi: "Công Cụ Săn Bắt", en: "Hunting Tools" }, component: Page22CongCuSan },
+  { id: "22b", label: { vi: "Di Sản Phi Vật Thể", en: "Intangible Cultural Heritage" }, component: PageTransition2 },
   { id: 23, label: { vi: "Lễ Mừng Lúa Mới", en: "New Rice Festival" }, component: Page23LeMungLuaMoi },
   { id: 24, label: { vi: "Lễ Dựng Nhà Gươl", en: "Gươl Ceremony" }, component: Page24LeDungNhaGuol },
   { id: 25, label: { vi: "Lễ Kết Nghĩa", en: "Bond Ceremony" }, component: Page25LeKetNghia },
